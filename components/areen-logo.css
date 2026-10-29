@@ -1,0 +1,70 @@
+/* Areen logo: base styles + optional intro animation (add the `areen-animate` class). */
+
+.areen-logo .areen-facets {
+  fill: none;
+  stroke: #ffffff;
+  stroke-opacity: 0.55;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+/* Mark parts pivot around the base of the mark; letters around their own centre */
+.areen-logo [data-part="areen-mark"] > g > *,
+.areen-logo [data-part="areen-mark"] > * {
+  transform-box: view-box;
+  transform-origin: 457px 800px;
+}
+.areen-logo [data-part="areen-star"] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.areen-logo .areen-letter,
+.areen-logo [data-part^="rule-"] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.areen-animate [data-part^="center-crystal"] { animation: areen-rise 900ms 100ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.areen-animate [data-part="inner-crystal-left"],
+.areen-animate [data-part="leaf-left"] { --r: -28deg; animation: areen-fan 900ms 350ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.areen-animate [data-part="inner-crystal-right"],
+.areen-animate [data-part="leaf-right"] { --r: 28deg; animation: areen-fan 900ms 350ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.areen-animate [data-part="outer-crystal-left"],
+.areen-animate [data-part="swoosh-left"] { --r: -40deg; animation: areen-fan 1000ms 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.areen-animate [data-part="outer-crystal-right"],
+.areen-animate [data-part="swoosh-right"] { --r: 40deg; animation: areen-fan 1000ms 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.areen-animate [data-part="areen-star"] { animation: areen-star 900ms 1200ms cubic-bezier(0.3, 1.4, 0.4, 1) both; }
+
+.areen-animate [data-part="wordmark-ar"] .areen-letter {
+  animation: areen-letter 700ms calc(1500ms + var(--i) * 60ms) ease-out both;
+}
+.areen-animate [data-part="wordmark-en"] .areen-letter,
+.areen-animate [data-part="wordmark-hotel"] .areen-letter {
+  animation: areen-letter 600ms calc(2000ms + var(--i) * 45ms) ease-out both;
+}
+.areen-animate [data-part^="rule-"] { animation: areen-rule 800ms 2300ms ease-out both; }
+
+@keyframes areen-rise {
+  from { opacity: 0; transform: translateY(80px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes areen-fan {
+  from { opacity: 0; transform: rotate(var(--r)); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes areen-star {
+  from { opacity: 0; transform: scale(0) rotate(-90deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes areen-letter {
+  from { opacity: 0; transform: translateY(14px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes areen-rule {
+  from { transform: scaleX(0); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .areen-animate * { animation: none !important; }
+}

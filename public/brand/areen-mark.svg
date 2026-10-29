@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 914 820" role="img" aria-label="Areen Albasateen Hotel">
+  <defs>
+    <linearGradient id="areen-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6E3A1" />
+      <stop offset="0.45" stop-color="#D4AF37" />
+      <stop offset="1" stop-color="#A27E22" />
+    </linearGradient>
+    <linearGradient id="areen-crystal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E4F0FA" />
+      <stop offset="0.5" stop-color="#A7C6E0" />
+      <stop offset="1" stop-color="#5B8FB7" />
+    </linearGradient>
+    <linearGradient id="areen-crystal-deep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A7C6E0" />
+      <stop offset="0.55" stop-color="#5B8FB7" />
+      <stop offset="1" stop-color="#2B5578" />
+    </linearGradient>
+  </defs>
+  <style>
+    .areen-facets { fill: none; stroke: #FFFFFF; stroke-opacity: 0.55; stroke-width: 2; stroke-linejoin: round; }
+  </style>
+  <g id="areen-mark">
+    <g id="areen-left">
+    <g id="outer-crystal-left" class="areen-crystal areen-outer-crystal">
+      <path d="M28 490 L150 487 L300 590 L410 712 L160 668 Z" fill="url(#areen-crystal)" />
+      <path class="areen-facets" d="M28 490 L215 590 L410 712 M150 487 L215 590 M160 668 L215 590 M90 560 L215 590" />
+    </g>
+    <path id="swoosh-left" class="areen-gold areen-swoosh" d="M126 676 C270 656 392 718 448 806 C380 752 270 696 126 676 Z" fill="url(#areen-gold)" />
+    <g id="inner-crystal-left" class="areen-crystal areen-inner-crystal">
+      <path d="M216 354 L296 400 L354 488 L430 740 L230 480 Z" fill="url(#areen-crystal-deep)" />
+      <path class="areen-facets" d="M216 354 L326 560 L430 740 M296 400 L326 560 M230 480 L326 560" />
+    </g>
+    <path id="leaf-left" class="areen-gold areen-leaf" d="M446 792 C330 705 214 610 204 478 L184 316 C262 352 336 410 374 476 C420 560 446 680 452 770 Z M432 744 C350 662 238 582 226 478 L212 350 C276 382 330 430 356 486 C394 570 422 662 432 744 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
+    <g id="center-crystal-left" class="areen-crystal areen-center-crystal">
+      <path d="M366 202 L449 284 L451 708 L440 722 L360 432 Z" fill="url(#areen-crystal-deep)" />
+      <path d="M414 264 L449 284 L451 708 L436 712 Z" fill="url(#areen-crystal)" opacity="0.9" />
+      <path class="areen-facets" d="M366 202 L414 264 L436 712" />
+    </g>
+    </g>
+    <g id="areen-right">
+    <g id="outer-crystal-right" class="areen-crystal areen-outer-crystal">
+      <path d="M886 490 L764 487 L614 590 L504 712 L754 668 Z" fill="url(#areen-crystal)" />
+      <path class="areen-facets" d="M886 490 L699 590 L504 712 M764 487 L699 590 M754 668 L699 590 M824 560 L699 590" />
+    </g>
+    <path id="swoosh-right" class="areen-gold areen-swoosh" d="M788 676 C644 656 522 718 466 806 C534 752 644 696 788 676 Z" fill="url(#areen-gold)" />
+    <g id="inner-crystal-right" class="areen-crystal areen-inner-crystal">
+      <path d="M698 354 L618 400 L560 488 L484 740 L684 480 Z" fill="url(#areen-crystal-deep)" />
+      <path class="areen-facets" d="M698 354 L588 560 L484 740 M618 400 L588 560 M684 480 L588 560" />
+    </g>
+    <path id="leaf-right" class="areen-gold areen-leaf" d="M468 792 C584 705 700 610 710 478 L730 316 C652 352 578 410 540 476 C494 560 468 680 462 770 Z M482 744 C564 662 676 582 688 478 L702 350 C638 382 584 430 558 486 C520 570 492 662 482 744 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
+    <g id="center-crystal-right" class="areen-crystal areen-center-crystal">
+      <path d="M548 202 L465 284 L463 708 L474 722 L554 432 Z" fill="url(#areen-crystal-deep)" />
+      <path d="M500 264 L465 284 L463 708 L478 712 Z" fill="url(#areen-crystal)" opacity="0.9" />
+      <path class="areen-facets" d="M548 202 L500 264 L478 712" />
+    </g>
+    </g>
+    <path id="areen-star" class="areen-gold" d="M457 22 Q467 100 524 112 Q467 124 457 226 Q447 124 390 112 Q447 100 457 22 Z" fill="url(#areen-gold)" />
+  </g>
+</svg>

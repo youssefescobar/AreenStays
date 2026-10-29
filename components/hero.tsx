@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ChevronDown } from "lucide-react";
+import { AreenLogo } from "./areen-logo";
 
 const HERO_IMG =
   "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=80";
@@ -19,22 +19,15 @@ export function Hero() {
       />
 
       <div className="relative z-10 flex flex-col items-center px-4 pt-24 pb-36 text-center">
-        <Image
-          src="/brand/logo-lockup.png"
-          alt="Areen Albasateen Hotel"
-          width={700}
-          height={666}
-          priority
-          className="w-56 animate-rise sm:w-72 lg:w-80"
-        />
+        <AreenLogo animate className="w-64 sm:w-80 lg:w-96" />
         <p
           dir="rtl"
           lang="ar"
-          className="mt-8 animate-rise font-arabic text-2xl font-light text-beige [animation-delay:200ms] sm:text-3xl"
+          className="mt-8 animate-rise font-arabic text-2xl font-light text-beige [animation-delay:2600ms] sm:text-3xl"
         >
           إقامة .. بتجربة تتجاوز التوقعات
         </p>
-        <p className="mt-3 animate-rise text-sm uppercase tracking-[0.5em] text-gold [animation-delay:350ms]">
+        <p className="mt-3 animate-rise text-sm uppercase tracking-[0.5em] text-gold [animation-delay:2800ms]">
           More than a stay
         </p>
       </div>

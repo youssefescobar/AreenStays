@@ -34,7 +34,8 @@ Brand tokens (navy, crystal, sky, gold, beige, sand, ink) live in the `@theme` b
 
 ## Placeholders
 
-- Logos in `public/brand/` are cut from the brand sheet image. Swap in the designer's SVG/PNG exports when available.
+- `components/areen-logo.tsx` is the logo as code-drawn SVG (every part has a `data-part`, every letter is its own path). Preview it at `/logo`. Static copies: `public/brand/areen-logo.svg`, `areen-mark.svg`. Generator scripts in `scripts/logo/`.
+- The header still uses PNGs cut from the brand sheet image (`public/brand/logo-*.png`).
 - Photos are Unsplash stock loaded by URL, with a navy-to-crystal gradient fallback. Replace with the hotel's own photography.
 - Room names, prices, offers, phone and email are sample content.
 - Motion is CSS only: a fade-up on the hero, hover zoom on room cards, and lift on offer cards. Respects `prefers-reduced-motion`.
