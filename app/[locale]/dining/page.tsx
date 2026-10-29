@@ -18,7 +18,7 @@ export default async function DiningPage({ params }: LocaleParams) {
   const { locale } = await resolve(params);
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-24">
           {venues.map((v, i) => (

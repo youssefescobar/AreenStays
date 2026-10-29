@@ -38,8 +38,8 @@ All text, rooms, prices and contact details live in `content/`, in both language
 
 ## Photos
 
-Every image slot uses `components/photo.tsx`. With no `src` it shows a branded placeholder, so layouts are final already.
-To add real photos, put them in `public/photos/` and list them in the content files, e.g. `images: ["/photos/rooms/deluxe-1.jpg"]` in `content/rooms.ts`. The hero, gallery and Umrah/business strips have placeholder slots marked in their components.
+Every image slot uses `components/photo.tsx`: a branded placeholder with the photo on top. For now the photos are **temporary Unsplash fillers**, all listed in `content/stock.ts`; if one fails to load, the placeholder shows.
+To add real photos, put them in `public/photos/` and swap the paths in the content files (e.g. `images: ["/photos/rooms/deluxe-1.jpg"]` in `content/rooms.ts`), or point the keys in `content/stock.ts` at the new files.
 
 ## Booking
 
