@@ -1,4 +1,5 @@
 import type { T } from "@/lib/i18n";
+import { stock } from "./stock";
 
 export type Venue = { slug: string; name: T; type: T; description: T; hours: string; images: string[] };
 
@@ -12,7 +13,7 @@ export const venues: Venue[] = [
       ar: "بوفيه فطور بأشهى الأطباق السعودية، وقائمة غداء وعشاء، وأطباق عائلية للمشاركة.",
     },
     hours: "06:30 – 23:00",
-    images: [],
+    images: [stock.restaurant, stock.restaurant2],
   },
   {
     slug: "crystal-lounge",
@@ -23,7 +24,7 @@ export const venues: Venue[] = [
       ar: "قهوة سعودية وتمر عند الوصول، وقهوة مختصة، وعصائر طازجة وحلويات في صالة هادئة.",
     },
     hours: "10:00 – 01:00",
-    images: [],
+    images: [stock.coffee, stock.coffee2],
   },
   {
     slug: "in-room-dining",
@@ -34,6 +35,6 @@ export const venues: Venue[] = [
       ar: "القائمة الكاملة تصل إلى غرفتك ليلاً أو نهاراً، بما في ذلك السحور في رمضان.",
     },
     hours: "24/7",
-    images: [],
+    images: [stock.restaurant3],
   },
 ];

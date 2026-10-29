@@ -7,6 +7,7 @@ import { rooms } from "@/content/rooms";
 import { venues } from "@/content/dining";
 import { offers } from "@/content/offers";
 import { hotel } from "@/content/site";
+import { stock } from "@/content/stock";
 import { Hero } from "@/components/hero";
 import { BookingBar } from "@/components/booking-bar";
 import { SectionHeading } from "@/components/section-heading";
@@ -121,7 +122,7 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       <section className="relative overflow-hidden bg-navy-deep px-4 py-24 sm:px-6 lg:px-8">
-        <Photo label={t.nav.umrah} className="absolute inset-0 opacity-25" sizes="100vw" />
+        <Photo src={stock.lobby} label={t.nav.umrah} className="absolute inset-0 opacity-30" sizes="100vw" />
         <Reveal className="relative mx-auto max-w-3xl text-center">
           <p className="eyebrow text-gold">{t.nav.umrah}</p>
           <h2 className="mt-4 text-3xl font-light text-white sm:text-4xl">{t.home.umrahTitle}</h2>

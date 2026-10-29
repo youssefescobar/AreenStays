@@ -12,12 +12,12 @@ export function FeaturePage({
   cta,
 }: {
   locale: Locale;
-  page: { eyebrow: T; title: T; intro: T; features: { title: T; text: T }[] };
+  page: { eyebrow: T; title: T; intro: T; image?: string; features: { title: T; text: T; image?: string }[] };
   cta: string;
 }) {
   return (
     <>
-      <PageHero eyebrow={page.eyebrow[locale]} title={page.title[locale]} intro={page.intro[locale]} />
+      <PageHero eyebrow={page.eyebrow[locale]} title={page.title[locale]} intro={page.intro[locale]} image={page.image} />
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-px bg-beige sm:grid-cols-2 lg:grid-cols-3">
           {page.features.map((f, i) => (
@@ -32,7 +32,7 @@ export function FeaturePage({
       <section className="bg-navy px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
           {page.features.slice(0, 3).map((f) => (
-            <Photo key={f.title.en} label={f.title[locale]} className="aspect-[4/3]" sizes="(min-width: 768px) 33vw, 100vw" />
+            <Photo key={f.title.en} src={f.image} label={f.title[locale]} className="aspect-[4/3]" sizes="(min-width: 768px) 33vw, 100vw" />
           ))}
         </div>
         <div className="mt-12 text-center">

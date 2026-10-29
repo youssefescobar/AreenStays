@@ -1,4 +1,5 @@
 import type { T } from "@/lib/i18n";
+import { stock } from "./stock";
 
 export type Room = {
   slug: string;
@@ -39,7 +40,7 @@ export const rooms: Room[] = [
     view: { en: "City view", ar: "إطلالة على المدينة" },
     price: 450,
     amenities: common,
-    images: [],
+    images: [stock.room1, stock.bath, stock.room4, stock.lobby, stock.room6],
   },
   {
     slug: "executive-suite",
@@ -55,7 +56,7 @@ export const rooms: Room[] = [
     view: { en: "City view", ar: "إطلالة على المدينة" },
     price: 780,
     amenities: [...common, { en: "Separate lounge", ar: "صالة منفصلة" }, { en: "Bathtub", ar: "حوض استحمام" }],
-    images: [],
+    images: [stock.room2, stock.room7, stock.bath2, stock.room5, stock.lobby2],
   },
   {
     slug: "family-suite",
@@ -71,7 +72,7 @@ export const rooms: Room[] = [
     view: { en: "City view", ar: "إطلالة على المدينة" },
     price: 950,
     amenities: [...common, { en: "Two bedrooms", ar: "غرفتا نوم" }, { en: "Living room", ar: "صالة معيشة" }],
-    images: [],
+    images: [stock.room3, stock.bedroom, stock.bedroom2, stock.bath, stock.room8],
   },
   {
     slug: "royal-suite",
@@ -92,7 +93,7 @@ export const rooms: Room[] = [
       { en: "Dining area", ar: "ركن طعام" },
       { en: "Butler on request", ar: "خدمة خاصة عند الطلب" },
     ],
-    images: [],
+    images: [stock.room7, stock.room5, stock.bath2, stock.restaurant3, stock.room2],
   },
 ];
 

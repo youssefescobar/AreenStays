@@ -17,7 +17,7 @@ export default async function RoomsPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
       <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room, i) => (
