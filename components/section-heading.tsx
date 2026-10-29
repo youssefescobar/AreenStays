@@ -3,13 +3,13 @@ import { cn } from "@/lib/utils";
 export function SectionHeading({
   eyebrow,
   title,
-  arabic,
+  intro,
   light = false,
   className,
 }: {
   eyebrow: string;
   title: string;
-  arabic?: string;
+  intro?: string;
   light?: boolean;
   className?: string;
 }) {
@@ -19,11 +19,7 @@ export function SectionHeading({
       <h2 className={cn("mt-4 text-3xl font-light leading-tight sm:text-4xl", light ? "text-white" : "text-navy")}>
         {title}
       </h2>
-      {arabic && (
-        <p dir="rtl" lang="ar" className={cn("mt-2 w-fit font-arabic text-xl", light ? "text-beige/80" : "text-navy/60")}>
-          {arabic}
-        </p>
-      )}
+      {intro && <p className={cn("mt-4 leading-relaxed", light ? "text-white/70" : "text-ink/70")}>{intro}</p>}
     </div>
   );
 }
