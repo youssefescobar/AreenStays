@@ -1,41 +1,59 @@
 # Areen Stay
 
-Proof-of-concept homepage for **areenstay.com**, Areen Albasateen Hotel (أرين البساتين), Jeddah.
+Website for **areenstay.com**, Areen Albasateen Hotel (أرين البساتين), Jeddah.
 "More than a stay" / "إقامة .. بتجربة تتجاوز التوقعات".
 
 ## Stack
 
-Next.js 15 (App Router) · React 19 · Tailwind CSS v4 · lucide-react. Fonts: Montserrat (EN) and Tajawal (AR) via `next/font`.
-`lib/utils.ts` has the `cn()` helper, so shadcn/ui can be added with `npx shadcn@latest init` later.
+Next.js 15 (App Router) · React 19 · Tailwind CSS v4 · lucide-react · Lenis (smooth scroll).
+Fonts: Tajawal (Arabic) and Montserrat (English) via `next/font`.
 
 ```bash
 npm install
-npm run dev   # http://localhost:3000
+npm run dev   # http://localhost:3000 -> redirects to /ar or /en
 ```
 
-## Structure
+## Languages
 
-| Section | File |
+Every page exists at `/ar/...` (right-to-left) and `/en/...`. `middleware.ts` sends visitors without a language in the URL to:
+their saved choice (cookie set by the language switch) → Arabic for visitors in Saudi Arabia (Vercel geo header) → their browser language → Arabic.
+
+## Pages
+
+| URL | File |
 | --- | --- |
-| Top bar with Book button | `components/header.tsx` |
-| Hero (logo + tagline) | `components/hero.tsx` |
-| Booking bar | `components/booking-bar.tsx` |
-| Welcome / location | `components/intro.tsx` |
-| Rooms & suites | `components/rooms.tsx` |
-| Dining | `components/dining.tsx` |
-| Offers | `components/offers.tsx` |
-| Footer + newsletter | `components/footer.tsx` |
+| `/` home | `app/[locale]/page.tsx` |
+| `/rooms`, `/rooms/[slug]` | `app/[locale]/rooms/` |
+| `/dining`, `/offers`, `/gallery`, `/location` | `app/[locale]/*/page.tsx` |
+| `/umrah`, `/corporate` | share `components/feature-page.tsx` |
+| `/brand` brand guide (not indexed) | `app/[locale]/brand/page.tsx` |
 
-Brand tokens (navy, crystal, sky, gold, beige, sand, ink) live in the `@theme` block of `app/globals.css`, so they work as Tailwind classes like `bg-navy` or `text-gold`.
+## Editing content
 
-## Preview
+All text, rooms, prices and contact details live in `content/`, in both languages:
 
-![Desktop](docs/desktop-full.png)
+- `content/site.ts`: phone, WhatsApp, email, address, social links, booking-site listings, and all shared UI text. Values marked `TODO` are placeholders.
+- `content/rooms.ts`, `content/dining.ts`, `content/offers.ts`: one entry per room / venue / offer.
+- `content/pages.ts`: intro text for the inner pages, Umrah and business features, gallery captions, drive times.
 
-## Placeholders
+## Photos
 
-- `components/areen-logo.tsx` is the logo as code-drawn SVG (every part has a `data-part`, every letter is its own path). Preview it at `/logo`. Static copies: `public/brand/areen-logo.svg`, `areen-mark.svg`. Generator scripts in `scripts/logo/`.
-- The header still uses PNGs cut from the brand sheet image (`public/brand/logo-*.png`).
-- Photos are Unsplash stock loaded by URL, with a navy-to-crystal gradient fallback. Replace with the hotel's own photography.
-- Room names, prices, offers, phone and email are sample content.
-- Motion is CSS only: a fade-up on the hero, hover zoom on room cards, and lift on offer cards. Respects `prefers-reduced-motion`.
+Every image slot uses `components/photo.tsx`. With no `src` it shows a branded placeholder, so layouts are final already.
+To add real photos, put them in `public/photos/` and list them in the content files, e.g. `images: ["/photos/rooms/deluxe-1.jpg"]` in `content/rooms.ts`. The hero, gallery and Umrah/business strips have placeholder slots marked in their components.
+
+## Booking
+
+Until a booking engine is chosen, the booking form opens WhatsApp with the dates, guests and room filled in (`components/booking-bar.tsx`). Phones also get a pinned bar with Call / WhatsApp / Book (`components/mobile-book-bar.tsx`). To connect an engine later, replace `onSubmit` in the booking bar with a redirect to its URL.
+
+## Logo
+
+`components/areen-logo.tsx` is the logo drawn in code (variants `lockup`, `horizontal`, `mark`). Every part has a `data-part` and every letter is its own path, so it can be animated. Intro, star twinkle and hover shimmer are in `components/areen-logo.css`.
+Files: `public/brand/*.svg`, PNG/white/gold/avatar exports in `public/brand/export/`, favicon in `app/icon.png`. Regenerate with `scripts/logo/` (see its README). Preview everything at `/en/brand`.
+
+## SEO
+
+Per-page titles and descriptions with `ar`/`en` alternates (`lib/seo.ts`), schema.org `Hotel` data in the layout, `sitemap.xml`, `robots.txt`, and a share image at `public/og.png`.
+
+## Deploying
+
+Built for Vercel: import the repo, then add `areenstay.com` under Project → Domains. The Saudi-visitor language detection uses Vercel's geo header; on other hosts it falls back to browser language.

@@ -1,6 +1,6 @@
 # Converts the generated SVGs into a typed React component with named parts.
 import re, sys
-lock = open("lockup.svg").read(); mark = open("mark.svg").read()
+lock = open("lockup.svg").read(); mark = open("mark.svg").read(); horiz = open("horizontal.svg").read()
 
 def body(svg):
     svg = re.sub(r"\s*<style>.*?</style>", "", svg, flags=re.S)
@@ -18,7 +18,7 @@ def body(svg):
     inner = re.sub(r'\bid="', 'data-part="', inner)
     return vb, inner
 
-lvb, linner = body(lock); mvb, minner = body(mark)
+lvb, linner = body(lock); mvb, minner = body(mark); hvb, hinner = body(horiz)
 tsx = f'''"use client";
 
 import {{ useId }} from "react";
@@ -28,7 +28,8 @@ import "./areen-logo.css";
 /**
  * Areen Albasateen logo as inline SVG. Every part has an id or class, so it can be styled or animated:
  *  - [data-part] = areen-mark, areen-left, areen-right, areen-star, center-crystal-{{left,right}},
- *    inner-crystal-*, leaf-*, outer-crystal-*, swoosh-*, wordmark-ar, wordmark-en, wordmark-hotel, rule-left, rule-right
+ *    inner-crystal-*, leaf-*, outer-crystal-*, swoosh-*, wordmark-ar, wordmark-en, wordmark-hotel, rule-left, rule-right,
+ *    divider (horizontal only)
  *  - classes group them: .areen-gold, .areen-crystal, .areen-leaf, .areen-swoosh, .areen-facets
  *  e.g. gsap.from("[data-part=areen-star]", {{ scale: 0 }}) or document.querySelectorAll(".areen-letter")
  *  - every glyph is a .areen-letter with a --i index for staggering
@@ -40,18 +41,27 @@ export function AreenLogo({{
   className,
   title = "Areen Albasateen Hotel",
 }}: {{
-  variant?: "lockup" | "mark";
+  variant?: "lockup" | "mark" | "horizontal";
   animate?: boolean;
   className?: string;
   title?: string;
 }}) {{
   const uid = useId().replace(/:/g, "");
-  return variant === "mark" ? (
-    <svg viewBox="{mvb}" role="img" aria-label={{title}} className={{cn("areen-logo", animate && "areen-animate", className)}}>
+  const cls = cn("areen-logo", animate && "areen-animate", className);
+  if (variant === "mark")
+    return (
+      <svg viewBox="{mvb}" role="img" aria-label={{title}} className={{cls}}>
 {minner}
-    </svg>
-  ) : (
-    <svg viewBox="{lvb}" role="img" aria-label={{title}} className={{cn("areen-logo", animate && "areen-animate", className)}}>
+      </svg>
+    );
+  if (variant === "horizontal")
+    return (
+      <svg viewBox="{hvb}" role="img" aria-label={{title}} className={{cls}}>
+{hinner}
+      </svg>
+    );
+  return (
+    <svg viewBox="{lvb}" role="img" aria-label={{title}} className={{cls}}>
 {linner}
     </svg>
   );

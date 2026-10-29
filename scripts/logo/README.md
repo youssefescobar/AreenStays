@@ -12,6 +12,7 @@ pip install fonttools uharfbuzz
 cd scripts/logo
 python3 mark.py > ../../public/brand/areen-mark.svg
 python3 lockup.py ./fonts > ../../public/brand/areen-logo.svg
-cp ../../public/brand/areen-mark.svg mark.svg && cp ../../public/brand/areen-logo.svg lockup.svg
-python3 totsx.py ../../components/areen-logo.tsx && rm mark.svg lockup.svg
+python3 lockup.py ./fonts horizontal > ../../public/brand/areen-logo-horizontal.svg
+cp ../../public/brand/areen-mark.svg mark.svg && cp ../../public/brand/areen-logo.svg lockup.svg && cp ../../public/brand/areen-logo-horizontal.svg horizontal.svg
+python3 totsx.py ../../components/areen-logo.tsx && rm mark.svg lockup.svg horizontal.svg
 ```

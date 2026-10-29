@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 930" role="img" aria-label="Areen Albasateen Hotel">
+  <defs>
+    <linearGradient id="areen-gold" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#F6E6B4" />
+      <stop offset="0.25" stop-color="#D9B866" />
+      <stop offset="0.5" stop-color="#A9843A" />
+      <stop offset="0.64" stop-color="#EBD39A" />
+      <stop offset="0.84" stop-color="#C29C4E" />
+      <stop offset="1" stop-color="#7C5F25" />
+    </linearGradient>
+    <linearGradient id="areen-glass-hi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EAF3FB" stop-opacity="0.85" />
+      <stop offset="0.5" stop-color="#9DBEDD" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#4D7DA8" stop-opacity="0.55" />
+    </linearGradient>
+    <linearGradient id="areen-glass-mid" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B9CEE2" stop-opacity="0.7" />
+      <stop offset="0.45" stop-color="#5E86AD" stop-opacity="0.5" />
+      <stop offset="1" stop-color="#0F2A47" stop-opacity="0.8" />
+    </linearGradient>
+    <linearGradient id="areen-glass-deep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4C79A3" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#081F36" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="areen-glass-dark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#163A5E" stop-opacity="0.8" />
+      <stop offset="0.6" stop-color="#081F36" stop-opacity="0.85" />
+      <stop offset="1" stop-color="#9CB9D6" stop-opacity="0.7" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#6E98C0" stop-opacity="0.9" />
+      <stop offset="0.3" stop-color="#1B3F64" stop-opacity="0.92" />
+      <stop offset="0.75" stop-color="#0A2340" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#3D6B96" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar-lit" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#DCEAF7" stop-opacity="0.95" />
+      <stop offset="0.4" stop-color="#93B8DA" stop-opacity="0.92" />
+      <stop offset="1" stop-color="#3E6D99" stop-opacity="0.92" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar-pale" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#D2E3F2" stop-opacity="0.85" />
+      <stop offset="0.45" stop-color="#8FB2D3" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#4F7EA9" stop-opacity="0.7" />
+    </linearGradient>
+    <linearGradient id="areen-glint" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.75" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="areen-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" />
+      <feOffset dy="4" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.45" /></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <linearGradient id="areen-gold-text" gradientUnits="userSpaceOnUse" x1="0" y1="590" x2="0" y2="910">
+      <stop offset="0" stop-color="#F6E6B4" />
+      <stop offset="0.4" stop-color="#D9B866" />
+      <stop offset="0.55" stop-color="#A9843A" />
+      <stop offset="0.7" stop-color="#E6CC8C" />
+      <stop offset="1" stop-color="#B38D45" />
+    </linearGradient>
+  </defs>
+  <style>.areen-edge{fill:none;stroke:none}.areen-facet{stroke:none}.areen-gold{stroke:none}</style>
+  <g id="areen-mark-wrap" transform="translate(189.2 0) scale(0.68)">
+  <g id="areen-mark">
+    <g id="areen-left">
+    <g id="outer-crystal-left" class="areen-crystal areen-outer-crystal">
+      <path class="areen-facet" d="M28 490 L150 487 L215 590 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M150 487 L300 590 L215 590 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M300 590 L410 712 L215 590 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M410 712 L160 668 L215 590 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M160 668 L28 490 L215 590 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-edge" d="M28 490 L150 487 L300 590 L410 712 L160 668 Z" />
+    </g>
+    <path id="swoosh-left" class="areen-gold areen-swoosh" d="M126 676 C270 656 392 718 448 806 C380 752 270 696 126 676 Z" fill="#D4AF37" />
+    <g id="inner-crystal-left" class="areen-crystal areen-inner-crystal">
+      <path class="areen-facet" d="M226 372 L326 474 L318 540 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M326 474 L384 598 L318 540 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M384 598 L426 728 L318 540 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M426 728 L238 482 L318 540 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M238 482 L226 372 L318 540 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-edge" d="M226 372 L326 474 L384 598 L426 728 L238 482 Z" />
+    </g>
+    <path id="leaf-left" class="areen-gold areen-leaf" d="M446 792 C330 705 214 610 204 478 L184 316 L362 462 C414 548 446 670 452 770 Z M428 730 C350 652 246 578 236 480 L224 372 L330 478 C380 560 414 650 428 730 Z" fill="#D4AF37" fill-rule="evenodd" />
+    <g id="center-crystal-left" class="areen-crystal areen-center-crystal">
+      <path class="areen-facet" d="M366 202 L414 264 L436 712 L440 722 L360 432 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M414 264 L449 284 L451 708 L436 712 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-glint" d="M372 236 L404 262 L392 420 L366 380 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-edge" d="M366 202 L414 264 L436 712 L440 722 L360 432 Z M414 264 L449 284 L451 708 L436 712 Z" />
+    </g>
+    </g>
+    <g id="areen-right">
+    <g id="outer-crystal-right" class="areen-crystal areen-outer-crystal">
+      <path class="areen-facet" d="M886 490 L764 487 L699 590 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M764 487 L614 590 L699 590 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M614 590 L504 712 L699 590 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M504 712 L754 668 L699 590 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M754 668 L886 490 L699 590 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-edge" d="M886 490 L764 487 L614 590 L504 712 L754 668 Z" />
+    </g>
+    <path id="swoosh-right" class="areen-gold areen-swoosh" d="M788 676 C644 656 522 718 466 806 C534 752 644 696 788 676 Z" fill="#D4AF37" />
+    <g id="inner-crystal-right" class="areen-crystal areen-inner-crystal">
+      <path class="areen-facet" d="M688 372 L588 474 L596 540 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M588 474 L530 598 L596 540 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M530 598 L488 728 L596 540 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-facet" d="M488 728 L676 482 L596 540 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M676 482 L688 372 L596 540 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-edge" d="M688 372 L588 474 L530 598 L488 728 L676 482 Z" />
+    </g>
+    <path id="leaf-right" class="areen-gold areen-leaf" d="M468 792 C584 705 700 610 710 478 L730 316 L552 462 C500 548 468 670 462 770 Z M486 730 C564 652 668 578 678 480 L690 372 L584 478 C534 560 500 650 486 730 Z" fill="#D4AF37" fill-rule="evenodd" />
+    <g id="center-crystal-right" class="areen-crystal areen-center-crystal">
+      <path class="areen-facet" d="M548 202 L500 264 L478 712 L474 722 L554 432 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-facet" d="M500 264 L465 284 L463 708 L478 712 Z" fill="#D4AF37" fill-opacity="0.4" />
+      <path class="areen-glint" d="M542 236 L510 262 L522 420 L548 380 Z" fill="#D4AF37" fill-opacity="0.7" />
+      <path class="areen-edge" d="M548 202 L500 264 L478 712 L474 722 L554 432 Z M500 264 L465 284 L463 708 L478 712 Z" />
+    </g>
+    </g>
+    <path id="areen-star" class="areen-gold" d="M457 22 Q467 100 524 112 Q467 124 457 226 Q447 124 390 112 Q447 100 457 22 Z" fill="#D4AF37" />
+  </g>
+  </g>
+  <g id="wordmark-ar" class="areen-gold-text" fill="#D4AF37">
+      <path class="areen-letter" data-char="ن" style="--i:0" d="M 95.1 649.6 Q 90.6 649.6 87.9 646.8 Q 85.1 644.1 85.1 639.4 Q 85.1 635 87.9 632.2 Q 90.6 629.5 95.1 629.5 Q 99.7 629.5 102.4 632.2 Q 105 634.8 105 639.4 Q 105 649.6 95.1 649.6 Z M 148.2 697.6 H 161.9 V 716 H 146.4 Q 141.2 716 136.8 714.6 Q 133.9 729.2 122.1 737.6 Q 111.4 744.9 96.2 744.9 Q 75.7 744.9 64.4 730.4 Q 55.6 719.2 55.6 704 Q 55.6 692 61.3 683 L 79.5 679.2 Q 73.4 689.6 73.4 701 Q 73.4 712.5 79.9 719.6 Q 86.2 726.5 96.2 726.5 Q 106.7 726.5 112.6 721.2 Q 118.4 715.8 118.4 706.3 V 658.5 L 137.6 648.5 V 686.7 Q 137.6 692.6 140 695.1 Q 142.4 697.6 148.2 697.6 Z" />
+      <path class="areen-letter" data-char="ي" style="--i:1" d="M 206.9 697.6 H 220.5 V 716 H 205 Q 193.9 716 186.7 710.1 Q 179.4 716 168.3 716 H 152.8 V 697.6 H 166.4 Q 172.2 697.6 174.6 695.1 Q 177.1 692.6 177.1 686.7 V 658.5 L 196.2 648.5 V 686.7 Q 196.2 692.6 198.7 695.1 Q 201.1 697.6 206.9 697.6 Z M 167.5 729.8 Q 172.1 729.8 174.7 732.5 Q 177.4 735.2 177.4 739.7 Q 177.4 749.9 167.5 749.9 Q 162.9 749.9 160.2 747.2 Q 157.5 744.4 157.5 739.7 Q 157.5 729.8 167.5 729.8 Z M 190.9 729.8 Q 195.5 729.8 198.1 732.5 Q 200.8 735.2 200.8 739.7 Q 200.8 749.9 190.9 749.9 Q 186.3 749.9 183.6 747.2 Q 180.9 744.4 180.9 739.7 Q 180.9 729.8 190.9 729.8 Z" />
+      <path class="areen-letter" data-char="ت" style="--i:2" d="M 222.4 633.2 Q 217.8 633.2 215.1 630.4 Q 212.3 627.7 212.3 623 Q 212.3 613.1 222.4 613.1 Q 226.9 613.1 229.6 615.8 Q 232.3 618.4 232.3 623 Q 232.3 633.2 222.4 633.2 Z M 245.8 633.2 Q 241.2 633.2 238.5 630.4 Q 235.7 627.7 235.7 623 Q 235.7 613.1 245.8 613.1 Q 250.3 613.1 253 615.8 Q 255.7 618.4 255.7 623 Q 255.7 633.2 245.8 633.2 Z M 211.4 716 V 697.6 H 225.1 Q 230.9 697.6 233.3 695.1 Q 235.7 692.6 235.7 686.7 V 658.5 L 254.9 648.5 V 687.6 Q 254.9 701.4 246.4 709.2 Q 238.9 716 226.9 716 Z" />
+      <path class="areen-letter" data-char="ا" style="--i:3" d="M 310.2 716 Q 296.4 716 288.8 707.2 Q 282.3 699.6 282.3 687.6 V 628 L 301.4 618 V 686.7 Q 301.4 692.6 303.8 695.1 Q 306.3 697.6 312.1 697.6 H 325.7 V 716 Z" />
+      <path class="areen-letter" data-char="س" style="--i:4" d="M 316.6 716 V 697.6 H 332.7 Q 338.5 697.6 341 695.1 Q 343.5 692.6 343.5 686.7 V 666.6 L 362.7 656.6 V 686.7 Q 362.7 692.6 365.1 695.1 Q 367.5 697.6 373.3 697.6 H 383.6 Q 389.4 697.6 391.9 695.1 Q 394.3 692.6 394.3 686.7 V 662.6 L 413.4 652.5 V 686.7 Q 413.4 692.6 415.9 695.1 Q 418.5 697.6 424.2 697.6 H 434.6 Q 440.3 697.6 442.8 695.1 Q 445.2 692.6 445.2 686.7 V 658.5 L 464.4 648.5 V 684.2 Q 464.4 691.5 467.3 694.6 Q 470.3 697.6 477.3 697.6 H 491.3 V 716 H 476.2 Q 463.4 716 455.7 708.7 Q 448.9 715.8 437.3 716 H 422.3 Q 411 716 403.9 709.3 Q 397.3 715.8 386.5 716 H 371.5 Q 360.2 716 353.1 709.3 Q 345.9 716 334.7 716 Z" />
+      <path class="areen-letter" data-char="ب" style="--i:5" d="M 536.3 697.6 H 549.9 V 716 H 534.4 Q 523.3 716 516 710.1 Q 508.7 716 497.6 716 H 482.1 V 697.6 H 495.8 Q 501.6 697.6 504 695.1 Q 506.5 692.6 506.5 686.7 V 658.5 L 525.6 648.5 V 686.7 Q 525.6 692.6 528 695.1 Q 530.5 697.6 536.3 697.6 Z M 516.9 729.8 Q 521.5 729.8 524.2 732.5 Q 526.8 735.2 526.8 739.7 Q 526.8 749.9 516.9 749.9 Q 512.4 749.9 509.7 747.2 Q 506.9 744.4 506.9 739.7 Q 506.9 735.3 509.7 732.6 Q 512.4 729.8 516.9 729.8 Z" />
+      <path class="areen-letter" data-char="ل" style="--i:6" d="M 540.8 716 V 697.6 H 550.4 Q 557.4 697.6 560.3 694.6 Q 563.3 691.5 563.3 684.2 V 628.1 L 582.3 618 V 684.4 Q 582.3 699.1 573.3 707.9 Q 565.1 716 551.5 716 Z" />
+      <path class="areen-letter" data-char="ا" style="--i:7" d="M 609.7 716 V 628.1 L 628.8 618 V 716 Z" />
+      <path class="areen-letter" data-char="ن" style="--i:8" d="M 729.1 649.6 Q 724.6 649.6 721.8 646.8 Q 719.1 644.1 719.1 639.4 Q 719.1 635 721.8 632.2 Q 724.6 629.5 729.1 629.5 Q 733.7 629.5 736.4 632.2 Q 739 634.8 739 639.4 Q 739 649.6 729.1 649.6 Z M 782.2 697.6 H 795.9 V 716 H 780.4 Q 775.2 716 770.8 714.6 Q 767.9 729.2 756 737.6 Q 745.4 744.9 730.2 744.9 Q 709.7 744.9 698.4 730.4 Q 689.6 719.2 689.6 704 Q 689.6 692 695.2 683 L 713.5 679.2 Q 707.4 689.6 707.4 701 Q 707.4 712.5 713.9 719.6 Q 720.2 726.5 730.2 726.5 Q 740.7 726.5 746.5 721.2 Q 752.4 715.8 752.4 706.3 V 658.5 L 771.5 648.5 V 686.7 Q 771.5 692.6 774 695.1 Q 776.4 697.6 782.2 697.6 Z" />
+      <path class="areen-letter" data-char="ي" style="--i:9" d="M 786.7 716 V 697.6 H 800.4 Q 806.2 697.6 808.6 695.1 Q 811.1 692.6 811.1 686.7 V 658.5 L 830.2 648.5 V 687.6 Q 830.2 701.4 821.7 709.2 Q 814.3 716 802.3 716 Z M 795 749.9 Q 790.4 749.9 787.7 747.2 Q 784.9 744.4 784.9 739.7 Q 784.9 729.8 795 729.8 Q 799.5 729.8 802.2 732.5 Q 804.8 735.2 804.8 739.7 Q 804.8 749.9 795 749.9 Z M 818.4 749.9 Q 813.8 749.9 811.1 747.2 Q 808.3 744.4 808.3 739.7 Q 808.3 729.8 818.4 729.8 Q 822.9 729.8 825.6 732.5 Q 828.2 735.2 828.2 739.7 Q 828.2 749.9 818.4 749.9 Z" />
+      <path class="areen-letter" data-char="ر" style="--i:10" d="M 894.8 706.6 Q 894.8 724.2 885.1 735.2 Q 876.1 745.3 861.4 745.3 Q 851.8 745.3 842.7 740.5 V 723.8 Q 850.6 728.2 858.2 728.2 Q 866.5 728.2 871.2 722.8 Q 875.8 717.4 875.8 707.8 V 658.7 L 894.8 648.5 Z" />
+      <path class="areen-letter" data-char="أ" style="--i:11" d="M 916.4 609.4 921.3 600.6 H 925.8 Q 924.2 597.6 924.2 594.4 Q 924.2 589.5 927.7 586 Q 931.3 582.5 936.3 582.5 Q 940.9 582.5 944.8 585.7 V 594.6 Q 941.2 591.4 937.5 591.4 Q 932.5 591.4 932.5 595.9 Q 932.5 598.2 934.5 600.6 H 949.5 L 944.7 609.4 Z M 922.2 716 V 628.1 L 941.3 618 V 716 Z" />
+  </g>
+  <g id="wordmark-en" class="areen-gold-text" fill="#D4AF37">
+      <path class="areen-letter" data-char="A" style="--i:0" d="M 40.4 820 56.9 783.6 H 62.1 L 78.6 820 H 73.2 L 58.4 786.5 H 60.5 L 45.8 820 Z M 47.5 810.9 48.9 806.7 H 69.4 L 70.9 810.9 Z" />
+      <path class="areen-letter" data-char="R" style="--i:1" d="M 108 820 V 783.6 H 122.2 Q 129.3 783.6 133.3 787 Q 137.4 790.3 137.4 796.3 Q 137.4 800.2 135.6 803.1 Q 133.8 805.9 130.4 807.4 Q 127 808.9 122.2 808.9 H 110.9 L 113.2 806.5 V 820 Z M 132.4 820 123.1 806.8 H 128.7 L 138 820 Z M 113.2 807.1 110.9 804.5 H 122.1 Q 127.1 804.5 129.6 802.3 Q 132.2 800.2 132.2 796.3 Q 132.2 792.4 129.6 790.3 Q 127.1 788.1 122.1 788.1 H 110.9 L 113.2 785.5 Z" />
+      <path class="areen-letter" data-char="E" style="--i:2" d="M 169.8 820 V 783.6 H 195.5 V 788.1 H 175 V 815.5 H 196.2 V 820 Z M 174.6 803.7 V 799.3 H 193.3 V 803.7 Z" />
+      <path class="areen-letter" data-char="E" style="--i:3" d="M 228.7 820 V 783.6 H 254.4 V 788.1 H 233.9 V 815.5 H 255.1 V 820 Z M 233.4 803.7 V 799.3 H 252.1 V 803.7 Z" />
+      <path class="areen-letter" data-char="N" style="--i:4" d="M 287.5 820 V 783.6 H 291.8 L 315.8 813.5 H 313.6 V 783.6 H 318.8 V 820 H 314.5 L 290.5 790.1 H 292.7 V 820 Z" />
+      <path class="areen-letter" data-char="A" style="--i:5" d="M 386.2 820 402.7 783.6 H 407.8 L 424.4 820 H 418.9 L 404.2 786.5 H 406.3 L 391.6 820 Z M 393.2 810.9 394.6 806.7 H 415.1 L 416.6 810.9 Z" />
+      <path class="areen-letter" data-char="L" style="--i:6" d="M 453.8 820 V 783.6 H 459 V 815.5 H 478.7 V 820 Z" />
+      <path class="areen-letter" data-char="B" style="--i:7" d="M 508.7 820 V 783.6 H 525 Q 531.3 783.6 534.7 786.1 Q 538.1 788.6 538.1 793 Q 538.1 796 536.7 798 Q 535.4 800 533.2 801.1 Q 530.9 802.2 528.3 802.2 L 529.3 800.7 Q 532.4 800.7 534.8 801.7 Q 537.2 802.8 538.6 804.9 Q 540 807.1 540 810.2 Q 540 814.9 536.5 817.4 Q 533 820 526 820 Z M 513.9 815.8 H 525.8 Q 530.1 815.8 532.4 814.3 Q 534.7 812.9 534.7 809.8 Q 534.7 806.6 532.4 805.1 Q 530.1 803.7 525.8 803.7 H 513.4 V 799.5 H 524.5 Q 528.5 799.5 530.7 798 Q 532.9 796.5 532.9 793.6 Q 532.9 790.7 530.7 789.3 Q 528.5 787.8 524.5 787.8 H 513.9 Z" />
+      <path class="areen-letter" data-char="A" style="--i:8" d="M 566.4 820 582.9 783.6 H 588.1 L 604.6 820 H 599.1 L 584.4 786.5 H 586.5 L 571.8 820 Z M 573.4 810.9 574.8 806.7 H 595.3 L 596.8 810.9 Z" />
+      <path class="areen-letter" data-char="S" style="--i:9" d="M 644.6 820.4 Q 640.4 820.4 636.6 819.1 Q 632.9 817.9 630.7 815.8 L 632.6 811.8 Q 634.7 813.6 637.9 814.8 Q 641.1 816 644.6 816 Q 647.8 816 649.8 815.3 Q 651.7 814.5 652.7 813.3 Q 653.6 812 653.6 810.4 Q 653.6 808.5 652.4 807.4 Q 651.2 806.2 649.2 805.5 Q 647.3 804.8 644.9 804.3 Q 642.6 803.8 640.2 803.1 Q 637.8 802.4 635.9 801.3 Q 633.9 800.2 632.7 798.3 Q 631.6 796.5 631.6 793.6 Q 631.6 790.8 633 788.4 Q 634.5 786 637.6 784.6 Q 640.7 783.2 645.5 783.2 Q 648.7 783.2 651.8 784 Q 654.9 784.8 657.2 786.4 L 655.5 790.6 Q 653.1 789 650.5 788.3 Q 647.9 787.6 645.5 787.6 Q 642.4 787.6 640.4 788.4 Q 638.5 789.2 637.6 790.5 Q 636.6 791.8 636.6 793.4 Q 636.6 795.3 637.9 796.4 Q 639.1 797.6 641 798.3 Q 643 798.9 645.3 799.5 Q 647.7 800 650 800.7 Q 652.4 801.4 654.4 802.5 Q 656.3 803.6 657.5 805.4 Q 658.7 807.2 658.7 810.1 Q 658.7 812.8 657.2 815.2 Q 655.7 817.6 652.5 819 Q 649.4 820.4 644.6 820.4 Z" />
+      <path class="areen-letter" data-char="A" style="--i:10" d="M 684.8 820 701.3 783.6 H 706.4 L 722.9 820 H 717.5 L 702.8 786.5 H 704.8 L 690.1 820 Z M 691.8 810.9 693.2 806.7 H 713.7 L 715.2 810.9 Z" />
+      <path class="areen-letter" data-char="T" style="--i:11" d="M 757.8 820 V 788.1 H 745.3 V 783.6 H 775.4 V 788.1 H 762.9 V 820 Z" />
+      <path class="areen-letter" data-char="E" style="--i:12" d="M 805.1 820 V 783.6 H 830.7 V 788.1 H 810.3 V 815.5 H 831.5 V 820 Z M 809.8 803.7 V 799.3 H 828.5 V 803.7 Z" />
+      <path class="areen-letter" data-char="E" style="--i:13" d="M 863.9 820 V 783.6 H 889.6 V 788.1 H 869.1 V 815.5 H 890.3 V 820 Z M 868.6 803.7 V 799.3 H 887.3 V 803.7 Z" />
+      <path class="areen-letter" data-char="N" style="--i:14" d="M 922.7 820 V 783.6 H 927 L 951.1 813.5 H 948.8 V 783.6 H 954 V 820 H 949.8 L 925.7 790.1 H 927.9 V 820 Z" />
+  </g>
+  <g id="wordmark-hotel" fill="#D4AF37">
+    <rect id="rule-left" x="40.5" y="886" width="270.7" height="3" />
+    <rect id="rule-right" x="688.8" y="886" width="270.7" height="3" />
+      <path class="areen-letter" data-char="H" style="--i:0" d="M 377.9 904 V 873.2 H 382.3 V 904 Z M 355.8 904 V 873.2 H 360.2 V 904 Z M 359.7 890.3 V 886.4 H 378.3 V 890.3 Z" />
+      <path class="areen-letter" data-char="O" style="--i:1" d="M 441.4 904.4 Q 437.9 904.4 434.9 903.2 Q 431.9 902 429.7 899.8 Q 427.5 897.7 426.2 894.8 Q 425 892 425 888.6 Q 425 885.2 426.2 882.4 Q 427.5 879.5 429.7 877.4 Q 431.9 875.2 434.9 874 Q 437.8 872.8 441.4 872.8 Q 444.9 872.8 447.9 874 Q 450.9 875.2 453.1 877.3 Q 455.3 879.4 456.5 882.3 Q 457.7 885.2 457.7 888.6 Q 457.7 892 456.5 894.9 Q 455.3 897.8 453.1 899.9 Q 450.9 902 447.9 903.2 Q 444.9 904.4 441.4 904.4 Z M 441.4 900.4 Q 444 900.4 446.1 899.6 Q 448.3 898.7 449.9 897.1 Q 451.5 895.5 452.4 893.3 Q 453.3 891.2 453.3 888.6 Q 453.3 886 452.4 883.9 Q 451.5 881.7 449.9 880.1 Q 448.3 878.5 446.1 877.6 Q 444 876.8 441.4 876.8 Q 438.8 876.8 436.6 877.6 Q 434.5 878.5 432.8 880.1 Q 431.2 881.7 430.3 883.9 Q 429.4 886 429.4 888.6 Q 429.4 891.2 430.3 893.3 Q 431.2 895.5 432.8 897.1 Q 434.5 898.7 436.6 899.6 Q 438.8 900.4 441.4 900.4 Z" />
+      <path class="areen-letter" data-char="T" style="--i:2" d="M 506.1 904 V 877 H 495.6 V 873.2 H 521.1 V 877 H 510.5 V 904 Z" />
+      <path class="areen-letter" data-char="E" style="--i:3" d="M 561.9 904 V 873.2 H 583.6 V 877 H 566.2 V 900.2 H 584.2 V 904 Z M 565.9 890.2 V 886.5 H 581.7 V 890.2 Z" />
+      <path class="areen-letter" data-char="L" style="--i:4" d="M 627.3 904 V 873.2 H 631.7 V 900.2 H 648.4 V 904 Z" />
+  </g>
+</svg>
