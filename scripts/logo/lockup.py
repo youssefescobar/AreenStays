@@ -54,14 +54,14 @@ def line(font, text, size, tracking, y, cls, idp, rtl=False):
         parts.append(f'      <path class="areen-letter" data-char="{ch}" style="--i:{i}" d="{offset(d, x0, y)}" />')
     return parts, x0, width
 
-ar, _, _ = line("tajawal-700.ttf", "أرين البساتين", 152, 0, 664, "", "ar", rtl=True)
-en, enx, enw = line("montserrat-500.ttf", "AREEN ALBASATEEN", 52, 24, 768, "", "en")
-ho, hox, how = line("montserrat-500.ttf", "HOTEL", 44, 36, 852, "", "hotel")
+ar, _, _ = line("tajawal-700.ttf", "أرين البساتين", 152, 0, 716, "", "ar", rtl=True)
+en, enx, enw = line("montserrat-500.ttf", "AREEN ALBASATEEN", 52, 24, 820, "", "en")
+ho, hox, how = line("montserrat-500.ttf", "HOTEL", 44, 36, 904, "", "hotel")
 
-MARK_SCALE = 0.62
+MARK_SCALE = 0.68
 mx = (W - 914 * MARK_SCALE) / 2
-rule_y = 834
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} 880" role="img" aria-label="Areen Albasateen Hotel">{DEFS}{STYLE}
+rule_y = 886
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} 930" role="img" aria-label="Areen Albasateen Hotel">{DEFS}{STYLE}
   <g id="areen-mark-wrap" transform="translate({mx:.1f} 0) scale({MARK_SCALE})">
   {mark_group()}
   </g>
@@ -77,10 +77,12 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} 880" role="im
 {chr(10).join(ho)}
   </g>
 </svg>'''
-svg = svg.replace("</defs>", '''  <linearGradient id="areen-gold-text" gradientUnits="userSpaceOnUse" x1="0" y1="540" x2="0" y2="860">
-      <stop offset="0" stop-color="#F3D98B" />
-      <stop offset="0.5" stop-color="#D4AF37" />
-      <stop offset="1" stop-color="#B8922A" />
+svg = svg.replace("</defs>", '''  <linearGradient id="areen-gold-text" gradientUnits="userSpaceOnUse" x1="0" y1="590" x2="0" y2="910">
+      <stop offset="0" stop-color="#F6E6B4" />
+      <stop offset="0.4" stop-color="#D9B866" />
+      <stop offset="0.55" stop-color="#A9843A" />
+      <stop offset="0.7" stop-color="#E6CC8C" />
+      <stop offset="1" stop-color="#B38D45" />
     </linearGradient>
   </defs>''', 1)
 print(svg)

@@ -17,7 +17,7 @@ export default function LogoPlayground() {
           <AreenLogo key={`l${run}`} animate className="w-full" />
           <div className="flex flex-col items-center gap-10">
             <AreenLogo key={`m${run}`} variant="mark" animate className="w-48" />
-            <div className="w-full bg-sand p-8">
+            <div className="w-full bg-sand p-8 [--areen-gap:var(--color-sand)]">
               <AreenLogo variant="lockup" className="w-full" />
             </div>
           </div>

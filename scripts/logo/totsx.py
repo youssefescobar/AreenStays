@@ -12,7 +12,7 @@ def body(svg):
         inner = inner.replace(a + "=", camel + "=")
     inner = re.sub(r'style="--i:(\d+)"', r'style={{ "--i": \1 } as React.CSSProperties}', inner)
     # ids must be unique per instance; prefix gradients with a per-instance id
-    for g in ["areen-gold-text", "areen-crystal-deep", "areen-gold", "areen-crystal"]:
+    for g in sorted(re.findall(r'<(?:linearGradient|filter) id="([^"]+)"', inner), key=len, reverse=True):
         inner = inner.replace(f'id="{g}"', f'id={{`${{uid}}-{g}`}}').replace(f'url(#{g})', f'__URL__{g}__')
     inner = re.sub(r'"__URL__([a-z-]+)__"', r'{`url(#${uid}-\1)`}', inner)
     inner = re.sub(r'\bid="', 'data-part="', inner)

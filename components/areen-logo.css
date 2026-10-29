@@ -1,12 +1,10 @@
 /* Areen logo: base styles + optional intro animation (add the `areen-animate` class). */
 
-.areen-logo .areen-facets {
-  fill: none;
-  stroke: #ffffff;
-  stroke-opacity: 0.55;
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
+.areen-logo .areen-edge { fill: none; stroke: #eef6fd; stroke-opacity: 0.9; stroke-width: 2.4; stroke-linejoin: round; }
+.areen-logo .areen-facet { stroke: #ffffff; stroke-opacity: 0.35; stroke-width: 1; stroke-linejoin: round; }
+/* Gold pieces get a dark outline under the fill, so they read as separate inlaid parts.
+   Set --areen-gap to the background colour (or transparent) when placing the logo on light backgrounds. */
+.areen-logo .areen-gold { stroke: var(--areen-gap, #071e33); stroke-width: 6; paint-order: stroke; }
 
 /* Mark parts pivot around the base of the mark; letters around their own centre */
 .areen-logo [data-part="areen-mark"] > g > *,

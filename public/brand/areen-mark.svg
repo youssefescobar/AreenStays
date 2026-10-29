@@ -1,57 +1,115 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 914 820" role="img" aria-label="Areen Albasateen Hotel">
   <defs>
-    <linearGradient id="areen-gold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#F6E3A1" />
-      <stop offset="0.45" stop-color="#D4AF37" />
-      <stop offset="1" stop-color="#A27E22" />
+    <linearGradient id="areen-gold" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#F6E6B4" />
+      <stop offset="0.25" stop-color="#D9B866" />
+      <stop offset="0.5" stop-color="#A9843A" />
+      <stop offset="0.64" stop-color="#EBD39A" />
+      <stop offset="0.84" stop-color="#C29C4E" />
+      <stop offset="1" stop-color="#7C5F25" />
     </linearGradient>
-    <linearGradient id="areen-crystal" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E4F0FA" />
-      <stop offset="0.5" stop-color="#A7C6E0" />
-      <stop offset="1" stop-color="#5B8FB7" />
+    <linearGradient id="areen-glass-hi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EAF3FB" stop-opacity="0.85" />
+      <stop offset="0.5" stop-color="#9DBEDD" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#4D7DA8" stop-opacity="0.55" />
     </linearGradient>
-    <linearGradient id="areen-crystal-deep" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#A7C6E0" />
-      <stop offset="0.55" stop-color="#5B8FB7" />
-      <stop offset="1" stop-color="#2B5578" />
+    <linearGradient id="areen-glass-mid" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B9CEE2" stop-opacity="0.7" />
+      <stop offset="0.45" stop-color="#5E86AD" stop-opacity="0.5" />
+      <stop offset="1" stop-color="#0F2A47" stop-opacity="0.8" />
     </linearGradient>
+    <linearGradient id="areen-glass-deep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4C79A3" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#081F36" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="areen-glass-dark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#163A5E" stop-opacity="0.8" />
+      <stop offset="0.6" stop-color="#081F36" stop-opacity="0.85" />
+      <stop offset="1" stop-color="#9CB9D6" stop-opacity="0.7" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#6E98C0" stop-opacity="0.9" />
+      <stop offset="0.3" stop-color="#1B3F64" stop-opacity="0.92" />
+      <stop offset="0.75" stop-color="#0A2340" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#3D6B96" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar-lit" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#DCEAF7" stop-opacity="0.95" />
+      <stop offset="0.4" stop-color="#93B8DA" stop-opacity="0.92" />
+      <stop offset="1" stop-color="#3E6D99" stop-opacity="0.92" />
+    </linearGradient>
+    <linearGradient id="areen-glass-pillar-pale" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#D2E3F2" stop-opacity="0.85" />
+      <stop offset="0.45" stop-color="#8FB2D3" stop-opacity="0.6" />
+      <stop offset="1" stop-color="#4F7EA9" stop-opacity="0.7" />
+    </linearGradient>
+    <linearGradient id="areen-glint" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.75" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="areen-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" />
+      <feOffset dy="4" />
+      <feComponentTransfer><feFuncA type="linear" slope="0.45" /></feComponentTransfer>
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
   </defs>
   <style>
-    .areen-facets { fill: none; stroke: #FFFFFF; stroke-opacity: 0.55; stroke-width: 2; stroke-linejoin: round; }
+    .areen-edge { fill: none; stroke: #EEF6FD; stroke-opacity: 0.9; stroke-width: 2.4; stroke-linejoin: round; }
+    .areen-facet { stroke: #FFFFFF; stroke-opacity: 0.35; stroke-width: 1; stroke-linejoin: round; }
+    .areen-gold { stroke: var(--areen-gap, #071E33); stroke-width: 6; paint-order: stroke; }
   </style>
-  <g id="areen-mark">
+  <g id="areen-mark" filter="url(#areen-glow)">
     <g id="areen-left">
     <g id="outer-crystal-left" class="areen-crystal areen-outer-crystal">
-      <path d="M28 490 L150 487 L300 590 L410 712 L160 668 Z" fill="url(#areen-crystal)" />
-      <path class="areen-facets" d="M28 490 L215 590 L410 712 M150 487 L215 590 M160 668 L215 590 M90 560 L215 590" />
+      <path class="areen-facet" d="M28 490 L150 487 L215 590 Z" fill="url(#areen-glass-hi)" />
+      <path class="areen-facet" d="M150 487 L300 590 L215 590 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-facet" d="M300 590 L410 712 L215 590 Z" fill="url(#areen-glass-deep)" />
+      <path class="areen-facet" d="M410 712 L160 668 L215 590 Z" fill="url(#areen-glass-dark)" />
+      <path class="areen-facet" d="M160 668 L28 490 L215 590 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-edge" d="M28 490 L150 487 L300 590 L410 712 L160 668 Z" />
     </g>
     <path id="swoosh-left" class="areen-gold areen-swoosh" d="M126 676 C270 656 392 718 448 806 C380 752 270 696 126 676 Z" fill="url(#areen-gold)" />
     <g id="inner-crystal-left" class="areen-crystal areen-inner-crystal">
-      <path d="M216 354 L296 400 L354 488 L430 740 L230 480 Z" fill="url(#areen-crystal-deep)" />
-      <path class="areen-facets" d="M216 354 L326 560 L430 740 M296 400 L326 560 M230 480 L326 560" />
+      <path class="areen-facet" d="M226 372 L326 474 L318 540 Z" fill="url(#areen-glass-hi)" />
+      <path class="areen-facet" d="M326 474 L384 598 L318 540 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-facet" d="M384 598 L426 728 L318 540 Z" fill="url(#areen-glass-deep)" />
+      <path class="areen-facet" d="M426 728 L238 482 L318 540 Z" fill="url(#areen-glass-dark)" />
+      <path class="areen-facet" d="M238 482 L226 372 L318 540 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-edge" d="M226 372 L326 474 L384 598 L426 728 L238 482 Z" />
     </g>
-    <path id="leaf-left" class="areen-gold areen-leaf" d="M446 792 C330 705 214 610 204 478 L184 316 C262 352 336 410 374 476 C420 560 446 680 452 770 Z M432 744 C350 662 238 582 226 478 L212 350 C276 382 330 430 356 486 C394 570 422 662 432 744 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
+    <path id="leaf-left" class="areen-gold areen-leaf" d="M446 792 C330 705 214 610 204 478 L184 316 L362 462 C414 548 446 670 452 770 Z M428 730 C350 652 246 578 236 480 L224 372 L330 478 C380 560 414 650 428 730 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
     <g id="center-crystal-left" class="areen-crystal areen-center-crystal">
-      <path d="M366 202 L449 284 L451 708 L440 722 L360 432 Z" fill="url(#areen-crystal-deep)" />
-      <path d="M414 264 L449 284 L451 708 L436 712 Z" fill="url(#areen-crystal)" opacity="0.9" />
-      <path class="areen-facets" d="M366 202 L414 264 L436 712" />
+      <path class="areen-facet" d="M366 202 L414 264 L436 712 L440 722 L360 432 Z" fill="url(#areen-glass-pillar)" />
+      <path class="areen-facet" d="M414 264 L449 284 L451 708 L436 712 Z" fill="url(#areen-glass-pillar-lit)" />
+      <path class="areen-glint" d="M372 236 L404 262 L392 420 L366 380 Z" fill="url(#areen-glint)" />
+      <path class="areen-edge" d="M366 202 L414 264 L436 712 L440 722 L360 432 Z M414 264 L449 284 L451 708 L436 712 Z" />
     </g>
     </g>
     <g id="areen-right">
     <g id="outer-crystal-right" class="areen-crystal areen-outer-crystal">
-      <path d="M886 490 L764 487 L614 590 L504 712 L754 668 Z" fill="url(#areen-crystal)" />
-      <path class="areen-facets" d="M886 490 L699 590 L504 712 M764 487 L699 590 M754 668 L699 590 M824 560 L699 590" />
+      <path class="areen-facet" d="M886 490 L764 487 L699 590 Z" fill="url(#areen-glass-hi)" />
+      <path class="areen-facet" d="M764 487 L614 590 L699 590 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-facet" d="M614 590 L504 712 L699 590 Z" fill="url(#areen-glass-deep)" />
+      <path class="areen-facet" d="M504 712 L754 668 L699 590 Z" fill="url(#areen-glass-dark)" />
+      <path class="areen-facet" d="M754 668 L886 490 L699 590 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-edge" d="M886 490 L764 487 L614 590 L504 712 L754 668 Z" />
     </g>
     <path id="swoosh-right" class="areen-gold areen-swoosh" d="M788 676 C644 656 522 718 466 806 C534 752 644 696 788 676 Z" fill="url(#areen-gold)" />
     <g id="inner-crystal-right" class="areen-crystal areen-inner-crystal">
-      <path d="M698 354 L618 400 L560 488 L484 740 L684 480 Z" fill="url(#areen-crystal-deep)" />
-      <path class="areen-facets" d="M698 354 L588 560 L484 740 M618 400 L588 560 M684 480 L588 560" />
+      <path class="areen-facet" d="M688 372 L588 474 L596 540 Z" fill="url(#areen-glass-hi)" />
+      <path class="areen-facet" d="M588 474 L530 598 L596 540 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-facet" d="M530 598 L488 728 L596 540 Z" fill="url(#areen-glass-deep)" />
+      <path class="areen-facet" d="M488 728 L676 482 L596 540 Z" fill="url(#areen-glass-dark)" />
+      <path class="areen-facet" d="M676 482 L688 372 L596 540 Z" fill="url(#areen-glass-mid)" />
+      <path class="areen-edge" d="M688 372 L588 474 L530 598 L488 728 L676 482 Z" />
     </g>
-    <path id="leaf-right" class="areen-gold areen-leaf" d="M468 792 C584 705 700 610 710 478 L730 316 C652 352 578 410 540 476 C494 560 468 680 462 770 Z M482 744 C564 662 676 582 688 478 L702 350 C638 382 584 430 558 486 C520 570 492 662 482 744 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
+    <path id="leaf-right" class="areen-gold areen-leaf" d="M468 792 C584 705 700 610 710 478 L730 316 L552 462 C500 548 468 670 462 770 Z M486 730 C564 652 668 578 678 480 L690 372 L584 478 C534 560 500 650 486 730 Z" fill="url(#areen-gold)" fill-rule="evenodd" />
     <g id="center-crystal-right" class="areen-crystal areen-center-crystal">
-      <path d="M548 202 L465 284 L463 708 L474 722 L554 432 Z" fill="url(#areen-crystal-deep)" />
-      <path d="M500 264 L465 284 L463 708 L478 712 Z" fill="url(#areen-crystal)" opacity="0.9" />
-      <path class="areen-facets" d="M548 202 L500 264 L478 712" />
+      <path class="areen-facet" d="M548 202 L500 264 L478 712 L474 722 L554 432 Z" fill="url(#areen-glass-pillar-pale)" />
+      <path class="areen-facet" d="M500 264 L465 284 L463 708 L478 712 Z" fill="url(#areen-glass-pillar-lit)" />
+      <path class="areen-glint" d="M542 236 L510 262 L522 420 L548 380 Z" fill="url(#areen-glint)" />
+      <path class="areen-edge" d="M548 202 L500 264 L478 712 L474 722 L554 432 Z M500 264 L465 284 L463 708 L478 712 Z" />
     </g>
     </g>
     <path id="areen-star" class="areen-gold" d="M457 22 Q467 100 524 112 Q467 124 457 226 Q447 124 390 112 Q447 100 457 22 Z" fill="url(#areen-gold)" />
