@@ -8,6 +8,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileBookBar } from "@/components/mobile-book-bar";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { ChatWidget } from "@/components/chat/chat-widget";
 import "../globals.css";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
@@ -47,6 +48,7 @@ export default async function LocaleLayout({
         <main>{children}</main>
         <Footer locale={locale} t={t} />
         <MobileBookBar locale={locale} t={t} />
+        <ChatWidget locale={locale} />
       </body>
     </html>
   );
