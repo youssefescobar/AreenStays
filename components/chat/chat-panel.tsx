@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { ChatMessage } from "./chat-message";
@@ -28,7 +28,6 @@ interface ChatPanelProps {
   isLoading: boolean;
   error: string | null;
   onSend: (text: string) => Promise<void>;
-  onNewChat: () => Promise<void>;
   onClose: () => void;
 }
 
@@ -42,7 +41,6 @@ export function ChatPanel({
   isLoading,
   error,
   onSend,
-  onNewChat,
   onClose,
 }: ChatPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,17 +131,6 @@ export function ChatPanel({
           </p>
         </div>
 
-        {/* New Chat */}
-        <button
-          type="button"
-          onClick={() => void onNewChat()}
-          aria-label={isRtl ? "محادثة جديدة" : "New chat"}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-        >
-          <Plus size={18} />
-        </button>
-
-        {/* Close */}
         <button
           type="button"
           onClick={onClose}

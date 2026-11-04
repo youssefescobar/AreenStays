@@ -20,7 +20,6 @@ interface UseChatReturn {
   error: string | null;
   hasUnread: boolean;
   sendMessage: (text: string) => Promise<void>;
-  startNewChat: () => Promise<void>;
   toggleChat: () => void;
   dismissUnread: () => void;
 }
@@ -167,32 +166,13 @@ export function useChat(): UseChatReturn {
     }
   }, []);
 
-  /* ---- New chat ---- */
-  const startNewChat = useCallback(async () => {
-    setMessages([]);
-    setError(null);
-
-    try {
-      const res = await fetch(`${API_BASE}/api/chat/new`, { method: "POST" });
-      if (!res.ok) throw new Error("Failed to create session");
-      const data = await res.json();
-      sessionIdRef.current = data.sessionId as string;
-    } catch {
-      sessionIdRef.current = generateId();
-    }
-
-    writeSessionId(sessionIdRef.current!);
-  }, []);
-
-  /* ---- Toggle ---- */
   const toggleChat = useCallback(() => {
     setIsOpen((prev) => {
-      if (!prev) setHasUnread(false); // opening the chat clears unread badge
+      if (!prev) setHasUnread(false);
       return !prev;
     });
   }, []);
 
-  /* ---- Dismiss unread badge ---- */
   const dismissUnread = useCallback(() => setHasUnread(false), []);
 
   return {
@@ -202,7 +182,6 @@ export function useChat(): UseChatReturn {
     error,
     hasUnread,
     sendMessage,
-    startNewChat,
     toggleChat,
     dismissUnread,
   };
