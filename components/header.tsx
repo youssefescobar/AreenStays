@@ -54,6 +54,7 @@ export function Header({ locale, t }: { locale: Locale; t: Pick<Dict, "nav" | "b
               <Link
                 key={item.path}
                 href={href(locale, item.path)}
+                data-mascot-hint={item.label}
                 className={cn(
                   "text-xs font-medium uppercase tracking-[0.18em] transition-colors hover:text-gold",
                   active ? "text-gold" : "text-white/80",
@@ -97,6 +98,7 @@ export function Header({ locale, t }: { locale: Locale; t: Pick<Dict, "nav" | "b
             <Link
               key={item.path}
               href={href(locale, item.path)}
+              data-mascot-hint={item.label}
               className="block py-3 text-sm uppercase tracking-[0.2em] text-white/85"
             >
               {item.label}

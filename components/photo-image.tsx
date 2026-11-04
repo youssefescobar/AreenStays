@@ -7,5 +7,18 @@ import Image from "next/image";
 export function PhotoImage(props: { src: string; alt: string; sizes: string; priority?: boolean }) {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
-  return <Image {...props} fill className="object-cover" onError={() => setFailed(true)} />;
+
+  // Temporary Unsplash fillers: skip the optimizer so a slow/timeout upstream fetch
+  // does not 500 /_next/image. Local /public photos still get optimized.
+  const unoptimized = props.src.startsWith("http");
+
+  return (
+    <Image
+      {...props}
+      fill
+      unoptimized={unoptimized}
+      className="object-cover"
+      onError={() => setFailed(true)}
+    />
+  );
 }

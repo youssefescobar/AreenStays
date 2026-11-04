@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
+import { MascotFace } from "./mascot-face";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -25,13 +26,9 @@ export function ChatMessage({ role, content, timestamp, locale }: ChatMessagePro
         isUser ? "justify-end" : "justify-start",
       )}
     >
-      {/* Areen avatar — shown before assistant messages in LTR, after in RTL */}
       {!isUser && (
-        <div
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-deep text-[11px] font-semibold text-gold"
-          aria-hidden="true"
-        >
-          {isRtl ? "أ" : "A"}
+        <div className="reen-avatar h-7 w-7 shrink-0 overflow-hidden rounded-full" aria-hidden="true">
+          <MascotFace mood="idle" className="reen-avatar__photo" sizes="28px" />
         </div>
       )}
 

@@ -1,13 +1,16 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { useChat } from "./use-chat";
 import { ChatPanel } from "./chat-panel";
+import { MascotFace } from "./mascot-face";
+import { fabMood, preloadMascotFaces } from "./mascot";
+import { useMascotTip } from "./use-mascot-tip";
 
 /* ------------------------------------------------------------------ */
-/*  ChatWidget — floating bubble + panel                               */
+/*  ChatWidget — Durri-style REEN FAB + panel                          */
 /* ------------------------------------------------------------------ */
 
 export function ChatWidget({ locale }: { locale: Locale }) {
@@ -22,11 +25,27 @@ export function ChatWidget({ locale }: { locale: Locale }) {
     toggleChat,
   } = useChat();
 
+  const [hoveringFab, setHoveringFab] = useState(false);
   const isRtl = locale === "ar";
+  const mood = fabMood(isOpen || isLoading, hoveringFab);
+  const tip = useMascotTip({ locale, isOpen, hoveringFab });
+
+  useEffect(() => {
+    preloadMascotFaces();
+  }, []);
+
+  const handlePointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    setHoveringFab(true);
+  };
+
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    setHoveringFab(false);
+  };
 
   return (
     <>
-      {/* ---- Chat Panel ---- */}
       {isOpen && (
         <ChatPanel
           locale={locale}
@@ -39,36 +58,50 @@ export function ChatWidget({ locale }: { locale: Locale }) {
         />
       )}
 
-      {/* ---- Floating Action Button ---- */}
-      {!isOpen && (
-        <button
-          type="button"
-          onClick={toggleChat}
-          aria-label={isRtl ? "افتح الدردشة" : "Open chat"}
-          className={cn(
-            "fixed z-50 flex items-center justify-center rounded-full shadow-lg transition-all duration-300",
-            /* Gradient background */
-            "bg-gradient-to-br from-[#C9A351] to-[#DEB968]",
-            "hover:shadow-xl hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold",
-            /* Size: 56px mobile, 64px desktop */
-            "h-14 w-14 lg:h-16 lg:w-16",
-            /* Position: above MobileBookBar on mobile (bottom-20 ≈ 5rem clear), normal on desktop */
-            "bottom-20 lg:bottom-6",
-            isRtl ? "left-4 lg:left-6" : "right-4 lg:right-6",
-            /* Subtle entrance pulse */
-            "animate-[chatPulse_2s_ease-in-out_1]",
-          )}
-        >
-          <MessageCircle size={24} className="text-navy-deep lg:h-7 lg:w-7" />
-
-          {/* Unread badge */}
-          {hasUnread && (
-            <span className="absolute -top-0.5 -end-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-              1
+      {/* FAB stays visible while open (panel sits above it), like Durri */}
+      <div
+        className={cn(
+          "reen-fab-row fixed z-[80] flex items-center",
+          "bottom-[max(0.875rem,env(safe-area-inset-bottom))] end-4",
+          "sm:bottom-6 sm:end-6",
+          /* Clear mobile book bar when it is showing */
+          "max-lg:bottom-[calc(4.75rem+env(safe-area-inset-bottom))]",
+        )}
+      >
+        <span className={cn("reen-fab relative inline-grid place-items-center", tip && "has-tip")}>
+          {tip && (
+            <span
+              role="status"
+              aria-live="polite"
+              lang={locale}
+              dir={isRtl ? "rtl" : "ltr"}
+              className="reen-fab__tip"
+            >
+              {tip}
             </span>
           )}
-        </button>
-      )}
+
+          <button
+            type="button"
+            onClick={toggleChat}
+            onPointerEnter={handlePointerEnter}
+            onPointerLeave={handlePointerLeave}
+            aria-label={isRtl ? "افتح الدردشة مع رين" : "Open chat with Reen"}
+            aria-expanded={isOpen}
+            className={cn("reen-fab__btn", isOpen && "is-open")}
+          >
+            <span className="reen-fab__face" aria-hidden>
+              <MascotFace mood={mood} className={cn("reen-fab__photo", mood === "wave" && "is-wave")} sizes="56px" priority />
+            </span>
+
+            {hasUnread && !isOpen && (
+              <span className="reen-fab__badge" aria-hidden>
+                1
+              </span>
+            )}
+          </button>
+        </span>
+      </div>
     </>
   );
 }

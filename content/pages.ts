@@ -6,10 +6,21 @@ export const pages = {
   rooms: {
     image: stock.room2,
     eyebrow: { en: "Stay", ar: "الإقامة" },
-    title: { en: "Rooms & Suites", ar: "الغرف والأجنحة" },
+    title: { en: "Rooms", ar: "الغرف" },
     intro: {
       en: "Every room comes with fast Wi-Fi, a prayer mat and Qibla direction, and 24-hour room service.",
       ar: "تتضمن كل غرفة إنترنت سريعاً وسجادة صلاة واتجاه القبلة وخدمة غرف على مدار الساعة.",
+    },
+    floors: {
+      eyebrow: { en: "Layout", ar: "التوزيع" },
+      title: { en: "Rooms by floor", ar: "الغرف حسب الطابق" },
+      intro: {
+        en: "Choose a king or twin room type below. Exact room numbers are confirmed when we reply on WhatsApp.",
+        ar: "اختر غرفة بسرير كبير أو سريرين أدناه. يتم تأكيد رقم الغرفة عند ردنا على واتساب.",
+      },
+      legendKing: { en: "King bed", ar: "سرير كبير" },
+      legendTwin: { en: "2 twin beds", ar: "سريران منفصلان" },
+      cta: { en: "View King & Twin rooms", ar: "عرض غرف السرير الكبير والسريرين" },
     },
   },
   dining: {
@@ -34,14 +45,14 @@ export const pages = {
     intro: { en: "Photos of the hotel are coming soon.", ar: "صور الفندق قريباً." },
     items: [
       { en: "Lobby", ar: "الردهة", image: stock.lobby },
-      { en: "Deluxe Room", ar: "غرفة ديلوكس", image: stock.room1 },
-      { en: "Executive Suite", ar: "الجناح التنفيذي", image: stock.room2 },
+      { en: "King Room", ar: "غرفة بسرير كبير", image: stock.room1 },
+      { en: "Twin Room", ar: "غرفة بسريرين", image: stock.room6 },
       { en: "Al Basateen Restaurant", ar: "مطعم البساتين", image: stock.restaurant },
       { en: "Crystal Lounge", ar: "صالة كريستال", image: stock.coffee },
-      { en: "Family Suite", ar: "الجناح العائلي", image: stock.room3 },
+      { en: "Guest bathroom", ar: "حمام الضيوف", image: stock.bath },
       { en: "Meeting room", ar: "قاعة الاجتماعات", image: stock.meeting },
       { en: "Building at night", ar: "المبنى ليلاً", image: stock.exteriorNight },
-      { en: "Royal Suite majlis", ar: "مجلس الجناح الملكي", image: stock.room7 },
+      { en: "Bedroom detail", ar: "تفاصيل غرفة النوم", image: stock.bedroom },
     ] as (T & { image?: string })[],
   },
   location: {

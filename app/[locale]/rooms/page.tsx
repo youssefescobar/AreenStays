@@ -4,6 +4,7 @@ import { rooms } from "@/content/rooms";
 import { pages } from "@/content/pages";
 import { PageHero } from "@/components/page-hero";
 import { RoomCard } from "@/components/room-card";
+import { FloorGuide } from "@/components/floor-guide";
 import { Reveal } from "@/components/reveal";
 
 const p = pages.rooms;
@@ -15,6 +16,8 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function RoomsPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
+  const floors = p.floors;
+
   return (
     <>
       <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
@@ -27,6 +30,17 @@ export default async function RoomsPage({ params }: LocaleParams) {
           ))}
         </div>
       </section>
+      <FloorGuide
+        locale={locale}
+        copy={{
+          eyebrow: floors.eyebrow[locale],
+          title: floors.title[locale],
+          intro: floors.intro[locale],
+          legendKing: floors.legendKing[locale],
+          legendTwin: floors.legendTwin[locale],
+          cta: floors.cta[locale],
+        }}
+      />
     </>
   );
 }

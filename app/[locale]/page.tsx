@@ -31,7 +31,11 @@ export default async function Home({ params }: LocaleParams) {
     <>
       <Hero locale={locale} t={t} />
 
-      <section id="booking" className="relative z-20 -mt-24 scroll-mt-28 px-4 sm:px-6 lg:px-8">
+      <section
+        id="booking"
+        data-mascot-hint={locale === "ar" ? "تحتاجين مساعدة بالحجز؟" : "Need help booking?"}
+        className="relative z-20 -mt-24 scroll-mt-28 px-4 sm:px-6 lg:px-8"
+      >
         <BookingBar locale={locale} t={t.booking} />
       </section>
 
@@ -58,7 +62,10 @@ export default async function Home({ params }: LocaleParams) {
         </Reveal>
       </section>
 
-      <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
+      <section
+        data-mascot-hint={locale === "ar" ? "اسألي عن الغرف" : "Ask about rooms"}
+        className="bg-white px-4 py-24 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
           <Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <SectionHeading eyebrow={t.home.roomsEyebrow} title={t.nav.rooms} />
@@ -76,7 +83,10 @@ export default async function Home({ params }: LocaleParams) {
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-24 sm:px-6 lg:px-8">
+      <section
+        data-mascot-hint={locale === "ar" ? "اسألي عن المطاعم" : "Ask about dining"}
+        className="bg-navy px-4 py-24 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <Photo src={venues[0].images[0]} label={venues[0].name[locale]} className="aspect-[4/3] w-full" />
@@ -106,7 +116,10 @@ export default async function Home({ params }: LocaleParams) {
         </div>
       </section>
 
-      <section className="px-4 py-24 sm:px-6 lg:px-8">
+      <section
+        data-mascot-hint={locale === "ar" ? "اطلعي على العروض" : "See today's offers"}
+        className="px-4 py-24 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <SectionHeading eyebrow={t.home.offersEyebrow} title={t.nav.offers} />
@@ -121,7 +134,10 @@ export default async function Home({ params }: LocaleParams) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-navy-deep px-4 py-24 sm:px-6 lg:px-8">
+      <section
+        data-mascot-hint={locale === "ar" ? "خططي إقامة العمرة" : "Plan your Umrah stay"}
+        className="relative overflow-hidden bg-navy-deep px-4 py-24 sm:px-6 lg:px-8"
+      >
         <Photo src={stock.lobby} label={t.nav.umrah} className="absolute inset-0 opacity-30" sizes="100vw" />
         <Reveal className="relative mx-auto max-w-3xl text-center">
           <p className="eyebrow text-gold">{t.nav.umrah}</p>

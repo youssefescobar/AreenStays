@@ -56,3 +56,236 @@ body { background: var(--color-sand); color: var(--color-ink); }
 }
 
 .placeholder .areen-logo * { animation: none !important; }
+
+@keyframes chatPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes chatSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- REEN FAB (Durri-style presence) ---- */
+.reen-fab-row {
+  --fab-size: 3.5rem;
+  pointer-events: none;
+}
+
+.reen-fab {
+  width: var(--fab-size);
+  height: var(--fab-size);
+  overflow: visible;
+}
+
+.reen-fab__btn {
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  overflow: visible;
+  transition: transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.reen-fab__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0;
+  box-shadow:
+    0 0 0 3px rgb(212 175 55 / 0.45),
+    0 0 34px rgb(91 143 183 / 0.4);
+  animation: reen-glow 2.8s ease-in-out infinite;
+}
+
+.reen-fab__face {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f6f1e8;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 3px rgb(212 175 55 / 0.4),
+    0 10px 24px rgb(7 30 51 / 0.22),
+    0 0 28px rgb(91 143 183 / 0.28);
+}
+
+.reen-fab__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: block;
+  background: #f6f1e8;
+  object-fit: cover;
+  object-position: center center;
+  transform-origin: 50% 36%;
+  transform: scale(1.4);
+}
+
+.reen-fab__photo.is-wave {
+  transform-origin: 50% center;
+  transform: translate(-8%) scale(1.15);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reen-fab__btn:hover {
+    transform: translateY(-3px) scale(1.04);
+  }
+  .reen-fab__btn:hover .reen-fab__face {
+    box-shadow:
+      0 0 0 2px #fff,
+      0 0 0 3px rgb(212 175 55 / 0.65),
+      0 14px 28px rgb(7 30 51 / 0.28),
+      0 0 36px rgb(91 143 183 / 0.4);
+  }
+}
+
+.reen-fab__btn:focus-visible {
+  outline: none;
+  transform: translateY(-3px) scale(1.04);
+}
+
+.reen-fab__btn:active {
+  transform: scale(0.96);
+}
+
+.reen-fab__btn.is-open .reen-fab__face {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 3px var(--color-gold),
+    0 10px 24px rgb(7 30 51 / 0.24),
+    0 0 30px rgb(212 175 55 / 0.45);
+}
+
+.reen-fab__badge {
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 2px;
+  z-index: 5;
+  display: inline-flex;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #ef4444;
+  padding: 0 3px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  box-shadow: 0 1px 3px rgb(7 30 51 / 0.22);
+}
+
+.reen-fab__tip {
+  position: absolute;
+  z-index: 6;
+  bottom: calc(100% + 0.75rem);
+  inset-inline-end: 0;
+  width: max-content;
+  max-width: min(15rem, calc(100vw - 6.5rem));
+  border-radius: 1.05rem;
+  border: 1.5px solid rgb(212 175 55 / 0.7);
+  background: #fff;
+  padding: 0.6rem 0.85rem;
+  color: var(--color-navy-deep);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.3;
+  text-align: start;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  box-shadow:
+    0 10px 24px rgb(7 30 51 / 0.16),
+    inset 0 0 0 1px rgb(255 255 255 / 0.75);
+  animation:
+    reen-tip-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both,
+    reen-tip-float 2.8s ease-in-out 0.42s infinite;
+}
+
+.reen-fab__tip[dir="rtl"] {
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.reen-fab__tip::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  inset-inline-end: calc(var(--fab-size) / 2 - 7.5px);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-bottom: 1.5px solid rgb(212 175 55 / 0.7);
+  border-right: 1.5px solid rgb(212 175 55 / 0.7);
+  transform: rotate(45deg);
+}
+
+@keyframes reen-tip-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes reen-glow {
+  50% { opacity: 1; }
+}
+
+@keyframes reen-tip-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+
+@keyframes chatSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.reen-avatar {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f6f1e8;
+  box-shadow: 0 0 0 1px rgb(212 175 55 / 0.35);
+}
+
+.reen-avatar__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform-origin: 50% 36%;
+  transform: scale(1.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reen-fab__btn::before,
+  .reen-fab__tip {
+    animation: none !important;
+  }
+  .reen-fab__btn:hover,
+  .reen-fab__btn:focus-visible,
+  .reen-fab__btn:active {
+    transform: none !important;
+  }
+}

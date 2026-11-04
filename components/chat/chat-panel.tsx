@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { ChatMessage } from "./chat-message";
 import { ChatInput } from "./chat-input";
+import { MascotFace } from "./mascot-face";
 import type { ChatMessage as ChatMessageType } from "./use-chat";
 
 /* ------------------------------------------------------------------ */
@@ -13,8 +14,8 @@ import type { ChatMessage as ChatMessageType } from "./use-chat";
 /* ------------------------------------------------------------------ */
 
 const GREETING: Record<Locale, string> = {
-  en: "Hello! 👋 I'm Areen, your virtual hotel assistant. How can I help you today?",
-  ar: "أهلاً! 👋 أنا أرين، مساعدتك الافتراضية في الفندق. كيف يمكنني مساعدتك؟",
+  en: "Hello! I'm Reen, your virtual hotel assistant. How can I help you today?",
+  ar: "أهلاً! أنا رين، مساعدتك الافتراضية في الفندق. كيف يمكنني مساعدتك؟",
 };
 
 /* ------------------------------------------------------------------ */
@@ -105,32 +106,30 @@ export function ChatPanel({
     <div
       ref={panelRef}
       role="dialog"
-      aria-label={isRtl ? "دردشة أرين" : "Areen Chat"}
+      aria-label={isRtl ? "دردشة رين" : "Reen Chat"}
       dir={isRtl ? "rtl" : "ltr"}
       className={cn(
-        /* Mobile: full screen overlay. Desktop: anchored panel */
-        "fixed z-50 flex flex-col overflow-hidden rounded-none bg-white shadow-2xl",
+        /* Mobile: full screen. Desktop: panel sits above the FAB like Durri */
+        "fixed z-[95] flex flex-col overflow-hidden bg-white shadow-2xl",
         "inset-0 lg:inset-auto",
-        "lg:bottom-6 lg:rounded-2xl",
+        "lg:bottom-[calc(1.5rem+3.5rem+1rem)] lg:rounded-[20px]",
         isRtl ? "lg:left-6" : "lg:right-6",
-        "lg:h-[min(600px,calc(100vh-3rem))] lg:w-[400px]",
-        /* Entry animation */
+        "lg:h-[min(520px,calc(100svh-11rem))] lg:w-[min(360px,calc(100vw-28px))]",
         "animate-[chatSlideUp_300ms_ease_forwards]",
       )}
     >
       {/* ---- Header ---- */}
       <div className="flex shrink-0 items-center gap-3 bg-navy-deep px-4 py-3">
-        {/* Areen avatar */}
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold/20 text-sm font-bold text-gold">
-          {isRtl ? "أ" : "A"}
+        <div className="reen-avatar h-9 w-9 overflow-hidden rounded-full">
+          <MascotFace mood={isLoading ? "think" : "idle"} className="reen-avatar__photo" sizes="36px" />
         </div>
 
         <div className="flex-1">
           <p className={cn("text-sm font-semibold text-white", isRtl ? "font-arabic" : "font-sans")}>
-            {isRtl ? "أرين" : "Areen"}
+            {isRtl ? "رين" : "Reen"}
           </p>
           <p className="text-[11px] text-emerald-400">
-            {isRtl ? "متصلة" : "Online"}
+            {isLoading ? (isRtl ? "تفكر…" : "Thinking…") : isRtl ? "متصلة" : "Online"}
           </p>
         </div>
 
@@ -173,14 +172,11 @@ export function ChatPanel({
         {/* Typing indicator */}
         {isLoading && (
           <div className="flex items-center gap-2.5">
-            <div
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-deep text-[11px] font-semibold text-gold"
-              aria-hidden="true"
-            >
-              {isRtl ? "أ" : "A"}
+            <div className="reen-avatar h-7 w-7 shrink-0 overflow-hidden rounded-full" aria-hidden="true">
+              <MascotFace mood="think" className="reen-avatar__photo" sizes="28px" />
             </div>
             <div className="rounded-2xl rounded-es-sm bg-sand px-4 py-3">
-              <div className="flex gap-1" aria-label={isRtl ? "أرين تكتب..." : "Areen is typing..."}>
+              <div className="flex gap-1" aria-label={isRtl ? "رين تكتب..." : "Reen is typing..."}>
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:0ms]" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:150ms]" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-400 [animation-delay:300ms]" />
