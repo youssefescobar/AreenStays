@@ -3,29 +3,23 @@
 import { cn } from "@/lib/utils";
 import { MASCOT_SRC, type MascotMood } from "./mascot";
 
-type MascotFaceProps = {
-  mood: MascotMood;
-  alt?: string;
-  className?: string;
-  sizes?: string;
-  priority?: boolean;
-  fit?: "contain" | "cover";
-};
-
-/** Circular REEN still. Remounts on mood change via key so the face swaps cleanly. */
+/** REEN still — remounts on mood via key. */
 export function MascotFace({
   mood,
-  alt = "",
   className,
   sizes = "64px",
   priority,
-  fit = "cover",
-}: MascotFaceProps) {
+}: {
+  mood: MascotMood;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+}) {
   return (
     <img
       key={mood}
       src={MASCOT_SRC[mood]}
-      alt={alt}
+      alt=""
       data-mood={mood}
       sizes={sizes}
       width={160}
@@ -33,10 +27,7 @@ export function MascotFace({
       decoding="async"
       fetchPriority={priority ? "high" : "auto"}
       draggable={false}
-      className={cn(
-        fit === "cover" ? "object-cover object-center" : "object-contain object-center",
-        className,
-      )}
+      className={cn("object-cover object-center", className)}
     />
   );
 }
