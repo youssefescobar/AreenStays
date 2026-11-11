@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChatCard } from "./chat-cards";
+import { playChatChime, readChatSound, unlockChatSound, writeChatSound } from "./chat-sound";
 
 export interface ChatMessage {
   id: string;
@@ -21,6 +22,29 @@ const STORAGE_KEY = "areen-session-id";
 // ponytail: polling, not websockets; ~1 cheap request per 4s per open chat is fine at hotel scale.
 const POLL_STAFF_MS = 4000;
 const POLL_AI_MS = 15000; // catches a staff takeover while the guest is just reading
+// Chat closed but a conversation exists: still notice team replies (badge + chime on the Reen button).
+const POLL_CLOSED_STAFF_MS = 8000;
+const POLL_CLOSED_AI_MS = 30000;
+const SEEN_KEY = "areen-chat-seen"; // "<sessionId>:<replies seen>"
+
+const replyCount = (list: { role: string }[]) => list.filter((m) => m.role !== "user").length;
+
+function readSeen(sid: string | null): number | null {
+  try {
+    const [id, n] = (localStorage.getItem(SEEN_KEY) ?? "").split(":");
+    return sid && id === sid ? Number(n) || 0 : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeSeen(sid: string | null, n: number): void {
+  try {
+    if (sid) localStorage.setItem(SEEN_KEY, `${sid}:${n}`);
+  } catch {
+    /* storage unavailable */
+  }
+}
 
 const newId = () => crypto.randomUUID();
 
@@ -47,6 +71,10 @@ export function useChat() {
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"ai" | "staff">("ai");
   const [staffName, setStaffName] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false); // first history load done (old replies are not "new")
+  const [seen, setSeen] = useState(0); // replies the guest has had the chat open for
+  const [soundOn, setSoundOn] = useState(true);
+  const [visible, setVisible] = useState(true);
 
   // Ref so async callbacks always see the latest session id.
   const sessionIdRef = useRef<string | null>(null);
@@ -79,17 +107,86 @@ export function useChat() {
   /* Restore the previous conversation, if any */
   useEffect(() => {
     sessionIdRef.current = readSessionId();
-    void syncHistory();
+    setSoundOn(readChatSound());
+    void syncHistory().finally(() => setHydrated(true));
   }, [syncHistory]);
 
-  /* While open, check for staff replies / takeover */
+  /* Tab visibility + unlock audio on the guest's first tap */
   useEffect(() => {
-    if (!isOpen || !sessionIdRef.current) return;
+    const onVis = () => setVisible(document.visibilityState === "visible");
+    onVis();
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pointerdown", unlockChatSound, { once: true });
+    window.addEventListener("keydown", unlockChatSound, { once: true });
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pointerdown", unlockChatSound);
+      window.removeEventListener("keydown", unlockChatSound);
+    };
+  }, []);
+
+  /* Check for staff replies / takeover: often while open, slower while closed */
+  const hasConversation = messages.length > 0;
+  useEffect(() => {
+    if (!sessionIdRef.current || (!isOpen && !hasConversation)) return;
+    if (!visible && mode !== "staff") return; // background tab: only keep listening for a person from the team
+    const ms = isOpen
+      ? mode === "staff" ? POLL_STAFF_MS : POLL_AI_MS
+      : mode === "staff" ? POLL_CLOSED_STAFF_MS : POLL_CLOSED_AI_MS;
     const timer = setInterval(() => {
       if (!isLoading) void syncHistory();
-    }, mode === "staff" ? POLL_STAFF_MS : POLL_AI_MS);
+    }, ms);
     return () => clearInterval(timer);
-  }, [isOpen, isLoading, mode, syncHistory]);
+  }, [isOpen, isLoading, mode, hasConversation, visible, syncHistory]);
+
+  /* Unread replies: everything after what the guest saw with the chat open */
+  const replies = replyCount(messages);
+  useEffect(() => {
+    if (!hydrated) return;
+    const stored = readSeen(sessionIdRef.current);
+    // First visit of this session on this device: old history is not "new"
+    setSeen(stored ?? replies);
+    if (stored === null) writeSeen(sessionIdRef.current, replies);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated]);
+
+  useEffect(() => {
+    if (hydrated && isOpen && visible && replies !== seen) {
+      setSeen(replies);
+      writeSeen(sessionIdRef.current, replies);
+    }
+  }, [hydrated, isOpen, visible, replies, seen]);
+
+  const unread = hydrated ? Math.max(0, replies - seen) : 0;
+
+  /* Chime for new replies: always for the hotel team, for Reen only when the chat is out of sight */
+  const prevReplies = useRef<number | null>(null);
+  useEffect(() => {
+    if (!hydrated) return;
+    const prev = prevReplies.current;
+    prevReplies.current = replies;
+    if (prev === null || replies <= prev || !soundOn) return;
+    const last = [...messages].reverse().find((m) => m.role !== "user");
+    if (last?.role === "staff") playChatChime("staff");
+    else if (!isOpen || !visible) playChatChime("reen");
+  }, [hydrated, replies, messages, soundOn, isOpen, visible]);
+
+  /* "(1) …" in the tab title while a reply waits in a background tab */
+  useEffect(() => {
+    const base = document.title.replace(/^\(\d+\)\s*/, "");
+    document.title = unread > 0 && !visible ? `(${unread}) ${base}` : base;
+  }, [unread, visible]);
+
+  const toggleSound = useCallback(() => {
+    setSoundOn((on) => {
+      writeChatSound(!on);
+      if (!on) {
+        unlockChatSound();
+        playChatChime("reen");
+      }
+      return !on;
+    });
+  }, []);
 
   /** Ask the backend; `text` must already be shown in the list as the last user message. */
   const request = useCallback(async (text: string) => {
@@ -154,5 +251,5 @@ export function useChat() {
 
   const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  return { messages, isOpen, isLoading, error, mode, staffName, sendMessage, retry, toggleChat };
+  return { messages, isOpen, isLoading, error, mode, staffName, unread, soundOn, toggleSound, sendMessage, retry, toggleChat };
 }
