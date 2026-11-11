@@ -85,7 +85,10 @@ export function Footer({ locale, t }: { locale: Locale; t: Dict }) {
 
         <div className="flex flex-col justify-between gap-2 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {hotel.name[locale]}. {t.footer.rights}
+            © {new Date().getFullYear()} {hotel.name[locale]}. {t.footer.rights} ·{" "}
+            <Link href={href(locale, "/privacy")} className="hover:text-gold">
+              {locale === "ar" ? "سياسة الخصوصية" : "Privacy policy"}
+            </Link>
           </p>
           <p>{t.tagline}</p>
         </div>

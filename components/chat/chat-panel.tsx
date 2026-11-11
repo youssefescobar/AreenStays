@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { href } from "@/lib/i18n";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
@@ -213,6 +215,13 @@ export function ChatPanel({
 
       {/* ---- Input ---- */}
       <ChatInput onSend={(t) => void onSend(t)} disabled={isLoading} locale={locale} />
+      {/* Consent notice: shown before guests share anything personal */}
+      <p className="shrink-0 bg-white px-4 pb-2 text-center text-[10px] text-gray-400">
+        {isRtl ? "تتم معالجة الرسائل بالذكاء الاصطناعي ويطّلع عليها فريقنا. " : "Messages are processed by AI and seen by our team. "}
+        <Link href={href(locale, "/privacy")} className="underline hover:text-gold">
+          {isRtl ? "سياسة الخصوصية" : "Privacy policy"}
+        </Link>
+      </p>
     </div>
   );
 }

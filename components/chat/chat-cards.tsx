@@ -10,7 +10,7 @@ import { Photo } from "../photo";
 
 /** Mirrors ChatCard in AreenStay-Backend/src/services/booking.ts */
 export type ChatCard =
-  | { type: "rooms"; slugs: string[] }
+  | { type: "rooms"; slugs: string[]; prices?: Record<string, number> }
   | { type: "dates"; maxGuests: number; guests?: number }
   | {
       type: "booking";
@@ -118,7 +118,7 @@ export function ChatCards({ cards, locale, onSend, disabled, isLatest }: { cards
                           <Users size={13} /> {room.guests} {t.guests}
                         </span>
                         <span className="font-semibold text-gold">
-                          {t.from} {room.price.toLocaleString("en-US")} {t.sar}
+                          {t.from} {(card.prices?.[room.slug] ?? room.price).toLocaleString("en-US")} {t.sar}
                           <span className="font-normal text-ink/50"> / {t.night}</span>
                         </span>
                       </div>
