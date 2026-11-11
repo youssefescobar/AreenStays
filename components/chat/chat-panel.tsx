@@ -151,8 +151,12 @@ export function ChatPanel({
       {mode === "staff" && (
         <div className="shrink-0 bg-gold/15 px-4 py-2 text-center text-xs font-medium text-navy" role="status">
           {isRtl
-            ? `أنت الآن تتحدث مع ${staffName ?? "فريق الفندق"} من فريق الفندق`
-            : `You're now chatting with ${staffName ?? "our team"} from the hotel team`}
+            ? staffName
+              ? `أنت الآن تتحدث مع ${staffName} من فريق الفندق`
+              : "أنت الآن تتحدث مع فريق الفندق"
+            : staffName
+              ? `You're now chatting with ${staffName} from the hotel team`
+              : "You're now chatting with our hotel team"}
         </div>
       )}
 

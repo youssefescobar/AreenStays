@@ -44,7 +44,7 @@ export function ChatMessage({ role, content, timestamp, locale, staffName }: Cha
       <div className={cn("max-w-[85%]", isUser ? "items-end" : "items-start")}>
         {isStaff && (
           <p className="mb-1 text-[11px] font-semibold text-gold">
-            {isRtl ? `${staffName ?? "فريق الفندق"} · فريق الفندق` : `${staffName ?? "Hotel team"} · Hotel team`}
+            {isRtl ? (staffName ? `${staffName} · فريق الفندق` : "فريق الفندق") : staffName ? `${staffName} · Hotel team` : "Hotel team"}
           </p>
         )}
         <div
