@@ -117,6 +117,7 @@ export function BookingBar({ locale, t, defaultRoom = "" }: { locale: Locale; t:
       const roomName = rooms.find((r) => r.slug === booking.slug)?.name[locale] ?? t.anyRoom;
       const lines = [
         t.message,
+        `${locale === "ar" ? "رقم الطلب" : "Reference"}: ${booking.id}`,
         `${t.checkIn}: ${booking.checkIn}`,
         `${t.checkOut}: ${booking.checkOut}`,
         `${t.guests}: ${guests}`,

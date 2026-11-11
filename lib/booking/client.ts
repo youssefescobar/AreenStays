@@ -1,7 +1,8 @@
 import type { AvailabilityResponse, CreateBookingRequest, CreateBookingResponse } from "./types";
 
+// Same backend as the AI chat, so website and chat bookings share one availability and land in the admin app.
 const baseUrl = () =>
-  (typeof process !== "undefined" && process.env.NEXT_PUBLIC_BOOKING_API_URL?.replace(/\/$/, "")) || "";
+  (process.env.NEXT_PUBLIC_BOOKING_API_URL || process.env.NEXT_PUBLIC_CHAT_API_URL || "http://localhost:4000").replace(/\/$/, "");
 
 export const fetchAvailability = async (checkIn: string, checkOut: string): Promise<AvailabilityResponse> => {
   const url = `${baseUrl()}/api/availability?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`;

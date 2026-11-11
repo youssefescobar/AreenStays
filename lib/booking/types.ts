@@ -28,14 +28,3 @@ export type CreateBookingResponse = {
   checkOut: string;
   roomNumber: number;
 };
-
-export type StoredBooking = {
-  id: string;
-  slug: string;
-  roomNumber: number;
-  checkIn: string;
-  checkOut: string;
-  guests: string;
-  locale: string;
-  createdAt: string;
-};
