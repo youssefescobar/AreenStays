@@ -2,14 +2,17 @@ import type { Locale } from "@/lib/i18n";
 
 export type MascotMood = "idle" | "wave" | "think";
 
+export const MASCOT_MOODS: MascotMood[] = ["idle", "wave", "think"];
+
 export const MASCOT_SRC: Record<MascotMood, string> = {
   idle: "/mascot/idle.webp",
   wave: "/mascot/wave.webp",
   think: "/mascot/think.webp",
 };
 
-export const fabMood = (open: boolean, hover: boolean): MascotMood =>
-  open ? "think" : hover ? "wave" : "idle";
+/** Priority: thinking > waving (hover or a short reaction) > idle. */
+export const reenMood = ({ thinking, hover, flash }: { thinking: boolean; hover: boolean; flash: boolean }): MascotMood =>
+  thinking ? "think" : hover || flash ? "wave" : "idle";
 
 export const preloadMascotFaces = () => {
   if (typeof window === "undefined") return;
@@ -17,14 +20,14 @@ export const preloadMascotFaces = () => {
 };
 
 const PATH_HINTS: { match: RegExp; en: string; ar: string }[] = [
-  { match: /\/rooms/, en: "Ask about rooms", ar: "اسألي عن الغرف" },
-  { match: /\/dining/, en: "Ask about dining", ar: "اسألي عن المطاعم" },
-  { match: /\/offers/, en: "See today's offers", ar: "اطلعي على العروض" },
-  { match: /\/umrah/, en: "Plan your Umrah stay", ar: "خططي إقامة العمرة" },
-  { match: /\/corporate/, en: "Ask about events", ar: "اسألي عن الفعاليات" },
-  { match: /\/location/, en: "How to find us", ar: "كيف تصلين إلينا" },
+  { match: /\/rooms/, en: "Ask about rooms", ar: "عندك سؤال عن الغرف؟" },
+  { match: /\/dining/, en: "Ask about dining", ar: "عندك سؤال عن المطاعم؟" },
+  { match: /\/offers/, en: "See today's offers", ar: "عروض اليوم بانتظارك" },
+  { match: /\/umrah/, en: "Plan your Umrah stay", ar: "نخطط لإقامة عمرتك؟" },
+  { match: /\/corporate/, en: "Ask about events", ar: "عندك فعالية أو اجتماع؟" },
+  { match: /\/location/, en: "How to find us", ar: "كيف الوصول إلينا؟" },
   { match: /\/gallery/, en: "Tour the hotel", ar: "جولة في الفندق" },
-  { match: /#booking/, en: "Need help booking?", ar: "تحتاجين مساعدة بالحجز؟" },
+  { match: /#booking/, en: "Need help booking?", ar: "أساعدك في الحجز؟" },
 ];
 
 export const tipFromPath = (path: string, locale: Locale) =>
@@ -32,7 +35,7 @@ export const tipFromPath = (path: string, locale: Locale) =>
 
 export const IDLE_TIPS: Record<Locale, string[]> = {
   en: ["Ask me anything", "Need a room tip?", "Book with me", "Umrah stays?", "Where are we?"],
-  ar: ["اسأليني أي شيء", "تحتاجين نصيحة غرفة؟", "احجزي معي", "إقامة عمرة؟", "أين موقعنا؟"],
+  ar: ["أنا هنا لمساعدتك", "نصيحة لاختيار غرفتك؟", "الحجز معي أسهل", "إقامة عمرة؟", "أين موقعنا؟"],
 };
 
 export const HELLO_TIP: Record<Locale, string> = { en: "Hello", ar: "أهلاً" };

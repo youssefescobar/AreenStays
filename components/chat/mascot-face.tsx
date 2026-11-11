@@ -1,33 +1,53 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { MASCOT_SRC, type MascotMood } from "./mascot";
+import { MASCOT_SRC, MASCOT_MOODS, type MascotMood } from "./mascot";
 
-/** REEN still — remounts on mood via key. */
-export function MascotFace({
-  mood,
-  className,
-  sizes = "64px",
-  priority,
-}: {
+type Props = {
   mood: MascotMood;
   className?: string;
   sizes?: string;
   priority?: boolean;
-}) {
+  /** Stack every pose and crossfade between them (FAB + panel header). */
+  live?: boolean;
+};
+
+/** REEN — a still, or a crossfading stack of poses when `live`. */
+export function MascotFace({ mood, className, sizes = "64px", priority, live }: Props) {
+  if (!live) {
+    return (
+      <img
+        src={MASCOT_SRC[mood]}
+        alt=""
+        data-mood={mood}
+        sizes={sizes}
+        width={160}
+        height={160}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        draggable={false}
+        className={cn("object-cover object-center", className)}
+      />
+    );
+  }
+
   return (
-    <img
-      key={mood}
-      src={MASCOT_SRC[mood]}
-      alt=""
-      data-mood={mood}
-      sizes={sizes}
-      width={160}
-      height={160}
-      decoding="async"
-      fetchPriority={priority ? "high" : "auto"}
-      draggable={false}
-      className={cn("object-cover object-center", className)}
-    />
+    <span className="reen-stack" data-mood={mood}>
+      {MASCOT_MOODS.map((m) => (
+        <img
+          key={m}
+          src={MASCOT_SRC[m]}
+          alt=""
+          sizes={sizes}
+          width={160}
+          height={160}
+          decoding="async"
+          fetchPriority={priority && m === "idle" ? "high" : "auto"}
+          draggable={false}
+          aria-hidden
+          className={cn("reen-stack__pose object-cover object-center", className, m === mood && "is-active")}
+        />
+      ))}
+    </span>
   );
 }

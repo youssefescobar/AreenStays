@@ -67,10 +67,14 @@ body { background: var(--color-sand); color: var(--color-ink); }
   to { opacity: 1; transform: none; }
 }
 
-/* ---- REEN FAB (Durri-style presence) ---- */
+/* ---- REEN FAB ---- */
 .reen-fab-row {
-  --fab-size: 3.5rem;
+  --fab-size: 3.75rem;
   pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .reen-fab-row { --fab-size: 4.25rem; }
 }
 
 .reen-fab {
@@ -94,22 +98,62 @@ body { background: var(--color-sand); color: var(--color-ink); }
   background: transparent;
   cursor: pointer;
   overflow: visible;
-  transition: transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: reen-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both;
 }
 
+/* Soft halo */
 .reen-fab__btn::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
+  inset: -10px;
+  z-index: 0;
   border-radius: 999px;
-  opacity: 0;
-  box-shadow:
-    0 0 0 3px rgb(212 175 55 / 0.45),
-    0 0 34px rgb(91 143 183 / 0.4);
-  animation: reen-glow 2.8s ease-in-out infinite;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgb(212 175 55 / 0.35), rgb(91 143 183 / 0.18) 60%, transparent);
+  opacity: 0.55;
+  animation: reen-halo 3.6s ease-in-out infinite;
 }
+
+/* Attention ping while closed */
+.reen-fab__btn::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: 0;
+  border-radius: 999px;
+  pointer-events: none;
+  border: 2px solid rgb(212 175 55 / 0.7);
+  opacity: 0;
+  animation: reen-ping 7s cubic-bezier(0.2, 0.7, 0.3, 1) 2.4s infinite;
+}
+
+.reen-fab__btn.is-open::after { animation: none; }
+
+/* Rotating gold-to-crystal ring */
+.reen-fab__ring {
+  position: absolute;
+  inset: -4px;
+  z-index: 1;
+  border-radius: 999px;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-gold) 0deg,
+    #f6e4a0 70deg,
+    var(--color-crystal) 150deg,
+    var(--color-sky) 200deg,
+    var(--color-gold-soft) 280deg,
+    var(--color-gold) 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  animation: reen-spin 12s linear infinite;
+  transition: opacity 0.3s ease;
+}
+
+.reen-fab__btn.is-thinking .reen-fab__ring { animation-duration: 1.3s; }
 
 .reen-fab__face {
   position: relative;
@@ -119,146 +163,239 @@ body { background: var(--color-sand); color: var(--color-ink); }
   height: 100%;
   overflow: hidden;
   border-radius: 999px;
-  background: #f6f1e8;
+  background: radial-gradient(circle at 50% 30%, #fff 0%, #f6f1e8 55%, #eadfca 100%);
   box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 3px rgb(212 175 55 / 0.4),
-    0 10px 24px rgb(7 30 51 / 0.22),
-    0 0 28px rgb(91 143 183 / 0.28);
+    inset 0 0 0 2px #fff,
+    0 10px 24px rgb(7 30 51 / 0.24),
+    0 2px 6px rgb(7 30 51 / 0.16);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 
-.reen-fab__photo {
+.reen-fab__btn[data-mood="wave"] .reen-fab__face {
+  animation: reen-hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Idle life: breathing + an occasional head tilt */
+.reen-fab__body {
   position: absolute;
   inset: 0;
+  display: block;
+  transform-origin: 50% 100%;
+  animation:
+    reen-breathe 4.2s ease-in-out infinite,
+    reen-tilt 11s ease-in-out 3s infinite;
+}
+
+.reen-stack {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.reen-stack__pose {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.34s ease;
+}
+
+.reen-stack__pose.is-active { opacity: 1; }
+
+.reen-fab__photo {
   width: 100%;
   height: 100%;
   max-width: none;
   display: block;
-  background: #f6f1e8;
   object-fit: cover;
   object-position: center center;
+  /* One framing for every pose, so swaps never jump; the wave hand still shows at the edge. */
   transform-origin: 50% 36%;
-  transform: scale(1.4);
+  transform: scale(1.3);
 }
 
-.reen-fab__photo.is-wave {
-  transform-origin: 50% center;
-  transform: translate(-8%) scale(1.15);
+/* Online dot */
+.reen-fab__status {
+  position: absolute;
+  z-index: 4;
+  bottom: 1px;
+  inset-inline-end: 1px;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px #fff;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
+
+.reen-fab__status::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: reen-dot 2.4s ease-out infinite;
+}
+
+.reen-fab__status.is-staff { background: var(--color-gold); }
+
+/* Close badge when open */
+.reen-fab__close {
+  position: absolute;
+  z-index: 5;
+  top: -3px;
+  inset-inline-end: -3px;
+  display: grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  background: var(--color-navy-deep);
+  color: #fff;
+  box-shadow: 0 0 0 2px #fff, 0 4px 10px rgb(7 30 51 / 0.3);
+  transform: scale(0) rotate(-90deg);
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reen-fab__btn.is-open .reen-fab__close { transform: scale(1) rotate(0); }
+.reen-fab__btn.is-open .reen-fab__status { transform: scale(0); opacity: 0; }
+.reen-fab__btn.is-open .reen-fab__face { transform: scale(0.92); }
+.reen-fab__btn.is-open .reen-fab__ring { opacity: 0.55; }
 
 @media (hover: hover) and (pointer: fine) {
-  .reen-fab__btn:hover {
-    transform: translateY(-3px) scale(1.04);
-  }
+  .reen-fab__btn:hover { transform: translateY(-4px); }
   .reen-fab__btn:hover .reen-fab__face {
+    transform: scale(1.05);
     box-shadow:
-      0 0 0 2px #fff,
-      0 0 0 3px rgb(212 175 55 / 0.65),
-      0 14px 28px rgb(7 30 51 / 0.28),
-      0 0 36px rgb(91 143 183 / 0.4);
+      inset 0 0 0 2px #fff,
+      0 16px 32px rgb(7 30 51 / 0.3),
+      0 0 28px rgb(212 175 55 / 0.35);
   }
+  .reen-fab__btn:hover .reen-fab__ring { animation-duration: 4s; }
+  .reen-fab__btn.is-open:hover .reen-fab__face { transform: scale(0.96); }
 }
 
 .reen-fab__btn:focus-visible {
-  outline: none;
-  transform: translateY(-3px) scale(1.04);
+  outline: 3px solid var(--color-crystal);
+  outline-offset: 5px;
 }
 
-.reen-fab__btn:active {
-  transform: scale(0.96);
-}
+.reen-fab__btn:active { transform: scale(0.94); }
 
-.reen-fab__btn.is-open .reen-fab__face {
-  box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 3px var(--color-gold),
-    0 10px 24px rgb(7 30 51 / 0.24),
-    0 0 30px rgb(212 175 55 / 0.45);
-}
-
-.reen-fab__badge {
-  position: absolute;
-  top: 2px;
-  inset-inline-end: 2px;
-  z-index: 5;
-  display: inline-flex;
-  min-width: 1.1rem;
-  height: 1.1rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  background: #ef4444;
-  padding: 0 3px;
-  font-size: 0.55rem;
-  font-weight: 800;
-  line-height: 1;
-  color: #fff;
-  box-shadow: 0 1px 3px rgb(7 30 51 / 0.22);
-}
-
+/* Tip bubble */
 .reen-fab__tip {
   position: absolute;
   z-index: 6;
-  bottom: calc(100% + 0.75rem);
-  inset-inline-end: 0;
+  bottom: calc(100% + 0.85rem);
+  inset-inline-end: -0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
   width: max-content;
-  max-width: min(15rem, calc(100vw - 6.5rem));
-  border-radius: 1.05rem;
-  border: 1.5px solid rgb(212 175 55 / 0.7);
-  background: #fff;
-  padding: 0.6rem 0.85rem;
+  max-width: min(15.5rem, calc(100vw - 6.5rem));
+  border-radius: 1.1rem;
+  border-end-end-radius: 0.35rem;
+  background: rgb(255 255 255 / 0.97);
+  padding: 0.55rem 0.9rem 0.6rem;
   color: var(--color-navy-deep);
   font-size: 0.8125rem;
   font-weight: 650;
   line-height: 1.3;
   text-align: start;
   pointer-events: none;
-  transform-origin: 50% 100%;
+  transform-origin: 90% 100%;
   box-shadow:
-    0 10px 24px rgb(7 30 51 / 0.16),
-    inset 0 0 0 1px rgb(255 255 255 / 0.75);
+    0 0 0 1px rgb(212 175 55 / 0.45),
+    0 12px 28px rgb(7 30 51 / 0.18),
+    0 2px 6px rgb(7 30 51 / 0.08);
+  backdrop-filter: blur(8px);
   animation:
-    reen-tip-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both,
-    reen-tip-float 2.8s ease-in-out 0.42s infinite;
+    reen-tip-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    reen-tip-float 3.2s ease-in-out 0.45s infinite;
 }
 
 .reen-fab__tip[dir="rtl"] {
   font-weight: 700;
   line-height: 1.45;
+  transform-origin: 10% 100%;
+}
+
+.reen-fab__tip-name {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a8862a;
+}
+
+.reen-fab__tip[dir="rtl"] .reen-fab__tip-name { letter-spacing: 0; font-size: 0.6875rem; }
+
+.reen-fab__tip.is-hello {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.875rem;
 }
 
 .reen-fab__tip::after {
   content: "";
   position: absolute;
-  bottom: -7px;
-  inset-inline-end: calc(var(--fab-size) / 2 - 7.5px);
-  width: 12px;
-  height: 12px;
+  bottom: -5px;
+  inset-inline-end: calc(var(--fab-size) / 2 - 1px);
+  width: 10px;
+  height: 10px;
   background: #fff;
-  border-bottom: 1.5px solid rgb(212 175 55 / 0.7);
-  border-right: 1.5px solid rgb(212 175 55 / 0.7);
+  box-shadow: 1px 1px 0 0 rgb(212 175 55 / 0.45);
   transform: rotate(45deg);
 }
 
+.reen-fab__tip[dir="rtl"]::after { box-shadow: -1px 1px 0 0 rgb(212 175 55 / 0.45); }
+
+@keyframes reen-pop {
+  from { opacity: 0; transform: translateY(18px) scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reen-halo {
+  0%, 100% { opacity: 0.35; scale: 0.96; }
+  50% { opacity: 0.8; scale: 1.04; }
+}
+@keyframes reen-ping {
+  0% { opacity: 0.8; scale: 1; }
+  18%, 100% { opacity: 0; scale: 1.55; }
+}
+@keyframes reen-spin {
+  to { rotate: 360deg; }
+}
+@keyframes reen-breathe {
+  0%, 100% { translate: 0 0; scale: 1; }
+  50% { translate: 0 -1.5px; scale: 1.015; }
+}
+@keyframes reen-tilt {
+  0%, 82%, 100% { rotate: 0deg; }
+  87% { rotate: -5deg; }
+  93% { rotate: 2deg; }
+}
+@keyframes reen-hop {
+  0%, 100% { translate: 0 0; }
+  35% { translate: 0 -5px; }
+  65% { translate: 0 1px; }
+}
+@keyframes reen-dot {
+  0% { opacity: 0.7; scale: 1; }
+  80%, 100% { opacity: 0; scale: 2.4; }
+}
 @keyframes reen-tip-in {
-  from { opacity: 0; transform: translateY(8px) scale(0.94); }
+  from { opacity: 0; transform: translateY(10px) scale(0.85); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-
-@keyframes reen-glow {
-  50% { opacity: 1; }
-}
-
 @keyframes reen-tip-float {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -4px; }
 }
-
-@keyframes chatSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: none; }
+@keyframes reen-shake {
+  0%, 100% { translate: 0 0; }
+  20%, 60% { translate: -2px 0; }
+  40%, 80% { translate: 2px 0; }
 }
 
+/* ---- REEN avatars (chat) ---- */
 .reen-avatar {
   position: relative;
   display: block;
@@ -278,11 +415,45 @@ body { background: var(--color-sand); color: var(--color-ink); }
   transform: scale(1.4);
 }
 
+.reen-avatar--live {
+  overflow: visible;
+  box-shadow: 0 0 0 2px rgb(212 175 55 / 0.7), 0 0 14px rgb(212 175 55 / 0.25);
+}
+
+.reen-avatar--live .reen-stack {
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.reen-avatar--live.is-error { animation: reen-shake 0.45s ease-in-out; }
+
+.reen-avatar__status {
+  position: absolute;
+  z-index: 2;
+  bottom: -1px;
+  inset-inline-end: -1px;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px var(--color-navy-deep);
+}
+
+.reen-avatar__status.is-staff { background: var(--color-gold); }
+
 @media (prefers-reduced-motion: reduce) {
+  .reen-fab__btn,
   .reen-fab__btn::before,
-  .reen-fab__tip {
+  .reen-fab__btn::after,
+  .reen-fab__ring,
+  .reen-fab__face,
+  .reen-fab__body,
+  .reen-fab__status::after,
+  .reen-fab__tip,
+  .reen-avatar--live {
     animation: none !important;
   }
+  .reen-stack__pose { transition: none; }
   .reen-fab__btn:hover,
   .reen-fab__btn:focus-visible,
   .reen-fab__btn:active {

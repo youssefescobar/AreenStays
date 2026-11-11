@@ -9,6 +9,7 @@ import { ChatInput } from "./chat-input";
 import { MascotFace } from "./mascot-face";
 import { ChatCards } from "./chat-cards";
 import type { ChatMessage as ChatMessageType } from "./use-chat";
+import type { MascotMood } from "./mascot";
 
 /* ------------------------------------------------------------------ */
 /*  Greeting messages                                                  */
@@ -32,6 +33,7 @@ interface ChatPanelProps {
   onRetry: () => Promise<void>;
   mode: "ai" | "staff";
   staffName: string | null;
+  mood: MascotMood;
   onClose: () => void;
 }
 
@@ -48,6 +50,7 @@ export function ChatPanel({
   onRetry,
   mode,
   staffName,
+  mood,
   onClose,
 }: ChatPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -117,7 +120,7 @@ export function ChatPanel({
         /* Mobile: full screen. Desktop: panel sits above the FAB like Durri */
         "fixed z-[95] flex flex-col overflow-hidden bg-white shadow-2xl",
         "inset-0 lg:inset-auto",
-        "lg:bottom-[calc(1.5rem+3.5rem+1rem)] lg:rounded-[20px]",
+        "lg:bottom-[calc(1.5rem+4.25rem+1rem)] lg:rounded-[20px]",
         isRtl ? "lg:left-6" : "lg:right-6",
         "lg:h-[min(520px,calc(100svh-11rem))] lg:w-[min(360px,calc(100vw-28px))]",
         "animate-[chatSlideUp_300ms_ease_forwards]",
@@ -125,16 +128,19 @@ export function ChatPanel({
     >
       {/* ---- Header ---- */}
       <div className="flex shrink-0 items-center gap-3 bg-navy-deep px-4 py-3">
-        <div className="reen-avatar h-9 w-9 overflow-hidden rounded-full">
-          <MascotFace mood={isLoading ? "think" : "idle"} className="reen-avatar__photo" sizes="36px" />
+        <div className={cn("reen-avatar reen-avatar--live h-10 w-10 shrink-0 rounded-full", error && "is-error")}>
+          <MascotFace mood={mood} live className="reen-avatar__photo" sizes="40px" />
+          <span className={cn("reen-avatar__status", mode === "staff" && "is-staff")} aria-hidden />
         </div>
 
         <div className="flex-1">
           <p className={cn("text-sm font-semibold text-white", isRtl ? "font-arabic" : "font-sans")}>
             {isRtl ? "رين" : "Reen"}
           </p>
-          <p className="text-[11px] text-emerald-400">
-            {isLoading ? (isRtl ? "تفكر…" : "Thinking…") : isRtl ? "متصلة" : "Online"}
+          <p className={cn("text-[11px]", mode === "staff" ? "text-gold" : "text-emerald-400")}>
+            {mode === "staff"
+              ? isRtl ? "مع فريق الفندق" : "With the hotel team"
+              : isLoading ? (isRtl ? "تفكر…" : "Thinking…") : isRtl ? "متصلة الآن" : "Online now"}
           </p>
         </div>
 
