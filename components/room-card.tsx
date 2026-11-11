@@ -4,8 +4,10 @@ import { href, type Locale } from "@/lib/i18n";
 import type { Room } from "@/content/rooms";
 import type { Dict } from "@/content/site";
 import { Photo } from "./photo";
+import { livePrice } from "@/lib/prices";
 
-export function RoomCard({ room, locale, t }: { room: Room; locale: Locale; t: Dict }) {
+export async function RoomCard({ room, locale, t }: { room: Room; locale: Locale; t: Dict }) {
+  const price = await livePrice(room);
   return (
     <Link href={href(locale, `/rooms/${room.slug}`)} className="group block">
       <div className="overflow-hidden">
@@ -23,7 +25,7 @@ export function RoomCard({ room, locale, t }: { room: Room; locale: Locale; t: D
         </div>
         <p className="shrink-0 text-end text-sm font-semibold text-gold">
           <span className="block text-[11px] font-normal text-ink/50">{t.from}</span>
-          {room.price.toLocaleString("en-US")} {t.sar}
+          {price.toLocaleString("en-US")} {t.sar}
         </p>
       </div>
       <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-ink/60">

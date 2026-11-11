@@ -9,6 +9,7 @@ import { Photo } from "@/components/photo";
 import { BookingBar } from "@/components/booking-bar";
 import { RoomCard } from "@/components/room-card";
 import { Reveal } from "@/components/reveal";
+import { livePrice } from "@/lib/prices";
 
 type Params = { params: Promise<{ locale: string; slug: string }> };
 
@@ -80,7 +81,7 @@ export default async function RoomPage({ params }: Params) {
           <aside className="h-fit border border-beige bg-white p-8 lg:sticky lg:top-28">
             <p className="text-sm text-ink/55">{t.from}</p>
             <p className="mt-1 text-4xl font-light text-navy">
-              {room.price.toLocaleString("en-US")} <span className="text-lg text-gold">{t.sar}</span>
+              {(await livePrice(room)).toLocaleString("en-US")} <span className="text-lg text-gold">{t.sar}</span>
             </p>
             <p className="text-sm text-ink/55">{t.perNight}</p>
             <a
