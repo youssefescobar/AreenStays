@@ -27,6 +27,7 @@ interface ChatPanelProps {
   isLoading: boolean;
   error: string | null;
   onSend: (text: string) => Promise<void>;
+  onRetry: () => Promise<void>;
   onNewChat: () => Promise<void>;
   onClose: () => void;
 }
@@ -41,6 +42,7 @@ export function ChatPanel({
   isLoading,
   error,
   onSend,
+  onRetry,
   onNewChat,
   onClose,
 }: ChatPanelProps) {
@@ -195,11 +197,7 @@ export function ChatPanel({
             {error}
             <button
               type="button"
-              onClick={() => {
-                /* Retry the last user message */
-                const lastUser = [...messages].reverse().find((m) => m.role === "user");
-                if (lastUser) void onSend(lastUser.content);
-              }}
+              onClick={() => void onRetry()}
               className="mt-1 block w-full text-xs font-medium text-red-700 underline"
             >
               {isRtl ? "إعادة المحاولة" : "Retry"}

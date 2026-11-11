@@ -16,8 +16,8 @@ export function ChatWidget({ locale }: { locale: Locale }) {
     isOpen,
     isLoading,
     error,
-    hasUnread,
     sendMessage,
+    retry,
     startNewChat,
     toggleChat,
   } = useChat();
@@ -34,6 +34,7 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           isLoading={isLoading}
           error={error}
           onSend={sendMessage}
+          onRetry={retry}
           onNewChat={startNewChat}
           onClose={toggleChat}
         />
@@ -60,13 +61,6 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           )}
         >
           <MessageCircle size={24} className="text-navy-deep lg:h-7 lg:w-7" />
-
-          {/* Unread badge */}
-          {hasUnread && (
-            <span className="absolute -top-0.5 -end-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-              1
-            </span>
-          )}
         </button>
       )}
     </>

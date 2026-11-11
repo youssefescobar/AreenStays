@@ -2,10 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
@@ -13,31 +9,11 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
-interface UseChatReturn {
-  messages: ChatMessage[];
-  isOpen: boolean;
-  isLoading: boolean;
-  error: string | null;
-  hasUnread: boolean;
-  sendMessage: (text: string) => Promise<void>;
-  startNewChat: () => Promise<void>;
-  toggleChat: () => void;
-  dismissUnread: () => void;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
-const API_BASE =
-  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_CHAT_API_URL) ||
-  "http://localhost:4000";
-
+// Base URL without "/api" — paths below add it.
+const API_BASE = process.env.NEXT_PUBLIC_CHAT_API_URL || "http://localhost:4000";
 const STORAGE_KEY = "areen-session-id";
 
-function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-}
+const newId = () => crypto.randomUUID();
 
 function readSessionId(): string | null {
   try {
@@ -55,111 +31,63 @@ function writeSessionId(id: string): void {
   }
 }
 
-/* ------------------------------------------------------------------ */
-/*  Hook                                                               */
-/* ------------------------------------------------------------------ */
-
-export function useChat(): UseChatReturn {
+export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasUnread, setHasUnread] = useState(false);
 
-  /** Session id is kept in a ref so async callbacks always see the latest value */
+  // Ref so async callbacks always see the latest session id.
   const sessionIdRef = useRef<string | null>(null);
-  /** Guard to ensure history is only loaded once per mount */
-  const historyLoadedRef = useRef(false);
 
-  /* ---- Load history on mount ---- */
+  /* Restore the previous conversation, if any */
   useEffect(() => {
-    if (historyLoadedRef.current) return;
-    historyLoadedRef.current = true;
-
     const stored = readSessionId();
     if (!stored) return;
-
     sessionIdRef.current = stored;
 
-    (async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/chat/history/${stored}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (Array.isArray(data.messages) && data.messages.length > 0) {
-          setMessages(
-            data.messages.map(
-              (m: { role: string; content: string; timestamp?: string }, i: number) => ({
-                id: `hist-${i}`,
-                role: m.role as "user" | "assistant",
-                content: m.content,
-                timestamp: m.timestamp ? new Date(m.timestamp) : new Date(),
-              }),
-            ),
-          );
-        }
-      } catch {
-        /* History load is best-effort — silently ignore */
-      }
-    })();
+    fetch(`${API_BASE}/api/chat/history/${encodeURIComponent(stored)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!Array.isArray(data?.messages)) return;
+        setMessages(
+          data.messages.map((m: { role: ChatMessage["role"]; content: string; timestamp?: string }) => ({
+            id: newId(),
+            role: m.role,
+            content: m.content,
+            timestamp: m.timestamp ? new Date(m.timestamp) : new Date(),
+          })),
+        );
+      })
+      .catch(() => {
+        /* best-effort */
+      });
   }, []);
 
-  /* ---- Send message ---- */
-  const sendMessage = useCallback(async (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-
-    setError(null);
-
-    /* Ensure we have a session id */
+  /** Ask the backend; `text` must already be shown in the list as the last user message. */
+  const request = useCallback(async (text: string) => {
     let sid = sessionIdRef.current;
     if (!sid) {
-      try {
-        const res = await fetch(`${API_BASE}/api/chat/new`, { method: "POST" });
-        if (!res.ok) throw new Error("Failed to create session");
-        const data = await res.json();
-        sid = data.sessionId as string;
-      } catch {
-        sid = generateId();
-      }
+      sid = newId(); // the backend creates the conversation on the first message
       sessionIdRef.current = sid;
       writeSessionId(sid);
     }
 
-    /* Append user message */
-    const userMsg: ChatMessage = {
-      id: generateId(),
-      role: "user",
-      content: trimmed,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, userMsg]);
+    setError(null);
     setIsLoading(true);
-
     try {
       const res = await fetch(`${API_BASE}/api/chat/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: sid, message: trimmed }),
+        body: JSON.stringify({ sessionId: sid, message: text }),
       });
+      const data = (await res.json().catch(() => ({}))) as { response?: string; error?: string };
+      if (!res.ok || !data.response) throw new Error(data.error || `Request failed (${res.status})`);
 
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(
-          (errBody as { error?: string }).error || `Request failed (${res.status})`,
-        );
-      }
-
-      const data = (await res.json()) as { response: string };
-
-      const assistantMsg: ChatMessage = {
-        id: generateId(),
-        role: "assistant",
-        content: data.response,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, assistantMsg]);
+      setMessages((prev) => [
+        ...prev,
+        { id: newId(), role: "assistant", content: data.response!, timestamp: new Date() },
+      ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -167,43 +95,30 @@ export function useChat(): UseChatReturn {
     }
   }, []);
 
-  /* ---- New chat ---- */
+  const sendMessage = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
+      setMessages((prev) => [...prev, { id: newId(), role: "user", content: trimmed, timestamp: new Date() }]);
+      await request(trimmed);
+    },
+    [request],
+  );
+
+  /** Re-send the last user message without adding a duplicate bubble. */
+  const retry = useCallback(async () => {
+    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+    if (lastUser) await request(lastUser.content);
+  }, [messages, request]);
+
   const startNewChat = useCallback(async () => {
     setMessages([]);
     setError(null);
-
-    try {
-      const res = await fetch(`${API_BASE}/api/chat/new`, { method: "POST" });
-      if (!res.ok) throw new Error("Failed to create session");
-      const data = await res.json();
-      sessionIdRef.current = data.sessionId as string;
-    } catch {
-      sessionIdRef.current = generateId();
-    }
-
-    writeSessionId(sessionIdRef.current!);
+    sessionIdRef.current = newId();
+    writeSessionId(sessionIdRef.current);
   }, []);
 
-  /* ---- Toggle ---- */
-  const toggleChat = useCallback(() => {
-    setIsOpen((prev) => {
-      if (!prev) setHasUnread(false); // opening the chat clears unread badge
-      return !prev;
-    });
-  }, []);
+  const toggleChat = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  /* ---- Dismiss unread badge ---- */
-  const dismissUnread = useCallback(() => setHasUnread(false), []);
-
-  return {
-    messages,
-    isOpen,
-    isLoading,
-    error,
-    hasUnread,
-    sendMessage,
-    startNewChat,
-    toggleChat,
-    dismissUnread,
-  };
+  return { messages, isOpen, isLoading, error, sendMessage, retry, startNewChat, toggleChat };
 }
