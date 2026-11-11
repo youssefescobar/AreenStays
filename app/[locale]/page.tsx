@@ -33,7 +33,7 @@ export default async function Home({ params }: LocaleParams) {
 
       <section
         id="booking"
-        data-mascot-hint={locale === "ar" ? "تحتاجين مساعدة بالحجز؟" : "Need help booking?"}
+        data-mascot-hint={locale === "ar" ? "أساعدك في الحجز؟" : "Need help booking?"}
         className="relative z-20 -mt-24 scroll-mt-28 px-4 sm:px-6 lg:px-8"
       >
         <BookingBar locale={locale} t={t.booking} />
@@ -63,7 +63,7 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       <section
-        data-mascot-hint={locale === "ar" ? "اسألي عن الغرف" : "Ask about rooms"}
+        data-mascot-hint={locale === "ar" ? "عندك سؤال عن الغرف؟" : "Ask about rooms"}
         className="bg-white px-4 py-24 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
@@ -84,7 +84,7 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       <section
-        data-mascot-hint={locale === "ar" ? "اسألي عن المطاعم" : "Ask about dining"}
+        data-mascot-hint={locale === "ar" ? "عندك سؤال عن المطاعم؟" : "Ask about dining"}
         className="bg-navy px-4 py-24 sm:px-6 lg:px-8"
       >
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
@@ -117,7 +117,7 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       <section
-        data-mascot-hint={locale === "ar" ? "اطلعي على العروض" : "See today's offers"}
+        data-mascot-hint={locale === "ar" ? "عروض اليوم بانتظارك" : "See today's offers"}
         className="px-4 py-24 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
@@ -135,7 +135,7 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       <section
-        data-mascot-hint={locale === "ar" ? "خططي إقامة العمرة" : "Plan your Umrah stay"}
+        data-mascot-hint={locale === "ar" ? "نخطط لإقامة عمرتك؟" : "Plan your Umrah stay"}
         className="relative overflow-hidden bg-navy-deep px-4 py-24 sm:px-6 lg:px-8"
       >
         <Photo src={stock.lobby} label={t.nav.umrah} className="absolute inset-0 opacity-30" sizes="100vw" />
