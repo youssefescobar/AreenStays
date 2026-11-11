@@ -163,11 +163,17 @@ export function ChatPanel({
         ref={scrollRef}
         className="flex-1 space-y-4 overflow-y-auto bg-[#FAF7F2] px-4 py-4"
       >
-        {allMessages.map((msg) => (
+        {allMessages.map((msg, i) => (
           <div key={msg.id} className="space-y-3">
             <ChatMessage role={msg.role} content={msg.content} timestamp={msg.timestamp} locale={locale} />
             {msg.cards?.length ? (
-              <ChatCards cards={msg.cards} locale={locale} onSend={(t) => void onSend(t)} disabled={isLoading} />
+              <ChatCards
+                cards={msg.cards}
+                locale={locale}
+                onSend={(t) => void onSend(t)}
+                disabled={isLoading}
+                isLatest={i === allMessages.length - 1}
+              />
             ) : null}
           </div>
         ))}
