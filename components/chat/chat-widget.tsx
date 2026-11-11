@@ -10,7 +10,7 @@ import { fabMood, preloadMascotFaces } from "./mascot";
 import { useMascotTip } from "./use-mascot-tip";
 
 export function ChatWidget({ locale }: { locale: Locale }) {
-  const { messages, isOpen, isLoading, error, sendMessage, retry, toggleChat } = useChat();
+  const { messages, isOpen, isLoading, error, mode, staffName, sendMessage, retry, toggleChat } = useChat();
   const [hoveringFab, setHoveringFab] = useState(false);
   const mood = fabMood(isOpen || isLoading, hoveringFab);
   const tip = useMascotTip({ locale, isOpen, hoveringFab });
@@ -33,6 +33,8 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           error={error}
           onSend={sendMessage}
           onRetry={retry}
+          mode={mode}
+          staffName={staffName}
           onClose={toggleChat}
         />
       )}

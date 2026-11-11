@@ -21,6 +21,7 @@ export type ChatCard =
       checkOut: string;
       nights: number;
       guests: number;
+      rooms?: number;
       guestName: string;
       estimatedTotal: number;
     };
