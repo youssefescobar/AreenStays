@@ -70,11 +70,11 @@ function DatesCard({ card, locale, onSend, disabled }: { card: Extract<ChatCard,
       <div className="flex items-center justify-between text-xs text-ink/60">
         <span>{t.guestsLabel}</span>
         <div className="flex items-center gap-3">
-          <button type="button" aria-label="-" onClick={() => setGuests((g) => Math.max(1, g - 1))} className="h-7 w-7 rounded-full border border-ink/15 text-ink">
+          <button type="button" aria-label="-" onClick={() => setGuests((g) => Math.max(1, g - 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
             −
           </button>
           <span className="w-4 text-center text-sm font-semibold text-ink">{guests}</span>
-          <button type="button" aria-label="+" onClick={() => setGuests((g) => Math.min(card.maxGuests, g + 1))} className="h-7 w-7 rounded-full border border-ink/15 text-ink">
+          <button type="button" aria-label="+" onClick={() => setGuests((g) => Math.min(card.maxGuests, g + 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
             +
           </button>
         </div>
