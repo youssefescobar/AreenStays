@@ -30,6 +30,8 @@ interface ChatPanelProps {
   error: string | null;
   onSend: (text: string) => Promise<void>;
   onRetry: () => Promise<void>;
+  mode: "ai" | "staff";
+  staffName: string | null;
   onClose: () => void;
 }
 
@@ -44,6 +46,8 @@ export function ChatPanel({
   error,
   onSend,
   onRetry,
+  mode,
+  staffName,
   onClose,
 }: ChatPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -144,6 +148,18 @@ export function ChatPanel({
         </button>
       </div>
 
+      {mode === "staff" && (
+        <div className="shrink-0 bg-gold/15 px-4 py-2 text-center text-xs font-medium text-navy" role="status">
+          {isRtl
+            ? staffName
+              ? `أنت الآن تتحدث مع ${staffName} من فريق الفندق`
+              : "أنت الآن تتحدث مع فريق الفندق"
+            : staffName
+              ? `You're now chatting with ${staffName} from the hotel team`
+              : "You're now chatting with our hotel team"}
+        </div>
+      )}
+
       {/* ---- Messages ---- */}
       <div
         ref={scrollRef}
@@ -151,7 +167,7 @@ export function ChatPanel({
       >
         {allMessages.map((msg, i) => (
           <div key={msg.id} className="space-y-3">
-            <ChatMessage role={msg.role} content={msg.content} timestamp={msg.timestamp} locale={locale} />
+            <ChatMessage role={msg.role} content={msg.content} timestamp={msg.timestamp} locale={locale} staffName={staffName} />
             {msg.cards?.length ? (
               <ChatCards
                 cards={msg.cards}

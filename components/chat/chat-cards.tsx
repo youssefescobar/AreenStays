@@ -21,6 +21,7 @@ export type ChatCard =
       checkOut: string;
       nights: number;
       guests: number;
+      rooms?: number;
       guestName: string;
       estimatedTotal: number;
     };
@@ -157,6 +158,7 @@ export function ChatCards({ cards, locale, onSend, disabled, isLatest }: { cards
               <p className="flex items-center gap-1.5 text-xs text-ink/70">
                 <CalendarDays size={13} />
                 {fmtDate(card.checkIn, locale)} → {fmtDate(card.checkOut, locale)} · {card.nights} {t.nights} · {card.guests} {t.guests}
+                {(card.rooms ?? 1) > 1 && ` · ${card.rooms} ${locale === "ar" ? "غرف" : "rooms"}`}
               </p>
               <p className="flex justify-between border-t border-ink/10 pt-2 text-xs">
                 <span className="text-ink/60">{t.total}</span>
