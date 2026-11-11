@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { ChatMessage } from "./chat-message";
 import { ChatInput } from "./chat-input";
+import { ChatCards } from "./chat-cards";
 import type { ChatMessage as ChatMessageType } from "./use-chat";
 
 /* ------------------------------------------------------------------ */
@@ -163,13 +164,12 @@ export function ChatPanel({
         className="flex-1 space-y-4 overflow-y-auto bg-[#FAF7F2] px-4 py-4"
       >
         {allMessages.map((msg) => (
-          <ChatMessage
-            key={msg.id}
-            role={msg.role}
-            content={msg.content}
-            timestamp={msg.timestamp}
-            locale={locale}
-          />
+          <div key={msg.id} className="space-y-3">
+            <ChatMessage role={msg.role} content={msg.content} timestamp={msg.timestamp} locale={locale} />
+            {msg.cards?.length ? (
+              <ChatCards cards={msg.cards} locale={locale} onSend={(t) => void onSend(t)} disabled={isLoading} />
+            ) : null}
+          </div>
         ))}
 
         {/* Typing indicator */}

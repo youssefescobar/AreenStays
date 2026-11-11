@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { ChatCard } from "./chat-cards";
 
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  cards?: ChatCard[];
 }
 
 // Base URL without "/api" — paths below add it.
@@ -51,11 +53,12 @@ export function useChat() {
       .then((data) => {
         if (!Array.isArray(data?.messages)) return;
         setMessages(
-          data.messages.map((m: { role: ChatMessage["role"]; content: string; timestamp?: string }) => ({
+          data.messages.map((m: { role: ChatMessage["role"]; content: string; timestamp?: string; cards?: ChatCard[] }) => ({
             id: newId(),
             role: m.role,
             content: m.content,
             timestamp: m.timestamp ? new Date(m.timestamp) : new Date(),
+            cards: m.cards,
           })),
         );
       })
@@ -81,12 +84,12 @@ export function useChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId: sid, message: text }),
       });
-      const data = (await res.json().catch(() => ({}))) as { response?: string; error?: string };
+      const data = (await res.json().catch(() => ({}))) as { response?: string; error?: string; cards?: ChatCard[] };
       if (!res.ok || !data.response) throw new Error(data.error || `Request failed (${res.status})`);
 
       setMessages((prev) => [
         ...prev,
-        { id: newId(), role: "assistant", content: data.response!, timestamp: new Date() },
+        { id: newId(), role: "assistant", content: data.response!, timestamp: new Date(), cards: data.cards },
       ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
