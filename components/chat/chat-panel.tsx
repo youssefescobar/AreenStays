@@ -7,6 +7,7 @@ import type { Locale } from "@/lib/i18n";
 import { ChatMessage } from "./chat-message";
 import { ChatInput } from "./chat-input";
 import { MascotFace } from "./mascot-face";
+import { ChatCards } from "./chat-cards";
 import type { ChatMessage as ChatMessageType } from "./use-chat";
 
 /* ------------------------------------------------------------------ */
@@ -28,6 +29,7 @@ interface ChatPanelProps {
   isLoading: boolean;
   error: string | null;
   onSend: (text: string) => Promise<void>;
+  onRetry: () => Promise<void>;
   onClose: () => void;
 }
 
@@ -41,6 +43,7 @@ export function ChatPanel({
   isLoading,
   error,
   onSend,
+  onRetry,
   onClose,
 }: ChatPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -146,14 +149,19 @@ export function ChatPanel({
         ref={scrollRef}
         className="flex-1 space-y-4 overflow-y-auto bg-[#FAF7F2] px-4 py-4"
       >
-        {allMessages.map((msg) => (
-          <ChatMessage
-            key={msg.id}
-            role={msg.role}
-            content={msg.content}
-            timestamp={msg.timestamp}
-            locale={locale}
-          />
+        {allMessages.map((msg, i) => (
+          <div key={msg.id} className="space-y-3">
+            <ChatMessage role={msg.role} content={msg.content} timestamp={msg.timestamp} locale={locale} />
+            {msg.cards?.length ? (
+              <ChatCards
+                cards={msg.cards}
+                locale={locale}
+                onSend={(t) => void onSend(t)}
+                disabled={isLoading}
+                isLatest={i === allMessages.length - 1}
+              />
+            ) : null}
+          </div>
         ))}
 
         {/* Typing indicator */}
@@ -178,11 +186,7 @@ export function ChatPanel({
             {error}
             <button
               type="button"
-              onClick={() => {
-                /* Retry the last user message */
-                const lastUser = [...messages].reverse().find((m) => m.role === "user");
-                if (lastUser) void onSend(lastUser.content);
-              }}
+              onClick={() => void onRetry()}
               className="mt-1 block w-full text-xs font-medium text-red-700 underline"
             >
               {isRtl ? "إعادة المحاولة" : "Retry"}

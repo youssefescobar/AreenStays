@@ -10,7 +10,7 @@ import { fabMood, preloadMascotFaces } from "./mascot";
 import { useMascotTip } from "./use-mascot-tip";
 
 export function ChatWidget({ locale }: { locale: Locale }) {
-  const { messages, isOpen, isLoading, error, hasUnread, sendMessage, toggleChat } = useChat();
+  const { messages, isOpen, isLoading, error, sendMessage, retry, toggleChat } = useChat();
   const [hoveringFab, setHoveringFab] = useState(false);
   const mood = fabMood(isOpen || isLoading, hoveringFab);
   const tip = useMascotTip({ locale, isOpen, hoveringFab });
@@ -32,6 +32,7 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           isLoading={isLoading}
           error={error}
           onSend={sendMessage}
+          onRetry={retry}
           onClose={toggleChat}
         />
       )}
@@ -67,11 +68,6 @@ export function ChatWidget({ locale }: { locale: Locale }) {
                 priority
               />
             </span>
-            {hasUnread && !isOpen && (
-              <span className="reen-fab__badge" aria-hidden>
-                1
-              </span>
-            )}
           </button>
         </span>
       </div>
