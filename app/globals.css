@@ -238,6 +238,31 @@ body { background: var(--color-sand); color: var(--color-ink); }
 
 .reen-fab__status.is-staff { background: var(--color-gold); }
 
+/* Unread replies badge (chat closed): same corner the close badge uses when open */
+.reen-fab__unread {
+  position: absolute;
+  z-index: 6;
+  top: -4px;
+  inset-inline-end: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font: 700 0.7rem/1 var(--font-sans, system-ui), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px #fff, 0 4px 10px rgb(220 38 38 / 0.35);
+  animation: reen-unread-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes reen-unread-pop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
 /* Close badge when open */
 .reen-fab__close {
   position: absolute;
@@ -449,6 +474,7 @@ body { background: var(--color-sand); color: var(--color-ink); }
   .reen-fab__face,
   .reen-fab__body,
   .reen-fab__status::after,
+  .reen-fab__unread,
   .reen-fab__tip,
   .reen-avatar--live {
     animation: none !important;
@@ -458,5 +484,15 @@ body { background: var(--color-sand); color: var(--color-ink); }
   .reen-fab__btn:focus-visible,
   .reen-fab__btn:active {
     transform: none !important;
+  }
+}
+
+/* iOS Safari (and the home-screen app) zooms into any field with text under 16px and stays zoomed.
+   16px on touch devices stops that without blocking pinch-zoom. Unlayered, so it beats Tailwind's text-sm. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px;
   }
 }

@@ -25,7 +25,8 @@ function useWaveFlash() {
 }
 
 export function ChatWidget({ locale }: { locale: Locale }) {
-  const { messages, isOpen, isLoading, error, mode, staffName, sendMessage, retry, toggleChat } = useChat();
+  const { messages, isOpen, isLoading, error, mode, staffName, unread, soundOn, toggleSound, sendMessage, retry, toggleChat } =
+    useChat();
   const [hoveringFab, setHoveringFab] = useState(false);
   const [flash, wave] = useWaveFlash();
   const tip = useMascotTip({ locale, isOpen, hoveringFab });
@@ -55,9 +56,10 @@ export function ChatWidget({ locale }: { locale: Locale }) {
     if (e.pointerType === "mouse") setHoveringFab(hover);
   };
 
+  const unreadLabel = unread > 0 ? (isRtl ? ` (${unread} رسائل جديدة)` : ` (${unread} new)`) : "";
   const label = isOpen
     ? isRtl ? "إغلاق الدردشة" : "Close chat"
-    : isRtl ? "افتح الدردشة مع رين" : "Open chat with Reen";
+    : (isRtl ? "افتح الدردشة مع رين" : "Open chat with Reen") + unreadLabel;
 
   return (
     <>
@@ -72,6 +74,8 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           mode={mode}
           staffName={staffName}
           mood={mood}
+          soundOn={soundOn}
+          onToggleSound={toggleSound}
           onClose={toggleChat}
         />
       )}
@@ -112,6 +116,11 @@ export function ChatWidget({ locale }: { locale: Locale }) {
               className={cn("reen-fab__status", mode === "staff" && "is-staff")}
               aria-hidden
             />
+            {!isOpen && unread > 0 && (
+              <span key={unread} className="reen-fab__unread" aria-hidden>
+                {unread > 9 ? "9+" : unread}
+              </span>
+            )}
             <span className="reen-fab__close" aria-hidden>
               <X size={13} strokeWidth={2.75} />
             </span>
