@@ -46,6 +46,7 @@ export function hotelJsonLd(locale: Locale) {
     checkinTime: hotel.checkIn,
     checkoutTime: hotel.checkOut,
     starRating: { "@type": "Rating", ratingValue: hotel.stars },
+    amenityFeature: [{ "@type": "LocationFeatureSpecification", name: "Swimming pool", value: true }],
     priceRange: "SAR 450 – 1800",
     sameAs: Object.values(hotel.social),
   };

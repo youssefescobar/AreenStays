@@ -42,6 +42,7 @@ export const pages = {
     intro: { en: "Photos of the hotel are coming soon.", ar: "صور الفندق قريباً." },
     items: [
       { en: "Lobby", ar: "الردهة", image: stock.lobby },
+      { en: "Swimming pool, 6th floor", ar: "المسبح، الطابق السادس", image: stock.pool },
       { en: "King Room", ar: "غرفة بسرير كبير", image: stock.room1 },
       { en: "Twin Room", ar: "غرفة بسريرين", image: stock.room6 },
       { en: "Al Basateen Restaurant", ar: "مطعم البساتين", image: stock.restaurant },
