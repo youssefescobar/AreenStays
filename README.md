@@ -25,17 +25,17 @@ their saved choice (cookie set by the language switch) → Arabic for visitors i
 | `/` home | `app/[locale]/page.tsx` |
 | `/rooms`, `/rooms/[slug]` | `app/[locale]/rooms/` |
 | `/dining`, `/offers`, `/gallery`, `/location` | `app/[locale]/*/page.tsx` |
-| `/umrah`, `/corporate` | share `components/feature-page.tsx` |
+| `/umrah` | uses `components/feature-page.tsx` |
 | `/brand` brand guide (not indexed) | `app/[locale]/brand/page.tsx` |
 
 ## Editing content
 
-All text, rooms, prices and contact details live in `content/`, in both languages:
+All text and contact details live in `content/`, in both languages:
 
 - `content/site.ts`: phone, WhatsApp, email, address, social links, booking-site listings, and all shared UI text. Values marked `TODO` are placeholders.
 - `content/dining.ts`, `content/offers.ts`: one entry per venue / offer.
 - Rooms (names, prices, photos, room numbers) are managed in the admin app → Rooms, and read from the backend's `/api/rooms`.
-- `content/pages.ts`: intro text for the inner pages, Umrah and business features, gallery captions, drive times.
+- `content/pages.ts`: intro text for the inner pages, Umrah features, gallery captions, drive times.
 
 ## Photos
 

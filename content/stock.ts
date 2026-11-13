@@ -30,5 +30,4 @@ export const stock = {
   coffee: u("1495474472287-4d71bcdd2085"),
   coffee2: u("1509042239860-f550ce710b93"),
   meeting: u("1431540015161-0bf868a2d407"),
-  office: u("1497366216548-37526070297c"),
 };

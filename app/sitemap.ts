@@ -3,7 +3,7 @@ import { locales } from "@/lib/i18n";
 import { hotel } from "@/content/site";
 import { getRooms } from "@/lib/rooms";
 
-const pages = ["", "/rooms", "/dining", "/offers", "/gallery", "/location", "/umrah", "/corporate", "/privacy"];
+const pages = ["", "/rooms", "/dining", "/offers", "/gallery", "/location", "/umrah", "/privacy"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = [...pages, ...(await getRooms()).map((r) => `/rooms/${r.slug}`)];

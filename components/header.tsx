@@ -19,7 +19,6 @@ export function Header({ locale, t }: { locale: Locale; t: Pick<Dict, "nav" | "b
     { label: t.nav.dining, path: "/dining" },
     { label: t.nav.offers, path: "/offers" },
     { label: t.nav.umrah, path: "/umrah" },
-    { label: t.nav.corporate, path: "/corporate" },
     { label: t.nav.location, path: "/location" },
   ];
 

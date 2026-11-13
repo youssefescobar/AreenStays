@@ -86,20 +86,4 @@ export const pages = {
       { title: { en: "Group bookings", ar: "حجوزات المجموعات" }, text: { en: "Blocks of rooms for families and Umrah groups.", ar: "مجموعات غرف للعائلات ومجموعات العمرة." }, image: stock.exterior },
     ],
   },
-  corporate: {
-    image: stock.meeting,
-    eyebrow: { en: "Business & events", ar: "الأعمال والمناسبات" },
-    title: { en: "Meet, host and stay", ar: "اجتمع واستضف وأقِم" },
-    intro: {
-      en: "Meeting rooms, corporate rates and private dining for teams and families celebrating in Jeddah.",
-      ar: "قاعات اجتماعات وأسعار للشركات وولائم خاصة للفرق والعائلات المحتفلة في جدة.",
-    },
-    features: [
-      { title: { en: "Meeting rooms", ar: "قاعات الاجتماعات" }, text: { en: "Up to 40 guests, with screen, sound and coffee breaks.", ar: "حتى ٤٠ ضيفاً، مع شاشة وصوت واستراحات قهوة." }, image: stock.meeting },
-      { title: { en: "Corporate rates", ar: "أسعار الشركات" }, text: { en: "Negotiated rates and monthly invoicing for companies.", ar: "أسعار تفاوضية وفوترة شهرية للشركات." }, image: stock.office },
-      { title: { en: "Private dining", ar: "ولائم خاصة" }, text: { en: "Family gatherings, engagements and business dinners.", ar: "تجمعات عائلية وخطوبة وعشاء أعمال." }, image: stock.restaurant },
-      { title: { en: "Long stays", ar: "إقامة طويلة" }, text: { en: "Weekly and monthly rates for project teams.", ar: "أسعار أسبوعية وشهرية لفرق المشاريع." }, image: stock.room5 },
-    ],
-    cta: { en: "Ask for a proposal", ar: "اطلب عرض سعر" },
-  },
 };
