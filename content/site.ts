@@ -12,8 +12,8 @@ export const hotel = {
     en: "Al Basateen District, Jeddah, Saudi Arabia",
     ar: "حي البساتين، جدة، المملكة العربية السعودية",
   },
-  geo: { lat: 21.6156, lng: 39.1517 }, // TODO exact coordinates of the building
-  mapsQuery: "Areen Hotel Al Basateen Jeddah",
+  geo: { lat: 21.6959381, lng: 39.1182187 }, // the hotel's Google Maps pin
+  mapsUrl: "https://maps.app.goo.gl/jnhZDoRNCrQKpSK5A",
   checkIn: "15:00",
   checkOut: "12:00",
   stars: 4, // TODO confirm classification
@@ -26,7 +26,7 @@ export const hotel = {
   listings: [
     { name: "Booking.com", url: "https://www.booking.com/" }, // TODO hotel listing URLs
     { name: "Agoda", url: "https://www.agoda.com/" },
-    { name: "Google Maps", url: "https://maps.google.com/?q=Areen+Hotel+Al+Basateen+Jeddah" },
+    { name: "Google Maps", url: "https://maps.app.goo.gl/jnhZDoRNCrQKpSK5A" },
   ],
 };
 
@@ -78,7 +78,7 @@ export const dict = {
       welcomeTitle: "A calm, crystal-clear retreat in the heart of Jeddah.",
       welcomeBody:
         "Thoughtful rooms, warm Saudi hospitality and a quiet address in Al Basateen. Whether you are here for business, family or Umrah, Areen is designed to make every day of your stay feel effortless.",
-      facts: ["Al Basateen, Jeddah", "Minutes from King Abdulaziz Airport", "Easy reach to Makkah & Al Balad"],
+      facts: ["Al Basateen, north Jeddah", "20 min to King Abdulaziz Airport", "Minutes from the Obhur beaches"],
       roomsEyebrow: "Stay",
       diningEyebrow: "Dining",
       diningTitle: "Flavours worth staying in for",
@@ -143,7 +143,7 @@ export const dict = {
       welcomeTitle: "ملاذ هادئ وصافٍ كالكريستال في قلب جدة.",
       welcomeBody:
         "غرف مدروسة بعناية، وضيافة سعودية دافئة، وعنوان هادئ في حي البساتين. سواء كانت زيارتك للعمل أو مع العائلة أو لأداء العمرة، صُمم أرين ليجعل كل يوم من إقامتك سهلاً ومريحاً.",
-      facts: ["حي البساتين، جدة", "دقائق من مطار الملك عبدالعزيز", "قريب من مكة المكرمة وجدة التاريخية"],
+      facts: ["حي البساتين، شمال جدة", "٢٠ دقيقة إلى مطار الملك عبدالعزيز", "دقائق من شواطئ أبحر"],
       roomsEyebrow: "الإقامة",
       diningEyebrow: "المطاعم",
       diningTitle: "نكهات تستحق البقاء من أجلها",

@@ -16,9 +16,9 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function LocationPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
-  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(hotel.mapsQuery)}&hl=${locale}&z=14&output=embed`;
+  const mapSrc = `https://www.google.com/maps?q=${hotel.geo.lat},${hotel.geo.lng}&hl=${locale}&z=15&output=embed`;
   const contact = [
-    { icon: MapPin, label: hotel.address[locale], href: `https://maps.google.com/?q=${encodeURIComponent(hotel.mapsQuery)}` },
+    { icon: MapPin, label: hotel.address[locale], href: hotel.mapsUrl },
     { icon: Phone, label: hotel.phone, href: telUrl, ltr: true },
     { icon: MessageCircle, label: t.whatsapp, href: whatsappUrl() },
     { icon: Mail, label: hotel.email, href: `mailto:${hotel.email}` },
@@ -47,7 +47,12 @@ export default async function LocationPage({ params }: LocaleParams) {
                 {p.distances.map((d) => (
                   <li key={d.place.en} className="flex justify-between gap-4 py-4 text-sm">
                     <span className="text-ink/75">{d.place[locale]}</span>
-                    <span className="shrink-0 font-semibold text-gold">{d.time[locale]}</span>
+                    <span className="shrink-0 text-end font-semibold text-gold">
+                      {d.time[locale]}
+                      <span className="block text-xs font-normal text-ink/50">
+                        {d.km < 1 ? (locale === "ar" ? "أقل من ٥٠٠ م" : "under 500 m") : `${d.km} ${locale === "ar" ? "كم" : "km"}`}
+                      </span>
+                    </span>
                   </li>
                 ))}
               </ul>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Clock, Landmark, MapPin, Plane } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Plane, Waves } from "lucide-react";
 import { href } from "@/lib/i18n";
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: LocaleParams) {
   return pageMetadata(locale, "", `${hotel.name[locale]} · ${t.tagline}`, t.home.welcomeBody);
 }
 
-const factIcons = [MapPin, Plane, Landmark];
+const factIcons = [MapPin, Plane, Waves];
 const arrow = "rtl:rotate-180";
 
 export default async function Home({ params }: LocaleParams) {
