@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, CheckCircle2, Users } from "lucide-react";
-import { getRoom } from "@/content/rooms";
+import { API_URL, type Room } from "@/lib/rooms";
 import { href, type Locale } from "@/lib/i18n";
 import { whatsappUrl } from "@/lib/contact";
 import { Photo } from "../photo";
@@ -92,8 +92,26 @@ function DatesCard({ card, locale, onSend, disabled }: { card: Extract<ChatCard,
   );
 }
 
+// One fetch per page load, shared by every room card in the chat.
+let roomsRequest: Promise<Room[]> | null = null;
+function useRooms(): Room[] {
+  const [rooms, setRooms] = useState<Room[]>([]);
+  useEffect(() => {
+    roomsRequest ??= fetch(`${API_URL}/api/rooms`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d: { rooms: Room[] }) => d.rooms)
+      .catch(() => {
+        roomsRequest = null; // retry on the next card
+        return [];
+      });
+    roomsRequest.then(setRooms);
+  }, []);
+  return rooms;
+}
+
 export function ChatCards({ cards, locale, onSend, disabled, isLatest }: { cards: ChatCard[]; locale: Locale; onSend: (text: string) => void; disabled: boolean; isLatest: boolean }) {
   const t = L[locale];
+  const rooms = useRooms();
   return (
     <div className="space-y-3">
       {cards.map((card, i) =>
@@ -101,9 +119,9 @@ export function ChatCards({ cards, locale, onSend, disabled, isLatest }: { cards
           // Only the latest picker is live; older ones would re-send stale dates.
           isLatest ? <DatesCard key={i} card={card} locale={locale} onSend={onSend} disabled={disabled} /> : null
         ) : card.type === "rooms" ? (
-          // Horizontal swipe row of room tiles; data comes from the site's own content so photos/links stay current.
+          // Horizontal swipe row of room tiles; data comes from the live room catalog so photos/links stay current.
           <div key={i} className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
-            {card.slugs.map(getRoom).map(
+            {card.slugs.map((slug) => rooms.find((r) => r.slug === slug)).map(
               (room) =>
                 room && (
                   <div key={room.slug} className="w-56 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">

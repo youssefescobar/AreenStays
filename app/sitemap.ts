@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n";
 import { hotel } from "@/content/site";
-import { rooms } from "@/content/rooms";
+import { getRooms } from "@/lib/rooms";
 
-const paths = ["", "/rooms", "/dining", "/offers", "/gallery", "/location", "/umrah", "/corporate", "/privacy",...rooms.map((r) => `/rooms/${r.slug}`)];
+const pages = ["", "/rooms", "/dining", "/offers", "/gallery", "/location", "/umrah", "/corporate", "/privacy"];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const paths = [...pages, ...(await getRooms()).map((r) => `/rooms/${r.slug}`)];
   return paths.map((path) => ({
     url: `${hotel.domain}/ar${path}`,
     changeFrequency: "weekly",

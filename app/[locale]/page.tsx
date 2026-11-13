@@ -3,7 +3,7 @@ import { ArrowRight, Clock, Landmark, MapPin, Plane } from "lucide-react";
 import { href } from "@/lib/i18n";
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
-import { rooms } from "@/content/rooms";
+import { getRooms } from "@/lib/rooms";
 import { venues } from "@/content/dining";
 import { offers } from "@/content/offers";
 import { hotel } from "@/content/site";
@@ -26,6 +26,7 @@ const arrow = "rtl:rotate-180";
 
 export default async function Home({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
+  const rooms = await getRooms();
 
   return (
     <>
@@ -36,7 +37,7 @@ export default async function Home({ params }: LocaleParams) {
         data-mascot-hint={locale === "ar" ? "أساعدك في الحجز؟" : "Need help booking?"}
         className="relative z-20 -mt-24 scroll-mt-28 px-4 sm:px-6 lg:px-8"
       >
-        <BookingBar locale={locale} t={t.booking} />
+        <BookingBar locale={locale} t={t.booking} rooms={rooms} />
       </section>
 
       <section className="px-4 py-24 sm:px-6 lg:px-8">

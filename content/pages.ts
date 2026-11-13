@@ -15,12 +15,9 @@ export const pages = {
       eyebrow: { en: "Layout", ar: "التوزيع" },
       title: { en: "Rooms by floor", ar: "الغرف حسب الطابق" },
       intro: {
-        en: "Choose a king or twin room type below. Exact room numbers are confirmed when we reply on WhatsApp.",
-        ar: "اختر غرفة بسرير كبير أو سريرين أدناه. يتم تأكيد رقم الغرفة عند ردنا على واتساب.",
+        en: "Every room number by floor and room type. Exact room numbers are confirmed when we reply on WhatsApp.",
+        ar: "أرقام الغرف حسب الطابق ونوع الغرفة. يتم تأكيد رقم الغرفة عند ردنا على واتساب.",
       },
-      legendKing: { en: "King bed", ar: "سرير كبير" },
-      legendTwin: { en: "2 twin beds", ar: "سريران منفصلان" },
-      cta: { en: "View King & Twin rooms", ar: "عرض غرف السرير الكبير والسريرين" },
     },
   },
   dining: {
