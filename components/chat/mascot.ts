@@ -10,6 +10,13 @@ export const MASCOT_SRC: Record<MascotMood, string> = {
   think: "/mascot/think.webp",
 };
 
+/** Same poses with the background removed, for frameless launchers. */
+export const MASCOT_CUT_SRC: Record<MascotMood, string> = {
+  idle: "/mascot/cut/idle.webp",
+  wave: "/mascot/cut/wave.webp",
+  think: "/mascot/cut/think.webp",
+};
+
 /** Priority: thinking > waving (hover or a short reaction) > idle. */
 export const reenMood = ({ thinking, hover, flash }: { thinking: boolean; hover: boolean; flash: boolean }): MascotMood =>
   thinking ? "think" : hover || flash ? "wave" : "idle";
