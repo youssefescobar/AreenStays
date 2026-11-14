@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BedDouble, CalendarDays, Users } from "lucide-react";
+import { BedDouble, CalendarDays, ChevronDown, Phone, User, Users } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import type { Dict } from "@/content/site";
 import type { Room } from "@/lib/rooms";
 import { whatsappUrl } from "@/lib/contact";
 import { createBooking, fetchAvailability } from "@/lib/booking/client";
 import type { AvailabilityType } from "@/lib/booking/types";
+import { countries, DEFAULT_COUNTRY, digitsOnly, flag, toE164 } from "@/lib/booking/phone";
 import { Button } from "./button";
 
 function Field({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
@@ -22,11 +23,15 @@ function Field({ label, icon, children }: { label: string; icon: React.ReactNode
   );
 }
 
-const inputCls = "w-full bg-transparent text-sm font-medium text-navy outline-none";
+const inputCls = "w-full bg-transparent text-sm font-medium text-navy outline-none placeholder:text-ink/35";
+
+// Remembered on this device so returning guests don't retype their details.
+const CONTACT_KEY = "areen.booking.contact";
 
 /**
- * Availability form. Checks live inventory for the selected dates, holds a room via
- * the booking API, then opens WhatsApp so reception can confirm.
+ * Availability form. Checks live inventory for the selected dates, asks for the guest's
+ * name and mobile (so staff can reach them), holds a room via the booking API, then
+ * opens WhatsApp so reception can confirm.
  */
 export function BookingBar({
   locale,
@@ -47,6 +52,23 @@ export function BookingBar({
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [guestName, setGuestName] = useState("");
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
+  const [localPhone, setLocalPhone] = useState("");
+  const [contactError, setContactError] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CONTACT_KEY) ?? "null");
+      if (saved?.name) setGuestName(saved.name);
+      if (saved?.country && countries.some((c) => c.iso === saved.country)) setCountry(saved.country);
+      if (saved?.phone) setLocalPhone(saved.phone);
+    } catch {
+      /* storage blocked */
+    }
+  }, []);
+
+  const dialCode = countries.find((c) => c.iso === country)?.dial ?? "966";
 
   const datesReady = Boolean(checkIn && checkOut && checkOut > checkIn);
 
@@ -100,7 +122,9 @@ export function BookingBar({
     return `${name} — ${info.available} ${t.left}`;
   };
 
-  const hint = !datesReady
+  const hint = contactError
+    ? contactError
+    : !datesReady
     ? t.pickDates
     : loading
       ? t.checking
@@ -114,6 +138,23 @@ export function BookingBar({
     e.preventDefault();
     if (submitDisabled) return;
 
+    const name = guestName.trim().replace(/\s+/g, " ");
+    const phone = toE164(country, localPhone);
+    if (name.length < 2) {
+      setContactError(t.nameInvalid);
+      return;
+    }
+    if (!phone) {
+      setContactError(t.phoneInvalid);
+      return;
+    }
+    setContactError(null);
+    try {
+      localStorage.setItem(CONTACT_KEY, JSON.stringify({ name, country, phone: localPhone }));
+    } catch {
+      /* storage blocked */
+    }
+
     setSubmitting(true);
     setError(null);
     try {
@@ -123,11 +164,15 @@ export function BookingBar({
         slug: room,
         guests,
         locale,
+        guestName: name,
+        phone,
       });
       const roomName = rooms.find((r) => r.slug === booking.slug)?.name[locale] ?? t.anyRoom;
       const lines = [
         t.message,
         `${locale === "ar" ? "رقم الطلب" : "Reference"}: ${booking.id}`,
+        `${t.name}: ${name}`,
+        `${t.phone}: ${phone}`,
         `${t.checkIn}: ${booking.checkIn}`,
         `${t.checkOut}: ${booking.checkOut}`,
         `${t.guests}: ${guests}`,
@@ -193,11 +238,81 @@ export function BookingBar({
             })}
           </select>
         </Field>
+      </div>
+      <div className="flex flex-col border-t border-navy/10 md:flex-row">
+        <Field label={t.name} icon={<User size={14} />}>
+          <input
+            type="text"
+            name="name"
+            autoComplete="name"
+            required
+            minLength={2}
+            maxLength={100}
+            placeholder={t.namePlaceholder}
+            value={guestName}
+            onChange={(e) => {
+              setGuestName(e.target.value);
+              setContactError(null);
+            }}
+            className={inputCls}
+          />
+        </Field>
+        <div className="flex flex-1 flex-col gap-1 border-b border-navy/10 px-5 py-4 md:border-e md:border-b-0">
+          <label htmlFor="booking-phone" className="eyebrow flex items-center gap-2 text-crystal">
+            <Phone size={14} />
+            {t.phone}
+          </label>
+          {/* Phone numbers read left-to-right in Arabic too: code first, then the number. */}
+          <div dir="ltr" className="flex items-center gap-3">
+            <div className="relative flex shrink-0 items-center gap-1 text-sm font-medium text-navy">
+              <span aria-hidden>{flag(country)}</span>
+              <span aria-hidden>+{dialCode}</span>
+              <ChevronDown size={14} aria-hidden className="text-ink/40" />
+              {/* Native select laid over the short "🇸🇦 +966" label: full country list, phone-friendly picker. */}
+              <select
+                aria-label={t.country}
+                value={country}
+                onChange={(e) => {
+                  setCountry(e.target.value);
+                  setContactError(null);
+                }}
+                className="absolute inset-0 cursor-pointer opacity-0"
+              >
+                {countries.map((c) => (
+                  <option key={c.iso} value={c.iso}>
+                    {`${flag(c.iso)} ${c[locale]} (+${c.dial})`}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <span aria-hidden className="h-5 w-px bg-navy/15" />
+            <input
+              id="booking-phone"
+              type="tel"
+              name="phone"
+              inputMode="tel"
+              autoComplete="tel-national"
+              required
+              placeholder={country === "SA" ? t.phonePlaceholder : ""}
+              value={localPhone}
+              onChange={(e) => {
+                setLocalPhone(e.target.value.replace(/[^\d٠-٩۰-۹\s()+-]/g, "").slice(0, 20));
+                setContactError(null);
+              }}
+              className={`${inputCls} min-w-0 text-start`}
+            />
+          </div>
+        </div>
         <Button type="submit" className="h-auto min-h-16 md:px-8" disabled={submitDisabled}>
           {submitting ? t.checking : t.submit}
         </Button>
       </div>
-      <p className={`border-t border-navy/10 px-5 py-2 text-xs ${error || allFull ? "text-gold" : "text-ink/55"}`}>{hint}</p>
+      <p
+        aria-live="polite"
+        className={`border-t border-navy/10 px-5 py-2 text-xs ${contactError || error || allFull ? "text-gold" : "text-ink/55"}`}
+      >
+        {hint}
+      </p>
     </form>
   );
 }
