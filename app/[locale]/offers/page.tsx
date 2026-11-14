@@ -1,5 +1,6 @@
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
+import { getSiteMedia, photo } from "@/lib/media";
 import { offers } from "@/content/offers";
 import { pages } from "@/content/pages";
 import { PageHero } from "@/components/page-hero";
@@ -15,9 +16,10 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function OffersPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
+  const media = await getSiteMedia();
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={photo(media, "offers.hero", p.image)} />
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
           {offers.map((o, i) => (

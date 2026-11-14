@@ -4,6 +4,7 @@ import { href } from "@/lib/i18n";
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
 import { getRooms } from "@/lib/rooms";
+import { getSiteMedia, photo } from "@/lib/media";
 import { venues } from "@/content/dining";
 import { offers } from "@/content/offers";
 import { hotel } from "@/content/site";
@@ -26,11 +27,11 @@ const arrow = "rtl:rotate-180";
 
 export default async function Home({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
-  const rooms = await getRooms();
+  const [rooms, media] = await Promise.all([getRooms(), getSiteMedia()]);
 
   return (
     <>
-      <Hero locale={locale} t={t} />
+      <Hero locale={locale} t={t} image={photo(media, "home.hero", stock.hero)} />
 
       <section
         id="booking"
@@ -90,7 +91,7 @@ export default async function Home({ params }: LocaleParams) {
       >
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
-            <Photo src={venues[0].images[0]} label={venues[0].name[locale]} className="aspect-[4/3] w-full" />
+            <Photo src={photo(media, `dining.${venues[0].slug}`, venues[0].images[0])} label={venues[0].name[locale]} className="aspect-[4/3] w-full" />
           </Reveal>
           <Reveal delay={150}>
             <SectionHeading eyebrow={t.home.diningEyebrow} title={t.home.diningTitle} intro={t.home.diningBody} light />
@@ -139,7 +140,7 @@ export default async function Home({ params }: LocaleParams) {
         data-mascot-hint={locale === "ar" ? "نخطط لإقامة عمرتك؟" : "Plan your Umrah stay"}
         className="relative overflow-hidden bg-navy-deep px-4 py-24 sm:px-6 lg:px-8"
       >
-        <Photo src={stock.lobby} label={t.nav.umrah} className="absolute inset-0 opacity-30" sizes="100vw" />
+        <Photo src={photo(media, "home.umrah", stock.lobby)} label={t.nav.umrah} className="absolute inset-0 opacity-30" sizes="100vw" />
         <Reveal className="relative mx-auto max-w-3xl text-center">
           <p className="eyebrow text-gold">{t.nav.umrah}</p>
           <h2 className="mt-4 text-3xl font-light text-white sm:text-4xl">{t.home.umrahTitle}</h2>

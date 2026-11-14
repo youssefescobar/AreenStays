@@ -1,6 +1,7 @@
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
+import { getSiteMedia, photo } from "@/lib/media";
 import { pages } from "@/content/pages";
 import { hotel } from "@/content/site";
 import { telUrl, whatsappUrl } from "@/lib/contact";
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function LocationPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
+  const media = await getSiteMedia();
   const mapSrc = `https://www.google.com/maps?q=${hotel.geo.lat},${hotel.geo.lng}&hl=${locale}&z=15&output=embed`;
   const contact = [
     { icon: MapPin, label: hotel.address[locale], href: hotel.mapsUrl },
@@ -26,7 +28,7 @@ export default async function LocationPage({ params }: LocaleParams) {
 
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={photo(media, "location.hero", p.image)} />
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.3fr]">
           <Reveal className="space-y-12">
