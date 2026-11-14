@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import { useChat } from "./use-chat";
 import { ChatPanel } from "./chat-panel";
 import { ReenLauncher } from "./reen-launcher";
-import { DEFAULT_FAB_VARIANT, FAB_VARIANTS, preloadMascotFaces, reenMood, type FabVariant } from "./mascot";
+import { preloadMascotFaces, reenMood } from "./mascot";
 import { useMascotTip } from "./use-mascot-tip";
 
 /** Short wave reaction: on arrival, on each new reply, on fresh section tips. */
@@ -23,7 +23,8 @@ function useWaveFlash() {
 }
 
 export function ChatWidget({ locale }: { locale: Locale }) {
-  const { messages, isOpen, isLoading, error, mode, staffName, sendMessage, retry, toggleChat } = useChat();
+  const { messages, isOpen, isLoading, error, mode, staffName, unread, soundOn, toggleSound, sendMessage, retry, toggleChat } =
+    useChat();
   const [hoveringFab, setHoveringFab] = useState(false);
   const [flash, wave] = useWaveFlash();
   const tip = useMascotTip({ locale, isOpen, hoveringFab });
@@ -48,20 +49,6 @@ export function ChatWidget({ locale }: { locale: Locale }) {
     if (tip?.kind === "section") wave(1200);
   }, [tip?.kind, tip?.text, wave]);
 
-  /* Launcher look: ?fab=<variant> previews one and keeps it for the visit. */
-  const [variant, setVariant] = useState<FabVariant>(DEFAULT_FAB_VARIANT);
-  useEffect(() => {
-    try {
-      const asked = new URLSearchParams(location.search).get("fab") ?? sessionStorage.getItem("reen-fab");
-      if (asked && (FAB_VARIANTS as readonly string[]).includes(asked)) {
-        setVariant(asked as FabVariant);
-        sessionStorage.setItem("reen-fab", asked);
-      }
-    } catch {
-      /* storage blocked: keep the default */
-    }
-  }, []);
-
   const onQuick = (text: string) => {
     if (!isOpen) toggleChat();
     void sendMessage(text);
@@ -80,18 +67,20 @@ export function ChatWidget({ locale }: { locale: Locale }) {
           mode={mode}
           staffName={staffName}
           mood={mood}
+          soundOn={soundOn}
+          onToggleSound={toggleSound}
           onClose={toggleChat}
         />
       )}
 
       <ReenLauncher
-        variant={variant}
         locale={locale}
         mood={mood}
         tip={tip}
         isOpen={isOpen}
         isLoading={isLoading}
         mode={mode}
+        unread={unread}
         onToggle={toggleChat}
         onQuick={onQuick}
         onHover={setHoveringFab}

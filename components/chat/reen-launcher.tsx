@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { MascotFace } from "./mascot-face";
-import type { FabVariant, MascotMood } from "./mascot";
+import type { MascotMood } from "./mascot";
 import type { MascotTip } from "./use-mascot-tip";
 
 const COPY = {
@@ -44,36 +44,54 @@ const COPY = {
 } as const;
 
 type Props = {
-  variant: FabVariant;
   locale: Locale;
   mood: MascotMood;
   tip: MascotTip;
   isOpen: boolean;
   isLoading: boolean;
   mode: "ai" | "staff";
+  unread: number;
   onToggle: () => void;
   onQuick: (text: string) => void;
   onHover: (hover: boolean) => void;
 };
 
-/** The closed-chat launcher. One component, several looks (see FAB_VARIANTS). */
-export function ReenLauncher({ variant, locale, mood, tip, isOpen, isLoading, mode, onToggle, onQuick, onHover }: Props) {
+const HIDDEN_KEY = "reen-card-hidden";
+
+/** The closed-chat launcher: a starter card with quick questions, or the compact ring once opened or hidden. */
+export function ReenLauncher({ locale, mood, tip, isOpen, isLoading, mode, unread, onToggle, onQuick, onHover }: Props) {
   const t = COPY[locale];
   const isRtl = locale === "ar";
   const [cardHidden, setCardHidden] = useState(false);
 
-  /* Tall looks hand over to the compact ring while the panel is open; the card also once dismissed. */
-  const tall = variant === "card" || variant === "portrait" || variant === "blob";
-  const look: FabVariant = (tall && isOpen) || (variant === "card" && cardHidden) ? "ring" : variant;
-  /* Pill and card carry their own text, so they skip the floating bubble. */
-  const showBubble = tip && look !== "pill" && look !== "card";
+  /* A hidden card stays hidden for the rest of the visit. */
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(HIDDEN_KEY)) setCardHidden(true);
+    } catch {
+      /* storage blocked */
+    }
+  }, []);
+  const hideCard = () => {
+    setCardHidden(true);
+    try {
+      sessionStorage.setItem(HIDDEN_KEY, "1");
+    } catch {
+      /* storage blocked */
+    }
+  };
+
+  /* The card hands over to the compact ring while the panel is open, once hidden, or when replies are waiting. */
+  const look = isOpen || cardHidden || unread > 0 ? "ring" : "card";
+  /* The card carries its own text, so it skips the floating bubble. */
+  const showBubble = tip && look === "ring";
 
   const btn = {
     type: "button" as const,
     onClick: onToggle,
     onPointerEnter: (e: React.PointerEvent) => e.pointerType === "mouse" && onHover(true),
     onPointerLeave: (e: React.PointerEvent) => e.pointerType === "mouse" && onHover(false),
-    "aria-label": isOpen ? t.close : t.open,
+    "aria-label": isOpen ? t.close : t.open + (unread > 0 ? (isRtl ? ` (${unread} رسائل جديدة)` : ` (${unread} new)`) : ""),
     "aria-expanded": isOpen,
     "data-mood": mood,
   };
@@ -128,41 +146,19 @@ export function ReenLauncher({ variant, locale, mood, tip, isOpen, isLoading, mo
           <button {...btn} className={cn("reen-fab__btn", state)}>
             {face}
             {status}
-            {close}
-          </button>
-        )}
-
-        {/* Frameless: Reen rises from the screen edge */}
-        {look === "peek" && (
-          <button {...btn} className={cn("reen-peek", state)}>
-            <span className="reen-peek__clip">{figure}</span>
-            <span className="reen-peek__chat" aria-hidden>
-              {isOpen ? <X size={14} strokeWidth={2.75} /> : <MessageCircle size={14} strokeWidth={2.5} />}
-            </span>
-          </button>
-        )}
-
-        {/* Expanded pill with a live line of text */}
-        {look === "pill" && (
-          <button {...btn} dir={isRtl ? "rtl" : "ltr"} className={cn("reen-pill", state)}>
-            <span className="reen-pill__text">
-              <span className="reen-pill__title">{t.title}</span>
-              <span className="reen-pill__sub" key={tip?.text ?? "online"}>
-                <i className={cn("reen-pill__dot", mode === "staff" && "is-staff")} />
-                {mode === "staff" ? t.staff : tip && tip.kind !== "hello" ? tip.text : t.online}
+            {!isOpen && unread > 0 && (
+              <span key={unread} className="reen-fab__unread" aria-hidden>
+                {unread > 9 ? "9+" : unread}
               </span>
-            </span>
-            <span className="reen-pill__face">
-              {face}
-              {close}
-            </span>
+            )}
+            {close}
           </button>
         )}
 
         {/* Starter card with quick questions */}
         {look === "card" && (
           <div className="reen-card" dir={isRtl ? "rtl" : "ltr"}>
-            <button type="button" className="reen-card__x" aria-label={t.dismiss} onClick={() => setCardHidden(true)}>
+            <button type="button" className="reen-card__x" aria-label={t.dismiss} onClick={hideCard}>
               <X size={12} strokeWidth={2.75} />
             </button>
             <button {...btn} className="reen-card__main">
@@ -170,7 +166,7 @@ export function ReenLauncher({ variant, locale, mood, tip, isOpen, isLoading, mo
               <span className="reen-card__text">
                 <span className="reen-card__hi">
                   {t.hi}
-                  <i className="reen-pill__dot" />
+                  <i className="reen-dot" />
                 </span>
                 <span className="reen-card__ask">{t.ask}</span>
               </span>
@@ -183,28 +179,6 @@ export function ReenLauncher({ variant, locale, mood, tip, isOpen, isLoading, mo
               ))}
             </div>
           </div>
-        )}
-
-        {/* Portrait frame with a name plate */}
-        {look === "portrait" && (
-          <button {...btn} className={cn("reen-portrait", state)}>
-            <span className="reen-portrait__frame">{figure}</span>
-            <span className="reen-portrait__plate" dir={isRtl ? "rtl" : "ltr"}>
-              <i className={cn("reen-pill__dot", mode === "staff" && "is-staff")} />
-              {t.name}
-            </span>
-            {close}
-          </button>
-        )}
-
-        {/* Morphing blob with Reen popping out of it */}
-        {look === "blob" && (
-          <button {...btn} className={cn("reen-blob", state)}>
-            <span className="reen-blob__bg" aria-hidden />
-            <span className="reen-blob__pop">{figure}</span>
-            {status}
-            {close}
-          </button>
         )}
       </span>
     </div>

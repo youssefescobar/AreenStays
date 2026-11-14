@@ -17,11 +17,6 @@ export const MASCOT_CUT_SRC: Record<MascotMood, string> = {
   think: "/mascot/cut/think.webp",
 };
 
-/** Launcher looks. Preview any of them with ?fab=<name>. */
-export const FAB_VARIANTS = ["ring", "peek", "pill", "card", "portrait", "blob"] as const;
-export type FabVariant = (typeof FAB_VARIANTS)[number];
-export const DEFAULT_FAB_VARIANT: FabVariant = "ring";
-
 /** Priority: thinking > waving (hover or a short reaction) > idle. */
 export const reenMood = ({ thinking, hover, flash }: { thinking: boolean; hover: boolean; flash: boolean }): MascotMood =>
   thinking ? "think" : hover || flash ? "wave" : "idle";
@@ -36,7 +31,6 @@ const PATH_HINTS: { match: RegExp; en: string; ar: string }[] = [
   { match: /\/dining/, en: "Ask about dining", ar: "عندك سؤال عن المطاعم؟" },
   { match: /\/offers/, en: "See today's offers", ar: "عروض اليوم بانتظارك" },
   { match: /\/umrah/, en: "Plan your Umrah stay", ar: "نخطط لإقامة عمرتك؟" },
-  { match: /\/corporate/, en: "Ask about events", ar: "عندك فعالية أو اجتماع؟" },
   { match: /\/location/, en: "How to find us", ar: "كيف الوصول إلينا؟" },
   { match: /\/gallery/, en: "Tour the hotel", ar: "جولة في الفندق" },
   { match: /#booking/, en: "Need help booking?", ar: "أساعدك في الحجز؟" },

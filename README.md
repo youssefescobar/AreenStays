@@ -25,21 +25,22 @@ their saved choice (cookie set by the language switch) → Arabic for visitors i
 | `/` home | `app/[locale]/page.tsx` |
 | `/rooms`, `/rooms/[slug]` | `app/[locale]/rooms/` |
 | `/dining`, `/offers`, `/gallery`, `/location` | `app/[locale]/*/page.tsx` |
-| `/umrah`, `/corporate` | share `components/feature-page.tsx` |
+| `/umrah` | uses `components/feature-page.tsx` |
 | `/brand` brand guide (not indexed) | `app/[locale]/brand/page.tsx` |
 
 ## Editing content
 
-All text, rooms, prices and contact details live in `content/`, in both languages:
+All text and contact details live in `content/`, in both languages:
 
 - `content/site.ts`: phone, WhatsApp, email, address, social links, booking-site listings, and all shared UI text. Values marked `TODO` are placeholders.
-- `content/rooms.ts`, `content/dining.ts`, `content/offers.ts`: one entry per room / venue / offer.
-- `content/pages.ts`: intro text for the inner pages, Umrah and business features, gallery captions, drive times.
+- `content/dining.ts`, `content/offers.ts`: one entry per venue / offer.
+- Rooms (names, prices, photos, room numbers) are managed in the admin app → Rooms, and read from the backend's `/api/rooms`.
+- `content/pages.ts`: intro text for the inner pages, Umrah features, gallery captions, drive times.
 
 ## Photos
 
 Every image slot uses `components/photo.tsx`: a branded placeholder with the photo on top. For now the photos are **temporary Unsplash fillers**, all listed in `content/stock.ts`; if one fails to load, the placeholder shows.
-To add real photos, put them in `public/photos/` and swap the paths in the content files (e.g. `images: ["/photos/rooms/deluxe-1.jpg"]` in `content/rooms.ts`), or point the keys in `content/stock.ts` at the new files.
+To add real photos, put them in `public/photos/` and swap the paths in the content files, or point the keys in `content/stock.ts` at the new files. Room photos are uploaded in the admin app (Rooms) instead.
 
 ## Booking
 

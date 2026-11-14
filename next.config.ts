@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Temporary filler photos (content/stock.ts) until the hotel's own photos are in /public/photos
-  images: { remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }] },
+  // Room photos uploaded in the admin (Cloudflare R2), plus the temporary Unsplash fillers
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "media.areenstay.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
+  },
   poweredByHeader: false,
   async headers() {
     return [

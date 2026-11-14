@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { href } from "@/lib/i18n";
-import { X } from "lucide-react";
+import { X, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import { ChatMessage } from "./chat-message";
@@ -36,6 +36,8 @@ interface ChatPanelProps {
   mode: "ai" | "staff";
   staffName: string | null;
   mood: MascotMood;
+  soundOn: boolean;
+  onToggleSound: () => void;
   onClose: () => void;
 }
 
@@ -53,6 +55,8 @@ export function ChatPanel({
   mode,
   staffName,
   mood,
+  soundOn,
+  onToggleSound,
   onClose,
 }: ChatPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -145,6 +149,17 @@ export function ChatPanel({
               : isLoading ? (isRtl ? "تفكر…" : "Thinking…") : isRtl ? "متصلة الآن" : "Online now"}
           </p>
         </div>
+
+        <button
+          type="button"
+          onClick={onToggleSound}
+          aria-pressed={soundOn}
+          aria-label={soundOn ? (isRtl ? "كتم صوت الرسائل" : "Mute message sound") : isRtl ? "تشغيل صوت الرسائل" : "Turn message sound on"}
+          title={soundOn ? (isRtl ? "كتم الصوت" : "Mute") : isRtl ? "تشغيل الصوت" : "Sound on"}
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          {soundOn ? <Volume2 size={16} /> : <VolumeX size={16} />}
+        </button>
 
         <button
           type="button"

@@ -3,23 +3,27 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, BedDouble, Check, Eye, Maximize2, Users } from "lucide-react";
 import { href, isLocale, locales } from "@/lib/i18n";
 import { dict } from "@/content/site";
-import { getRoom, rooms } from "@/content/rooms";
+import { getRooms } from "@/lib/rooms";
 import { pageMetadata } from "@/lib/seo";
 import { Photo } from "@/components/photo";
 import { BookingBar } from "@/components/booking-bar";
 import { RoomCard } from "@/components/room-card";
 import { Reveal } from "@/components/reveal";
-import { livePrice } from "@/lib/prices";
 
 type Params = { params: Promise<{ locale: string; slug: string }> };
 
-export const generateStaticParams = () => locales.flatMap((locale) => rooms.map((r) => ({ locale, slug: r.slug })));
+// Rooms added later in the admin render on first visit (dynamicParams stays on).
+export async function generateStaticParams() {
+  const rooms = await getRooms();
+  return locales.flatMap((locale) => rooms.map((r) => ({ locale, slug: r.slug })));
+}
 
 async function load(params: Params["params"]) {
   const { locale, slug } = await params;
-  const room = getRoom(slug);
+  const rooms = await getRooms();
+  const room = rooms.find((r) => r.slug === slug);
   if (!isLocale(locale) || !room) notFound();
-  return { locale, room, t: dict[locale] };
+  return { locale, room, rooms, t: dict[locale] };
 }
 
 export async function generateMetadata({ params }: Params) {
@@ -28,7 +32,7 @@ export async function generateMetadata({ params }: Params) {
 }
 
 export default async function RoomPage({ params }: Params) {
-  const { locale, room, t } = await load(params);
+  const { locale, room, rooms, t } = await load(params);
   const gallery = [0, 1, 2, 3, 4].map((i) => room.images[i]);
   const others = rooms.filter((r) => r.slug !== room.slug).slice(0, 3);
   const facts = [
@@ -81,7 +85,7 @@ export default async function RoomPage({ params }: Params) {
           <aside className="h-fit border border-beige bg-white p-8 lg:sticky lg:top-28">
             <p className="text-sm text-ink/55">{t.from}</p>
             <p className="mt-1 text-4xl font-light text-navy">
-              {(await livePrice(room)).toLocaleString("en-US")} <span className="text-lg text-gold">{t.sar}</span>
+              {room.price.toLocaleString("en-US")} <span className="text-lg text-gold">{t.sar}</span>
             </p>
             <p className="text-sm text-ink/55">{t.perNight}</p>
             <a
@@ -95,7 +99,7 @@ export default async function RoomPage({ params }: Params) {
       </section>
 
       <section id="room-booking" className="scroll-mt-28 bg-navy px-4 py-16 sm:px-6 lg:px-8">
-        <BookingBar locale={locale} t={t.booking} defaultRoom={room.slug} />
+        <BookingBar locale={locale} t={t.booking} rooms={rooms} defaultRoom={room.slug} />
       </section>
 
       <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">

@@ -12,7 +12,6 @@ export function Footer({ locale, t }: { locale: Locale; t: Dict }) {
     { label: t.nav.dining, path: "/dining" },
     { label: t.nav.offers, path: "/offers" },
     { label: t.nav.umrah, path: "/umrah" },
-    { label: t.nav.corporate, path: "/corporate" },
     { label: t.nav.gallery, path: "/gallery" },
     { label: t.nav.location, path: "/location" },
   ];

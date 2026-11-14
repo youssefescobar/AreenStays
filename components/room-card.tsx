@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { BedDouble, Maximize2, Users } from "lucide-react";
 import { href, type Locale } from "@/lib/i18n";
-import type { Room } from "@/content/rooms";
+import type { Room } from "@/lib/rooms";
 import type { Dict } from "@/content/site";
 import { Photo } from "./photo";
-import { livePrice } from "@/lib/prices";
 
-export async function RoomCard({ room, locale, t }: { room: Room; locale: Locale; t: Dict }) {
-  const price = await livePrice(room);
+export function RoomCard({ room, locale, t }: { room: Room; locale: Locale; t: Dict }) {
   return (
     <Link href={href(locale, `/rooms/${room.slug}`)} className="group block">
       <div className="overflow-hidden">
@@ -25,7 +23,7 @@ export async function RoomCard({ room, locale, t }: { room: Room; locale: Locale
         </div>
         <p className="shrink-0 text-end text-sm font-semibold text-gold">
           <span className="block text-[11px] font-normal text-ink/50">{t.from}</span>
-          {price.toLocaleString("en-US")} {t.sar}
+          {room.price.toLocaleString("en-US")} {t.sar}
         </p>
       </div>
       <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-ink/60">

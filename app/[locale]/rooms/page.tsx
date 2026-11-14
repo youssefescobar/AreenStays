@@ -1,6 +1,6 @@
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
-import { rooms } from "@/content/rooms";
+import { getRooms } from "@/lib/rooms";
 import { pages } from "@/content/pages";
 import { PageHero } from "@/components/page-hero";
 import { RoomCard } from "@/components/room-card";
@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: LocaleParams) {
 export default async function RoomsPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
   const floors = p.floors;
+  const rooms = await getRooms();
 
   return (
     <>
@@ -32,13 +33,11 @@ export default async function RoomsPage({ params }: LocaleParams) {
       </section>
       <FloorGuide
         locale={locale}
+        rooms={rooms}
         copy={{
           eyebrow: floors.eyebrow[locale],
           title: floors.title[locale],
           intro: floors.intro[locale],
-          legendKing: floors.legendKing[locale],
-          legendTwin: floors.legendTwin[locale],
-          cta: floors.cta[locale],
         }}
       />
     </>

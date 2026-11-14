@@ -5,7 +5,7 @@ import { PageHero } from "./page-hero";
 import { Photo } from "./photo";
 import { Reveal } from "./reveal";
 
-/** Shared layout for the Umrah and Business pages: hero, feature grid, photo strip, enquiry button. */
+/** Layout for the Umrah page: hero, feature grid, photo strip, enquiry button. */
 export function FeaturePage({
   locale,
   page,

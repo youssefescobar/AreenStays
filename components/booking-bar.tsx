@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { BedDouble, CalendarDays, Users } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import type { Dict } from "@/content/site";
-import { rooms } from "@/content/rooms";
+import type { Room } from "@/lib/rooms";
 import { whatsappUrl } from "@/lib/contact";
 import { createBooking, fetchAvailability } from "@/lib/booking/client";
 import type { AvailabilityType } from "@/lib/booking/types";
@@ -28,7 +28,17 @@ const inputCls = "w-full bg-transparent text-sm font-medium text-navy outline-no
  * Availability form. Checks live inventory for the selected dates, holds a room via
  * the booking API, then opens WhatsApp so reception can confirm.
  */
-export function BookingBar({ locale, t, defaultRoom = "" }: { locale: Locale; t: Dict["booking"]; defaultRoom?: string }) {
+export function BookingBar({
+  locale,
+  t,
+  rooms,
+  defaultRoom = "",
+}: {
+  locale: Locale;
+  t: Dict["booking"];
+  rooms: Pick<Room, "slug" | "name">[];
+  defaultRoom?: string;
+}) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(t.guestOptions[1]);
