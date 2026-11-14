@@ -1,6 +1,5 @@
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
-import { getSiteMedia, photo } from "@/lib/media";
 import { getRooms } from "@/lib/rooms";
 import { pages } from "@/content/pages";
 import { PageHero } from "@/components/page-hero";
@@ -17,13 +16,12 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function RoomsPage({ params }: LocaleParams) {
   const { locale, t } = await resolve(params);
-  const media = await getSiteMedia();
   const floors = p.floors;
   const rooms = await getRooms();
 
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={photo(media, "rooms.hero", p.image)} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={rooms.find((r) => r.images[0])?.images[0] ?? p.image} />
       <section className="bg-white px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room, i) => (
