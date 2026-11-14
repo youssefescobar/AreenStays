@@ -14,6 +14,8 @@ export type Room = {
   amenities: T[];
   /** Full photo URLs. Empty = branded placeholder. */
   images: string[];
+  /** Staff marked it fully booked in the admin: still shown, but it can't be requested. */
+  fullyBooked?: boolean;
   /** Physical room numbers of this type; floor = Math.floor(number / 100). */
   units: number[];
 };

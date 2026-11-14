@@ -88,12 +88,18 @@ export default async function RoomPage({ params }: Params) {
               {room.price.toLocaleString("en-US")} <span className="text-lg text-gold">{t.sar}</span>
             </p>
             <p className="text-sm text-ink/55">{t.perNight}</p>
-            <a
-              href="#room-booking"
-              className="mt-6 flex h-12 items-center justify-center bg-gold text-xs font-semibold uppercase tracking-[0.2em] text-navy-deep hover:bg-gold-soft"
-            >
-              {t.bookNow}
-            </a>
+            {room.fullyBooked ? (
+              <p className="mt-6 flex h-12 items-center justify-center border border-gold/60 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+                {t.booking.fullyBooked}
+              </p>
+            ) : (
+              <a
+                href="#room-booking"
+                className="mt-6 flex h-12 items-center justify-center bg-gold text-xs font-semibold uppercase tracking-[0.2em] text-navy-deep hover:bg-gold-soft"
+              >
+                {t.bookNow}
+              </a>
+            )}
           </aside>
         </div>
       </section>
