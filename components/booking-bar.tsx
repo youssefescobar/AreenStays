@@ -1,29 +1,56 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BedDouble, CalendarDays, ChevronDown, Phone, User, Users } from "lucide-react";
+import { useEffect, useId, useState } from "react";
+import { BedDouble, CalendarDays, Phone, User, Users } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import type { Dict } from "@/content/site";
 import type { Room } from "@/lib/rooms";
 import { whatsappUrl } from "@/lib/contact";
 import { createBooking, fetchAvailability } from "@/lib/booking/client";
 import type { AvailabilityType } from "@/lib/booking/types";
-import { countries, DEFAULT_COUNTRY, digitsOnly, flag, toE164 } from "@/lib/booking/phone";
+import { countries, DEFAULT_COUNTRY, flag, toE164 } from "@/lib/booking/phone";
+import { addDays, today as todayIso } from "@/lib/dates";
+import { cn } from "@/lib/utils";
+import { Select, type SelectOption } from "./ui/select";
+import { DateRangePicker, shortDate } from "./ui/date-range-picker";
 import { Button } from "./button";
 
-function Field({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
+function Field({
+  label,
+  icon,
+  labelId,
+  htmlFor,
+  active,
+  children,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  labelId: string;
+  htmlFor?: string;
+  active?: boolean;
+  children: React.ReactNode;
+}) {
+  const Label = htmlFor ? "label" : "span";
   return (
-    <label className="flex flex-1 flex-col gap-1 border-b border-navy/10 px-5 py-4 md:border-e md:border-b-0">
-      <span className="eyebrow flex items-center gap-2 text-crystal">
+    <div
+      className={cn(
+        "relative flex flex-1 flex-col gap-1 border-b border-navy/10 px-5 py-4 transition-colors focus-within:bg-sand/50 md:border-e md:border-b-0",
+        active && "bg-sand/50",
+      )}
+    >
+      <Label id={labelId} htmlFor={htmlFor} className="eyebrow flex items-center gap-2 text-crystal">
         {icon}
         {label}
-      </span>
+      </Label>
       {children}
-    </label>
+    </div>
   );
 }
 
 const inputCls = "w-full bg-transparent text-sm font-medium text-navy outline-none placeholder:text-ink/35";
+// Picker triggers stretch over the whole field so the label and padding are tappable too.
+const triggerCls =
+  "w-full text-start text-sm font-medium text-navy outline-none after:absolute after:inset-0 after:content-[''] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-gold/70";
 
 // Remembered on this device so returning guests don't retype their details.
 const CONTACT_KEY = "areen.booking.contact";
@@ -56,6 +83,7 @@ export function BookingBar({
   const [country, setCountry] = useState(DEFAULT_COUNTRY);
   const [localPhone, setLocalPhone] = useState("");
   const [contactError, setContactError] = useState<string | null>(null);
+  const uid = useId().replace(/:/g, "");
 
   useEffect(() => {
     try {
@@ -114,12 +142,6 @@ export function BookingBar({
   const allFull = datesReady && types !== null && !anyAvailable;
   const selectedFull = Boolean(room && selected?.status === "full");
   const submitDisabled = submitting || loading || !datesReady || allFull || selectedFull || (datesReady && types === null);
-
-  const optionLabel = (slug: string, name: string) => {
-    const info = typeMap.get(slug);
-    if (!datesReady || !info) return name;
-    return info.status === "full" ? `${name} — ${t.fullyBooked}` : name;
-  };
 
   const hint = contactError
     ? contactError
@@ -200,47 +222,91 @@ export function BookingBar({
     }
   };
 
+  const today = todayIso();
+  const roomOptions: SelectOption<string>[] = [
+    { value: "", label: t.anyRoom },
+    ...rooms.map((r) => {
+      const full = typeMap.get(r.slug)?.status === "full";
+      return { value: r.slug, label: r.name[locale], disabled: datesReady && full, hint: datesReady && full ? t.fullyBooked : undefined };
+    }),
+  ];
+  const countryOptions: SelectOption<string>[] = countries.map((c) => ({
+    value: c.iso,
+    label: `${c[locale]} (+${c.dial})`,
+    icon: <span className="text-lg leading-none">{flag(c.iso)}</span>,
+    keywords: `${c.en} ${c.ar} ${c.dial}`,
+  }));
+
   return (
     <form onSubmit={onSubmit} className="mx-auto max-w-6xl bg-white shadow-2xl shadow-navy/20">
       <div className="flex flex-col md:flex-row">
-        <Field label={t.checkIn} icon={<CalendarDays size={14} />}>
-          <input type="date" required value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className={inputCls} />
-        </Field>
-        <Field label={t.checkOut} icon={<CalendarDays size={14} />}>
-          <input
-            type="date"
-            required
-            min={checkIn || undefined}
-            value={checkOut}
-            onChange={(e) => setCheckOut(e.target.value)}
-            className={inputCls}
+        <DateRangePicker
+          locale={locale}
+          start={checkIn}
+          end={checkOut}
+          min={today}
+          max={addDays(today, 365)}
+          onChange={(r) => {
+            setCheckIn(r.start);
+            setCheckOut(r.end);
+          }}
+          labels={{ close: t.close }}
+        >
+          {({ trigger, open }) => (
+            <>
+              <Field label={t.checkIn} icon={<CalendarDays size={14} />} labelId={`${uid}-in`} active={open === "start"}>
+                <button
+                  {...trigger("start")}
+                  aria-labelledby={`${uid}-in ${uid}-in-v`}
+                  className={triggerCls}
+                >
+                  <span id={`${uid}-in-v`} className={checkIn ? "" : "text-ink/40"}>
+                    {checkIn ? shortDate(checkIn, locale) : t.addDate}
+                  </span>
+                </button>
+              </Field>
+              <Field label={t.checkOut} icon={<CalendarDays size={14} />} labelId={`${uid}-out`} active={open === "end"}>
+                <button
+                  {...trigger("end")}
+                  aria-labelledby={`${uid}-out ${uid}-out-v`}
+                  className={triggerCls}
+                >
+                  <span id={`${uid}-out-v`} className={checkOut ? "" : "text-ink/40"}>
+                    {checkOut ? shortDate(checkOut, locale) : t.addDate}
+                  </span>
+                </button>
+              </Field>
+            </>
+          )}
+        </DateRangePicker>
+        <Field label={t.guests} icon={<Users size={14} />} labelId={`${uid}-g`}>
+          <Select
+            value={guests}
+            onChange={setGuests}
+            options={t.guestOptions.map((g) => ({ value: g, label: g }))}
+            label={t.guests}
+            labelledBy={`${uid}-g`}
+            closeLabel={t.close}
+            className={triggerCls}
           />
         </Field>
-        <Field label={t.guests} icon={<Users size={14} />}>
-          <select className={inputCls} value={guests} onChange={(e) => setGuests(e.target.value)}>
-            {t.guestOptions.map((g) => (
-              <option key={g}>{g}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label={t.room} icon={<BedDouble size={14} />}>
-          <select className={inputCls} value={room} onChange={(e) => setRoom(e.target.value)} disabled={loading && !types}>
-            <option value="">{t.anyRoom}</option>
-            {rooms.map((r) => {
-              const info = typeMap.get(r.slug);
-              const full = info?.status === "full";
-              return (
-                <option key={r.slug} value={r.slug} disabled={full}>
-                  {optionLabel(r.slug, r.name[locale])}
-                </option>
-              );
-            })}
-          </select>
+        <Field label={t.room} icon={<BedDouble size={14} />} labelId={`${uid}-r`}>
+          <Select
+            value={room}
+            onChange={setRoom}
+            options={roomOptions}
+            label={t.room}
+            labelledBy={`${uid}-r`}
+            closeLabel={t.close}
+            disabled={loading && !types}
+            className={triggerCls}
+          />
         </Field>
       </div>
       <div className="flex flex-col border-t border-navy/10 md:flex-row">
-        <Field label={t.name} icon={<User size={14} />}>
+        <Field label={t.name} icon={<User size={14} />} labelId={`${uid}-n`} htmlFor={`${uid}-name`}>
           <input
+            id={`${uid}-name`}
             type="text"
             name="name"
             autoComplete="name"
@@ -256,33 +322,34 @@ export function BookingBar({
             className={inputCls}
           />
         </Field>
-        <div className="flex flex-1 flex-col gap-1 border-b border-navy/10 px-5 py-4 md:border-e md:border-b-0">
+        <div className="flex flex-1 flex-col gap-1 border-b border-navy/10 px-5 py-4 transition-colors focus-within:bg-sand/50 md:border-e md:border-b-0">
           <label htmlFor="booking-phone" className="eyebrow flex items-center gap-2 text-crystal">
             <Phone size={14} />
             {t.phone}
           </label>
           {/* Phone numbers read left-to-right in Arabic too: code first, then the number. */}
           <div dir="ltr" className="flex items-center gap-3">
-            <div className="relative flex shrink-0 items-center gap-1 text-sm font-medium text-navy">
-              <span aria-hidden>{flag(country)}</span>
-              <span aria-hidden>+{dialCode}</span>
-              <ChevronDown size={14} aria-hidden className="text-ink/40" />
-              {/* Native select laid over the short "🇸🇦 +966" label: full country list, phone-friendly picker. */}
-              <select
-                aria-label={t.country}
+            <div className="shrink-0">
+              <Select
                 value={country}
-                onChange={(e) => {
-                  setCountry(e.target.value);
+                onChange={(iso) => {
+                  setCountry(iso);
                   setContactError(null);
                 }}
-                className="absolute inset-0 cursor-pointer opacity-0"
-              >
-                {countries.map((c) => (
-                  <option key={c.iso} value={c.iso}>
-                    {`${flag(c.iso)} ${c[locale]} (+${c.dial})`}
-                  </option>
-                ))}
-              </select>
+                options={countryOptions}
+                label={t.country}
+                searchable
+                searchPlaceholder={t.searchCountry}
+                noResults={t.noMatch}
+                closeLabel={t.close}
+                renderValue={() => (
+                  <span className="flex items-center gap-1.5">
+                    <span aria-hidden className="text-base leading-none">{flag(country)}</span>
+                    <span className="tabular-nums">+{dialCode}</span>
+                  </span>
+                )}
+                className="gap-1 py-0.5"
+              />
             </div>
             <span aria-hidden className="h-5 w-px bg-navy/15" />
             <input
