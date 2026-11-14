@@ -1,7 +1,8 @@
 /**
  * TEMPORARY filler photos from Unsplash, used until the hotel's own photos arrive.
- * To replace: put real photos in /public/photos and swap the paths in the content files
- * (or point these keys at the new files). If a filler fails to load, the branded placeholder shows instead.
+ * These are only defaults: owners replace every one of them in the admin (Site images page),
+ * and room photos on the Rooms page. To change a default, swap the URL here
+ * (keep AreenStay-Backend services/siteMedia.ts in step so the admin previews it). Failed loads show the placeholder.
  */
 const u = (id: string, w = 1600) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 

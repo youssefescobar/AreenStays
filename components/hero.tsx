@@ -3,14 +3,13 @@ import type { Locale } from "@/lib/i18n";
 import type { Dict } from "@/content/site";
 import { AreenLogo } from "./areen-logo";
 import { Photo } from "./photo";
-import { stock } from "@/content/stock";
 
-export function Hero({ locale, t }: { locale: Locale; t: Pick<Dict, "tagline" | "taglineAlt"> }) {
+export function Hero({ locale, t, image }: { locale: Locale; t: Pick<Dict, "tagline" | "taglineAlt">; image?: string }) {
   const altLang = locale === "ar" ? "en" : "ar";
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-navy-deep">
-      {/* Swap for the hero photo or video once the shoot is ready */}
-      <Photo src={stock.hero} label="Hero" className="absolute inset-0 opacity-45" sizes="100vw" priority />
+      {/* Photo is set in the admin → Site images */}
+      <Photo src={image} label="Hero" className="absolute inset-0 opacity-45" sizes="100vw" priority />
       <div
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgb(91_143_183/0.25),transparent_60%),linear-gradient(180deg,rgb(7_30_51/0.7),rgb(7_30_51/0.4)_40%,rgb(7_30_51/0.95))]"

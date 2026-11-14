@@ -1,6 +1,7 @@
 import { Clock } from "lucide-react";
 import { resolve, type LocaleParams } from "@/lib/page";
 import { pageMetadata } from "@/lib/seo";
+import { getSiteMedia, photo } from "@/lib/media";
 import { venues } from "@/content/dining";
 import { pages } from "@/content/pages";
 import { PageHero } from "@/components/page-hero";
@@ -16,14 +17,15 @@ export async function generateMetadata({ params }: LocaleParams) {
 
 export default async function DiningPage({ params }: LocaleParams) {
   const { locale } = await resolve(params);
+  const media = await getSiteMedia();
   return (
     <>
-      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={p.image} />
+      <PageHero eyebrow={p.eyebrow[locale]} title={p.title[locale]} intro={p.intro[locale]} image={photo(media, "dining.hero", p.image)} />
       <section className="px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-24">
           {venues.map((v, i) => (
             <Reveal key={v.slug} className="grid gap-10 lg:grid-cols-2 lg:items-center">
-              <Photo src={v.images[0]} label={v.name[locale]} className={i % 2 ? "aspect-[4/3] lg:order-2" : "aspect-[4/3]"} />
+              <Photo src={photo(media, `dining.${v.slug}`, v.images[0])} label={v.name[locale]} className={i % 2 ? "aspect-[4/3] lg:order-2" : "aspect-[4/3]"} />
               <div>
                 <p className="eyebrow text-crystal">{v.type[locale]}</p>
                 <h2 className="mt-4 text-3xl font-light text-navy sm:text-4xl">{v.name[locale]}</h2>
