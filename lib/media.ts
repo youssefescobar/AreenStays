@@ -9,9 +9,13 @@ export type GalleryItem = { url: string; caption: { en: string; ar: string } };
  */
 export type SiteMedia = Record<string, { url?: string | null; items?: GalleryItem[] }>;
 
-/** Re-checked every 60 s. Throws on failure so a bad refresh keeps the last good page. */
+/**
+ * Re-checked every 60 s. Throws on failure so a bad refresh keeps the last good page.
+ * A 404 (a backend without Site images yet) just means "all defaults".
+ */
 export async function getSiteMedia(): Promise<SiteMedia> {
   const res = await fetch(`${API_URL}/api/site-media`, { next: { revalidate: 60 } });
+  if (res.status === 404) return {};
   if (!res.ok) throw new Error(`Site media API returned ${res.status}`);
   return ((await res.json()) as { media: SiteMedia }).media ?? {};
 }
