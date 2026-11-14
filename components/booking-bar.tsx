@@ -118,8 +118,7 @@ export function BookingBar({
   const optionLabel = (slug: string, name: string) => {
     const info = typeMap.get(slug);
     if (!datesReady || !info) return name;
-    if (info.status === "full") return `${name} — ${t.fullyBooked}`;
-    return `${name} — ${info.available} ${t.left}`;
+    return info.status === "full" ? `${name} — ${t.fullyBooked}` : name;
   };
 
   const hint = contactError
