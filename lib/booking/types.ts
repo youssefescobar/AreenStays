@@ -19,6 +19,8 @@ export type CreateBookingRequest = {
   slug: string;
   guests: string;
   locale: string;
+  guestName: string;
+  phone: string; // E.164, e.g. "+966512345678"
 };
 
 export type CreateBookingResponse = {
