@@ -7,6 +7,8 @@ import { API_URL, type Room } from "@/lib/rooms";
 import { href, type Locale } from "@/lib/i18n";
 import { whatsappUrl } from "@/lib/contact";
 import { Photo } from "../photo";
+import { DateRangePicker, shortDate } from "../ui/date-range-picker";
+import { addDays, today as todayIso } from "@/lib/dates";
 
 /** Mirrors ChatCard in AreenStay-Backend/src/services/booking.ts */
 export type ChatCard =
@@ -34,48 +36,62 @@ const L = {
 const fmtDate = (d: string, locale: Locale) =>
   new Date(`${d}T00:00:00`).toLocaleDateString(locale === "ar" ? "ar-SA" : "en-GB", { day: "numeric", month: "short" });
 
-const isoDay = (d: Date) => d.toLocaleDateString("en-CA"); // YYYY-MM-DD in the guest's timezone
-const addDays = (iso: string, n: number) => isoDay(new Date(new Date(`${iso}T12:00:00`).getTime() + n * 86_400_000));
 
-/** Native date inputs + guest stepper; sends the choice back as a normal chat message. */
+/** Brand date-range picker + guest stepper; sends the choice back as a normal chat message. */
 function DatesCard({ card, locale, onSend, disabled }: { card: Extract<ChatCard, { type: "dates" }>; locale: Locale; onSend: (text: string) => void; disabled: boolean }) {
   const t = L[locale];
-  const today = isoDay(new Date());
+  const today = todayIso();
   const [checkIn, setCheckIn] = useState(addDays(today, 1));
   const [checkOut, setCheckOut] = useState(addDays(today, 2));
   const [guests, setGuests] = useState(Math.min(card.guests ?? 2, card.maxGuests));
   const valid = checkIn >= today && checkOut > checkIn;
-  const field = "mt-1 w-full rounded-lg border border-ink/15 bg-sand/40 px-2 py-1.5 text-sm text-ink outline-none focus:border-gold";
 
   return (
     <div className="space-y-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5">
-      <div className="grid grid-cols-2 gap-2 text-xs text-ink/60">
-        <label>
-          {t.checkIn}
-          <input
-            type="date"
-            min={today}
-            value={checkIn}
-            onChange={(e) => {
-              setCheckIn(e.target.value);
-              if (checkOut <= e.target.value) setCheckOut(addDays(e.target.value, 1));
-            }}
-            className={field}
-          />
-        </label>
-        <label>
-          {t.checkOut}
-          <input type="date" min={addDays(checkIn, 1)} value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className={field} />
-        </label>
-      </div>
+      <DateRangePicker
+        locale={locale}
+        start={checkIn}
+        end={checkOut}
+        min={today}
+        max={addDays(today, 365)}
+        onChange={(r) => {
+          setCheckIn(r.start);
+          setCheckOut(r.end);
+        }}
+      >
+        {({ trigger, open }) => (
+          <div className="grid grid-cols-2 gap-2 text-xs text-ink/60">
+            {(["start", "end"] as const).map((which) => {
+              const v = which === "start" ? checkIn : checkOut;
+              const label = which === "start" ? t.checkIn : t.checkOut;
+              return (
+                <button
+                  key={which}
+                  {...trigger(which)}
+                  aria-label={`${label}: ${v ? shortDate(v, locale) : "—"}`}
+                  className={`flex flex-col items-start gap-0.5 rounded-lg border bg-sand/40 px-2.5 py-1.5 text-start outline-none transition-colors focus-visible:ring-2 focus-visible:ring-gold/60 ${
+                    open === which ? "border-gold" : "border-ink/15"
+                  }`}
+                >
+                  <span className="flex items-center gap-1 text-[11px] text-ink/55">
+                    <CalendarDays size={12} aria-hidden className="text-crystal" />
+                    {label}
+                  </span>
+                  <span className={`text-sm font-medium ${v ? "text-navy" : "text-ink/35"}`}>{v ? shortDate(v, locale) : "—"}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </DateRangePicker>
       <div className="flex items-center justify-between text-xs text-ink/60">
         <span>{t.guestsLabel}</span>
         <div className="flex items-center gap-3">
-          <button type="button" aria-label="-" onClick={() => setGuests((g) => Math.max(1, g - 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
+          <button type="button" aria-label={locale === "ar" ? "ضيف أقل" : "Fewer guests"} onClick={() => setGuests((g) => Math.max(1, g - 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
             −
           </button>
-          <span className="w-4 text-center text-sm font-semibold text-ink">{guests}</span>
-          <button type="button" aria-label="+" onClick={() => setGuests((g) => Math.min(card.maxGuests, g + 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
+          <span aria-live="polite" className="w-4 text-center text-sm font-semibold text-ink">{guests}</span>
+          <button type="button" aria-label={locale === "ar" ? "ضيف إضافي" : "More guests"} onClick={() => setGuests((g) => Math.min(card.maxGuests, g + 1))} className="h-9 w-9 rounded-full border border-ink/15 text-base text-ink">
             +
           </button>
         </div>
